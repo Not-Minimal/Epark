@@ -88,7 +88,7 @@ export default function Register() {
               footerContent={
                 <div className="flex items-center justify-between">
                   <span>¿Tienes una cuenta?</span>
-                  <Link to="/" className="underline">
+                  <Link to="/login" className="underline">
                     Iniciar Sesión
                   </Link>
                 </div>
