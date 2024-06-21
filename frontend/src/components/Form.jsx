@@ -1,37 +1,53 @@
-const Form = ({ title, fields, buttonText, onSubmit, footerContent, backgroundColor }) => {
+import { Button } from "./ui/button";
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
-        onSubmit(data);
-    };
+const Form = ({
+  fields,
+  buttonText,
+  onSubmit,
+  footerContent,
+  backgroundColor,
+}) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+    onSubmit(data);
+  };
 
-    return (
-        <form className="form" style={{ backgroundColor: backgroundColor }} onSubmit={handleSubmit}>
-            <h1>{title}</h1>
-            {fields.map((field, index) => (
-                <div className="container_inputs" key={index}>
-                    {field.label && <label htmlFor={field.name}>{field.label}</label>}
-                    <input
-                        label={field.type || "text"}
-                        name={field.name}
-                        placeholder={field.placeholder}
-                        type={field.type || "text"}
-                        value={field.value}
-                        required={field.required}
-                        disabled={field.disabled}
-                    />
-                </div>
-            ))}
-            {buttonText && <button type="submit">{buttonText}</button>}
-            {footerContent && <div>{footerContent}</div>}
-        </form>
-    );
+  return (
+    <form
+      className="form space-y-4"
+      style={{ backgroundColor: backgroundColor }}
+      onSubmit={handleSubmit}
+    >
+      {fields.map((field, index) => (
+        <div className="container_inputs" key={index}>
+          {field.label && (
+            <label
+              htmlFor={field.name}
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-500 dark:text-gray-400"
+            >
+              {field.label}
+            </label>
+          )}
+          <input
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+            name={field.name}
+            placeholder={field.placeholder}
+            type={field.type || "text"}
+            defaultValue={field.value}
+            required={field.required}
+            disabled={field.disabled}
+          />
+        </div>
+      ))}
+      {buttonText && <Button type="submit">{buttonText}</Button>}
+      {footerContent && <div>{footerContent}</div>}
+    </form>
+  );
 };
-
 
 export default Form;

@@ -45,17 +45,17 @@ export async function createUsers() {
 
     await Promise.all([
       new User({
-        username: "Nombre Usuario",
+        username: "E-Park User",
         email: "user@gmail.com",
         rut: "12345678-9",
-        password: await User.encryptPassword("user123"),
+        password: await User.encryptPassword("eparkuser123"),
         roles: user._id,
       }).save(),
       new User({
         username: "Nombre Administrador",
-        email: "admin@gmail.com",
+        email: "admin@epark.com",
         rut: "12345678-0",
-        password: await User.encryptPassword("admin123"),
+        password: await User.encryptPassword("eparkadmin123"),
         roles: admin._id,
       }).save(),
     ]);

@@ -17,20 +17,22 @@ import { createRoles, createUsers } from "./config/initSetup.js";
 
 /**
  * Inicia el servidor web
-*/
+ */
 async function setupServer() {
   try {
     /** Instancia de la aplicacion */
     const app = express();
     app.disable("x-powered-by");
-    
+
     // Configuración de express-session
-    app.use(session({
-      name: 'miCookie',
-      secret: `${PASS_SECRET}`,
-      resave: false,
-      saveUninitialized: false,
-    }));
+    app.use(
+      session({
+        name: "miCookie",
+        secret: `${PASS_SECRET}`,
+        resave: false,
+        saveUninitialized: false,
+      }),
+    );
 
     // Agregamos los cors
     app.use(cors({ credentials: true, origin: true }));
@@ -45,16 +47,16 @@ async function setupServer() {
 
     // Inicia el servidor en el puerto especificado
     app.listen(PORT, () => {
-      console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
+      console.log(`http://${HOST}:${PORT}/api`);
     });
   } catch (err) {
-    console.log('Error en server.js -> setupAPI(): ', err);
+    console.log("Error en server.js -> setupAPI(): ", err);
   }
 }
 
 /**
  * Inicia la API
-*/
+ */
 async function setupAPI() {
   try {
     // Inicia la conexión a la base de datos
@@ -66,11 +68,11 @@ async function setupAPI() {
     // Inicia la creación del usuario admin y user
     await createUsers();
   } catch (err) {
-    console.log('Error en server.js -> setupAPI(): ', err);
+    console.log("Error en server.js -> setupAPI(): ", err);
   }
 }
 
 // Inicia la API
 setupAPI()
   .then(() => console.log("=> API Iniciada exitosamente"))
-  .catch((err) => console.log('Error en server.js -> setupAPI(): ', err));
+  .catch((err) => console.log("Error en server.js -> setupAPI(): ", err));

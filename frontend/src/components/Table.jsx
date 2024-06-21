@@ -1,5 +1,5 @@
-import deleteIcon from '../assets/deleteIcon.svg';
-import updateIcon from '../assets/updateIcon.svg';
+import deleteIcon from "../assets/deleteIcon.svg";
+import updateIcon from "../assets/updateIcon.svg";
 
 const Table = ({ columns, data, onDelete, onEdit }) => {
   const totalRows = 7;
@@ -26,19 +26,28 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
             <tr key={index}>
               {columns.map((col) => (
                 <td key={col}>
-                  {col === 'Acción' ? (
+                  {col === "Acción" ? (
                     <>
-                      <img 
-                      src={updateIcon} 
-                      alt="Editar" 
-                      style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }}
-                      onClick={() => onEdit(row.Rut)}
+                      <img
+                        src={updateIcon}
+                        alt="Editar"
+                        style={{
+                          marginRight: "10px",
+                          cursor: "pointer",
+                          width: "24px",
+                          height: "24px",
+                        }}
+                        onClick={() => onEdit(row.Rut)}
                       />
-                      <img 
-                        src={deleteIcon} 
-                        alt="Eliminar" 
-                        style={{ cursor: 'pointer', width: '24px', height: '24px' }} 
-                        onClick={() => onDelete(row.Rut)} 
+                      <img
+                        src={deleteIcon}
+                        alt="Eliminar"
+                        style={{
+                          cursor: "pointer",
+                          width: "24px",
+                          height: "24px",
+                        }}
+                        onClick={() => onDelete(row.Rut)}
                       />
                     </>
                   ) : (
