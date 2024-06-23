@@ -14,6 +14,7 @@ const Profile = () => {
     username: "",
     email: "",
     rut: "",
+    celular: "",
     rolName: "",
   });
 
@@ -67,7 +68,11 @@ const Profile = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="name">Rut</Label>
-                    <Input id="name" value={userProfile.rut} />
+                    <Input id="rut" value={userProfile.rut} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Celular</Label>
+                    <Input id="celular" value={userProfile.celular} />
                   </div>
 
                   <div className="space-y-2">
