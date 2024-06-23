@@ -7,7 +7,23 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import Form from "@/components/Form";
+// import Form from "@/components/Form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({
@@ -77,8 +93,53 @@ const Profile = () => {
                 />
               </div>
             </CardContent>
-            <CardFooter>
-              <Button>Save</Button>
+            <CardFooter className="justify-between">
+              <Button>Guardar</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">Actualizar datos</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Actualizar datos</DialogTitle>
+                    <DialogDescription>
+                      Actualiza tus datos personales, solo puedes cambiar tu
+                      numero y role.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        Celular
+                      </Label>
+                      <Input
+                        id="name"
+                        defaultValue={userProfile.celular}
+                        className="col-span-3"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="username" className="text-right">
+                        Role
+                      </Label>
+                      <Select>
+                        <SelectTrigger className="w-[150px]">
+                          <SelectValue placeholder={userProfile.rolName} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Funcionario">
+                            Funcionario
+                          </SelectItem>
+                          <SelectItem value="Estudiante">Estudiante</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit">Save changes</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         </div>
