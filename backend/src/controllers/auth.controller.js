@@ -34,6 +34,8 @@ export async function login(req, res) {
       rut: userFound.rut,
       email: userFound.email,
       rolName: userFound.roles[0].name,
+      celular: userFound.celular,
+      tipoUsuario: userFound.tipoUsuario,
     };
 
     res.status(200).json({

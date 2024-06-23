@@ -32,6 +32,7 @@ const Profile = () => {
     rut: "",
     celular: "",
     rolName: "",
+    tipoUsuario: "",
   });
 
   useEffect(() => {
@@ -85,6 +86,10 @@ const Profile = () => {
                 <Input id="celular" value={userProfile.celular} readOnly />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="celular">Tipo Usuario</Label>
+                <Input id="celular" value={userProfile.tipoUsuario} readOnly />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
                 <Textarea
                   id="bio"
@@ -110,6 +115,16 @@ const Profile = () => {
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                       <Label htmlFor="name" className="text-right">
+                        Nombre
+                      </Label>
+                      <Input
+                        id="name"
+                        defaultValue={userProfile.username}
+                        className="col-span-3"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
                         Celular
                       </Label>
                       <Input
@@ -120,11 +135,11 @@ const Profile = () => {
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                       <Label htmlFor="username" className="text-right">
-                        Role
+                        Tipo Usuario
                       </Label>
                       <Select>
                         <SelectTrigger className="w-[150px]">
-                          <SelectValue placeholder={userProfile.rolName} />
+                          <SelectValue placeholder={userProfile.tipoUsuario} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Funcionario">
@@ -136,7 +151,7 @@ const Profile = () => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit">Actualizar</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
