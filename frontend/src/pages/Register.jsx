@@ -1,21 +1,41 @@
-// import { useState } from "react";
 import { Link } from "react-router-dom";
 import { register } from "@/services/auth.service";
 import { useNavigate } from "react-router-dom";
 import Form from "@/components/Form";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { toast } = useToast(); // Obtiene la función toast del hook useToast
 
   const registerSubmit = (data) => {
-    register(data).then(() => {
-      navigate("/login");
-    });
+    register(data)
+      .then(() => {
+        // Mostrar un toast de éxito
+        toast({
+          title: "Cuenta creada",
+          description: "Tu cuenta ha sido creada exitosamente",
+          action: <ToastAction altText="Cerrar">Cerrar</ToastAction>,
+        });
+        navigate("/login"); // Redirige a la página de inicio de sesión
+      })
+      .catch((error) => {
+        // Mostrar un toast de error
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Hubo un problema al crear tu cuenta",
+          status: "error", // Puedes añadir un status si lo deseas
+          action: <ToastAction altText="Cerrar">Cerrar</ToastAction>,
+        });
+        console.error("Error registering:", error);
+      });
   };
 
   return (
-    <div className="flex flex-col min-h-screen ">
-      <header className="flex items-center justify-center  gap-2 p-8 lg:px-6">
+    <div className="flex flex-col min-h-screen">
+      <header className="flex items-center justify-center gap-2 p-8 lg:px-6">
         <div className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -41,20 +61,19 @@ export default function Register() {
         </div>
       </header>
 
-      <main className="flex-grow ">
+      <main className="flex-grow">
         <div className="flex min-h-full items-center justify-center p-8">
           <div className="max-w-md w-full space-y-6 bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
             <div className="space-y-2 text-center">
               <h2 className="text-3xl font-bold">Registrarse</h2>
               <p className="text-gray-500 dark:text-gray-400">
-                Registrate para comenzar a usar la aplicación E-Park.
+                Regístrate para comenzar a usar la aplicación E-Park.
               </p>
             </div>
             <Form
-              title="Iniciar sesión"
               fields={[
                 {
-                  label: "Nombre de Usuario",
+                  label: "Nombre Completo",
                   name: "username",
                   placeholder: "Epark",
                   type: "text",
@@ -67,7 +86,24 @@ export default function Register() {
                   type: "text",
                   required: true,
                 },
-
+                {
+                  label: "Celular",
+                  name: "celular",
+                  placeholder: "912345678",
+                  type: "text",
+                  required: false,
+                },
+                {
+                  label: "Tipo Usuario",
+                  name: "tipoUsuario",
+                  type: "select",
+                  placeholder: "Selecciona tu rol",
+                  options: [
+                    { value: "Funcionario", label: "Funcionario" },
+                    { value: "Estudiante", label: "Estudiante" },
+                  ],
+                  required: true,
+                },
                 {
                   label: "Correo electrónico",
                   name: "email",

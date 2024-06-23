@@ -17,6 +17,16 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    celular: {
+      type: String,
+      required: false,
+      unique: false,
+    },
+    tipoUsuario: {
+      type: String,
+      required: true,
+      enum: ["Funcionario", "Estudiante"],
+    },
     password: {
       type: String,
       required: true,
