@@ -3,14 +3,41 @@ import { Link } from "react-router-dom";
 import { login } from "@/services/auth.service";
 import { useNavigate } from "react-router-dom";
 import Form from "@/components/Form";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const loginSubmit = (data) => {
-    login(data).then(() => {
-      navigate("/home");
-    });
+    login(data)
+      .then(() => {
+        // Mostar un toast de éxito
+        toast({
+          title: "Inicio de sesión exitoso",
+          description: "Has iniciado sesión exitosamente",
+        });
+        navigate("/home");
+      })
+      .catch((error) => {
+        // Mostrar un toast de error
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Hubo un problema al iniciar sesión",
+          status: "error",
+          action: (
+            <ToastAction
+              altText="Crear Cuenta"
+              onClick={() => navigate("/register")}
+            >
+              Crear Cuenta
+            </ToastAction>
+          ),
+        });
+        console.error("Error logging in:", error);
+      });
   };
 
   return (
