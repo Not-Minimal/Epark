@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import profileImage from "../assets/png/avatar.png";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({
@@ -87,7 +88,7 @@ const Profile = () => {
             <CardContent className="space-y-4">
               <Avatar className="w-12 h-12">
                 <img
-                  src="profile.png"
+                  src={profileImage}
                   width="96"
                   height="96"
                   alt="Avatar"
