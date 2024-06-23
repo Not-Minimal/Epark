@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import { profile } from "../services/auth.service";
+import { updateUser } from "@/services/user.service";
 import { useState, useEffect } from "react";
 import { Avatar } from "@/components/ui/avatar";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -7,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-// import Form from "@/components/Form";
 import {
   Dialog,
   DialogContent,
@@ -35,11 +35,22 @@ const Profile = () => {
     tipoUsuario: "",
   });
 
+  const [formState, setFormState] = useState({
+    username: "",
+    celular: "",
+    tipoUsuario: "",
+  });
+
   useEffect(() => {
     async function dataProfile() {
       try {
         const { data } = await profile();
         setUserProfile(data);
+        setFormState({
+          username: data.username,
+          celular: data.celular,
+          tipoUsuario: data.tipoUsuario,
+        });
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -47,13 +58,29 @@ const Profile = () => {
     dataProfile();
   }, []);
 
+  const handleUpdate = async () => {
+    try {
+      await updateUser(formState, userProfile.rut);
+      // Actualiza el perfil del usuario con los nuevos datos
+      setUserProfile((prev) => ({
+        ...prev,
+        username: formState.username,
+        celular: formState.celular,
+        tipoUsuario: formState.tipoUsuario,
+      }));
+      alert("Perfil actualizado correctamente");
+    } catch (error) {
+      console.error("Error actualizando perfil:", error);
+      alert(
+        "Hubo un error al actualizar el perfil. Por favor, intenta de nuevo.",
+      );
+    }
+  };
+
   return (
     <main className="profile_page flex-grow flex-col min-h-screen">
       <Navbar />
-      {/* <nav className="bg-gray-950 min-h-16 items-center justify-center text-3xl text-white p-8">
-        Mi Perfil
-      </nav> */}
-      <div className="sections py-8  justify-center items-center flex min-h-full"></div>
+      <div className="sections py-8 justify-center items-center flex min-h-full"></div>
       <div className="flex min-h-full items-center justify-center p-8">
         <div className="max-w-3xl w-full space-y-6 bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
           <Card className="py-4">
@@ -87,7 +114,11 @@ const Profile = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="celular">Tipo Usuario</Label>
-                <Input id="celular" value={userProfile.tipoUsuario} readOnly />
+                <Input
+                  id="tipoUsuario"
+                  value={userProfile.tipoUsuario}
+                  readOnly
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
@@ -109,35 +140,52 @@ const Profile = () => {
                     <DialogTitle>Actualizar datos</DialogTitle>
                     <DialogDescription>
                       Actualiza tus datos personales, solo puedes cambiar tu
-                      numero y role.
+                      nombre, número y tipo de usuario.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="name" className="text-right">
+                      <Label htmlFor="username" className="text-right">
                         Nombre
                       </Label>
                       <Input
-                        id="name"
-                        defaultValue={userProfile.username}
+                        id="username"
+                        value={formState.username}
                         className="col-span-3"
+                        onChange={(e) =>
+                          setFormState({
+                            ...formState,
+                            username: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="name" className="text-right">
+                      <Label htmlFor="celular" className="text-right">
                         Celular
                       </Label>
                       <Input
-                        id="name"
-                        defaultValue={userProfile.celular}
+                        id="celular"
+                        value={formState.celular}
                         className="col-span-3"
+                        onChange={(e) =>
+                          setFormState({
+                            ...formState,
+                            celular: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="username" className="text-right">
+                      <Label htmlFor="tipoUsuario" className="text-right">
                         Tipo Usuario
                       </Label>
-                      <Select>
+                      <Select
+                        onValueChange={(value) =>
+                          setFormState({ ...formState, tipoUsuario: value })
+                        }
+                        value={formState.tipoUsuario}
+                      >
                         <SelectTrigger className="w-[150px]">
                           <SelectValue placeholder={userProfile.tipoUsuario} />
                         </SelectTrigger>
@@ -151,7 +199,9 @@ const Profile = () => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit">Actualizar</Button>
+                    <Button type="submit" onClick={handleUpdate}>
+                      Actualizar
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
