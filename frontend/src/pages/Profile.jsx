@@ -25,8 +25,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import profileImage from "../assets/png/avatar.png";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState({
     username: "",
     email: "",
@@ -69,7 +73,11 @@ const Profile = () => {
         celular: formState.celular,
         tipoUsuario: formState.tipoUsuario,
       }));
-      alert("Perfil actualizado correctamente");
+      toast({
+        title: "Perfil actualizado",
+        description: "En tu proximo inicio de sesión verás los cambios.",
+      });
+      navigate("/home");
     } catch (error) {
       console.error("Error actualizando perfil:", error);
       alert(
