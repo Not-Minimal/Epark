@@ -13,7 +13,6 @@ export async function getUser(req, res) {
       });
       return;
     }
-
     const user = await User.findOne({ rut: rutUser });
 
     if (!user) {
@@ -23,7 +22,6 @@ export async function getUser(req, res) {
       });
       return;
     }
-
     res.status(200).json({
       message: "Usuario encontrado!",
       data: user,

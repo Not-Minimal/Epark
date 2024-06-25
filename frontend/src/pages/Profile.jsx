@@ -46,36 +46,32 @@ const Profile = () => {
     tipoUsuario: "",
   });
 
-  useEffect(() => {
-    async function dataProfile() {
-      try {
-        const { data } = await profile();
-        setUserProfile(data);
-        setFormState({
-          username: data.username,
-          celular: data.celular,
-          tipoUsuario: data.tipoUsuario,
-        });
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
+  const dataProfile = async () => {
+    try {
+      const { data } = await profile();
+      setUserProfile(data);
+      setFormState({
+        username: data.username,
+        celular: data.celular,
+        tipoUsuario: data.tipoUsuario,
+      });
+    } catch (error) {
+      console.error("Error fetching profile:", error);
     }
+  };
+
+  useEffect(() => {
     dataProfile();
   }, []);
 
   const handleUpdate = async () => {
     try {
       await updateUser(formState, userProfile.rut);
-      // Actualiza el perfil del usuario con los nuevos datos
-      setUserProfile((prev) => ({
-        ...prev,
-        username: formState.username,
-        celular: formState.celular,
-        tipoUsuario: formState.tipoUsuario,
-      }));
+      // Vuelve a obtener el perfil actualizado de la base de datos
+      await dataProfile();
       toast({
         title: "Perfil actualizado",
-        description: "En tu proximo inicio de sesión verás los cambios.",
+        description: "En tu próximo inicio de sesión verás los cambios.",
       });
       navigate("/home");
     } catch (error) {
@@ -84,6 +80,10 @@ const Profile = () => {
         "Hubo un error al actualizar el perfil. Por favor, intenta de nuevo.",
       );
     }
+  };
+
+  const handleRefresh = async () => {
+    await dataProfile();
   };
 
   return (
@@ -139,7 +139,7 @@ const Profile = () => {
               </div>
             </CardContent>
             <CardFooter className="justify-between">
-              <Button>Guardar</Button>
+              <Button onClick={handleRefresh}>Refrescar</Button>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline">Actualizar datos</Button>
