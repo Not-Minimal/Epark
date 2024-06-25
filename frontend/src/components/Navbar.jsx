@@ -1,5 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../services/auth.service.js";
+import { useToast } from "@/components/ui/use-toast";
 
 const Navbar = () => {
   const location = useLocation();
@@ -7,10 +8,14 @@ const Navbar = () => {
 
   const storedUser = JSON.parse(sessionStorage.getItem("usuario"));
   const userRole = storedUser?.data?.rolName;
+  const { toast } = useToast();
 
   const logoutSubmit = () => {
     try {
       logout();
+      toast({
+        title: "Cerraste sesión correctamente",
+      });
       navigate("/");
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
