@@ -3,7 +3,12 @@
 import { Router } from "express";
 
 /** Controlador de usuarios */
-import {getUser, getUsers, updateUser, deleteUser} from "../controllers/user.controller.js";
+import {
+  getUser,
+  getUsers,
+  updateUser,
+  deleteUser,
+} from "../controllers/user.controller.js";
 
 /** Middlewares de autorización */
 import { isAdmin } from "../middlewares/auth.middleware.js";
@@ -14,7 +19,7 @@ const router = Router();
 // Define las rutas para los usuarios
 router.get("/", isAdmin, getUsers);
 router.get("/1", isAdmin, getUser);
-router.put("/", isAdmin, updateUser);
+router.put("/", updateUser);
 router.delete("/", isAdmin, deleteUser);
 
 export default router;
