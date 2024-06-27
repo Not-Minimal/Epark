@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import Error404 from "./pages/Error404";
-import EditUser from "./pages/EditUser";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Users from "./pages/Users";
-import Landing from "./pages/Landing";
+import Login from "./pages/public/Login";
+import Register from "./pages/public/Register";
+import Home from "./pages/protected/Home";
+import Profile from "./pages/protected/Profile";
+import Error404 from "./pages/public/Error404";
+import EditUser from "./pages/protected/EditUser";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
+import Users from "./pages/protected/Users";
+import Landing from "./pages/public/Landing";
 
 const AppRouter = () => {
   return (

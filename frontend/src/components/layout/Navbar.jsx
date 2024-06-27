@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { logout } from "../services/auth.service.js";
+import { logout } from "@/services/auth.service.js";
 import { useToast } from "@/components/ui/use-toast";
 
 const Navbar = () => {

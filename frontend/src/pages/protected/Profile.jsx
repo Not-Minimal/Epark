@@ -1,5 +1,5 @@
-import Navbar from "../components/Navbar";
-import { profile } from "../services/auth.service";
+import Navbar from "@/components/layout/Navbar";
+import { profile } from "@/services/auth.service";
 import { updateUser } from "@/services/user.service";
 import { useState, useEffect } from "react";
 import { Avatar } from "@/components/ui/avatar";
@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import profileImage from "../assets/png/avatar.png";
+import profileImage from "@/assets/png/avatar.png";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 

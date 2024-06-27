@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Table from "../components/Table";
-import { getUsers, deleteUser } from "../services/user.service";
-import searchIcon from "../assets/searchIcon.svg";
+import Navbar from "@/components/layout/Navbar";
+import Table from "@/components/tables/Table";
+import { getUsers, deleteUser } from "@/services/user.service";
+import searchIcon from "@/assets/searchIcon.svg";
 
 const Users = () => {
   const [users, setUsers] = useState([]);

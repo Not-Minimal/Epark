@@ -2,9 +2,10 @@
 import { Link } from "react-router-dom";
 import { login } from "@/services/auth.service";
 import { useNavigate } from "react-router-dom";
-import Form from "@/components/Form";
+
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import Form from "@/components/forms/Form";
 
 export default function Login() {
   const navigate = useNavigate();

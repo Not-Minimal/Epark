@@ -1,6 +1,6 @@
-import Form from "../components/Form.jsx";
-import Navbar from "../components/Navbar.jsx";
-import { updateUser } from "../services/user.service.js";
+import Form from "@/components/forms/Form.jsx";
+import Navbar from "@/components/layout/Navbar.jsx";
+import { updateUser } from "@/services/user.service.js";
 import { useLocation, useNavigate } from "react-router-dom";
 const EditUser = () => {
   const location = useLocation();

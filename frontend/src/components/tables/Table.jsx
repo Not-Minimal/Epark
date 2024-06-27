@@ -1,5 +1,5 @@
-import deleteIcon from "../assets/deleteIcon.svg";
-import updateIcon from "../assets/updateIcon.svg";
+import deleteIcon from "@/assets/deleteIcon.svg";
+import updateIcon from "@/assets/updateIcon.svg";
 
 const Table = ({ columns, data, onDelete, onEdit }) => {
   const totalRows = 7;

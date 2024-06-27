@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { register } from "@/services/auth.service";
 import { useNavigate } from "react-router-dom";
-import Form from "@/components/Form";
+import Form from "@/components/forms/Form";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
