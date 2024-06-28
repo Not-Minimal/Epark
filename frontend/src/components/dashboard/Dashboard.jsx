@@ -39,7 +39,8 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
-import { Users } from "./Users";
+// import { Users } from "./Users";
+import { UsersTable } from "./UsersTable";
 
 export function Dashboard() {
   return (
@@ -303,7 +304,7 @@ export function Dashboard() {
                 </CardFooter>
               </Card>
             </div>
-            <Users />
+            <UsersTable />
           </div>
         </main>
       </div>

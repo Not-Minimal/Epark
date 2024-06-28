@@ -8,7 +8,6 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuItem,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -31,9 +30,9 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useEffect } from "react";
 import { deleteUser, getUsers } from "@/services/user.service";
-import { EllipsisVertical } from "lucide-react";
+import { Pencil, Trash } from "lucide-react";
 
-export function Users() {
+export function UsersTable() {
   const [users, setUsers] = useState([]);
 
   const handleDelete = async (rut) => {
@@ -54,6 +53,7 @@ export function Users() {
           Rut: user.rut,
           Correo: user.email,
           Rol: user.roles[0].name,
+          TipoUsuario: user.tipoUsuario,
         }));
         setUsers(formattedData);
       } catch (error) {
@@ -119,6 +119,9 @@ export function Users() {
                       <TableHead className="hidden md:table-cell">
                         Tipo Usuario
                       </TableHead>
+                      <TableHead className="hidden md:table-cell">
+                        Rol Usuario
+                      </TableHead>
                       <TableHead className="text-right">Acciones</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -126,9 +129,16 @@ export function Users() {
                     {users.map((user) => (
                       <TableRow key={user.Rut}>
                         <TableCell>{user.Nombre}</TableCell>
-                        <TableCell>{user.Rut}</TableCell>
-                        <TableCell>{user.Correo}</TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          {user.Rut}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          {user.Correo}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {user.TipoUsuario}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
                           {user.Rol === "administrador" ? (
                             <Badge variant="primary">{user.Rol}</Badge>
                           ) : (
@@ -136,28 +146,24 @@ export function Users() {
                           )}
                         </TableCell>
                         <TableCell align="end">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger>
+                          <div className="space-x-2">
+                            <Link
+                              to={`/edit-user/${user.Rut}`}
+                              state={{ user }}
+                            >
                               <Button variant="outline" size="icon">
-                                <EllipsisVertical className="h-4 w-4" />
+                                <Pencil className="h-4 w-4" />
                               </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                              <DropdownMenuItem>
-                                <Link
-                                  to={`/edit-user/${user.Rut}`}
-                                  state={{ user }}
-                                >
-                                  Editar
-                                </Link>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Button onClick={() => handleDelete(user.Rut)}>
-                                  Eliminar
-                                </Button>
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                            </Link>
+                            <Button
+                              className="bg-red-500"
+                              variant="outline"
+                              size="icon"
+                              onClick={() => handleDelete(user.Rut)}
+                            >
+                              <Trash className="h-4 w-4 text-white" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
