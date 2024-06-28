@@ -51,13 +51,22 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getUsers } from "@/services/user.service";
+import { deleteUser, getUsers } from "@/services/user.service";
 import { EllipsisVertical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+
+  const handleDelete = async (rut) => {
+    try {
+      await deleteUser(rut);
+      setUsers(users.filter((user) => user.Rut !== rut));
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -380,9 +389,9 @@ export function Dashboard() {
               <TabsContent value="week">
                 <Card x-chunk="dashboard-05-chunk-3">
                   <CardHeader className="px-7">
-                    <CardTitle>Espacios</CardTitle>
+                    <CardTitle>Usuarios</CardTitle>
                     <CardDescription>
-                      Espacios recientes ocupados en tus cuadrantes
+                      Este es un listado de los usarios en el sistema
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -391,15 +400,15 @@ export function Dashboard() {
                         <TableRow>
                           <TableHead>Nombre</TableHead>
                           <TableHead className="hidden sm:table-cell">
-                            Tipo
+                            Cedula
                           </TableHead>
                           <TableHead className="hidden sm:table-cell">
-                            Estado
+                            Correo
                           </TableHead>
                           <TableHead className="hidden md:table-cell">
-                            Fecha
+                            Tipo Usuario
                           </TableHead>
-                          <TableHead className="text-right">Espacio</TableHead>
+                          <TableHead className="text-right">Acciones</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -409,7 +418,11 @@ export function Dashboard() {
                             <TableCell>{user.Rut}</TableCell>
                             <TableCell>{user.Correo}</TableCell>
                             <TableCell>
-                              <Badge variant="secondary">{user.Rol}</Badge>
+                              {user.Rol === "administrador" ? (
+                                <Badge variant="primary">{user.Rol}</Badge>
+                              ) : (
+                                <Badge variant="secondary">{user.Rol}</Badge>
+                              )}
                             </TableCell>
                             <TableCell align="end">
                               <DropdownMenu>
@@ -426,6 +439,13 @@ export function Dashboard() {
                                     >
                                       Editar
                                     </Link>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem>
+                                    <Button
+                                      onClick={() => handleDelete(user.Rut)}
+                                    >
+                                      Eliminar
+                                    </Button>
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
