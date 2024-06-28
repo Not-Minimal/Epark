@@ -49,8 +49,35 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getUsers } from "@/services/user.service";
+import { EllipsisVertical } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
+  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers();
+        const formattedData = response.data.map((user) => ({
+          Nombre: user.username,
+          Rut: user.rut,
+          Correo: user.email,
+          Rol: user.roles[0].name,
+        }));
+        setUsers(formattedData);
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -376,26 +403,35 @@ export function Dashboard() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        <TableRow className="bg-accent">
-                          <TableCell>
-                            <div className="font-medium">Deivid Sandoval</div>
-                            <div className="hidden text-sm text-muted-foreground md:inline">
-                              deivid.sandoval2201@alumnos.ubiobio.cl
-                            </div>
-                          </TableCell>
-                          <TableCell className="hidden sm:table-cell">
-                            Estacionamiento
-                          </TableCell>
-                          <TableCell className="hidden sm:table-cell">
-                            <Badge className="text-xs" variant="secondary">
-                              Ocupado
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="hidden md:table-cell">
-                            25/06/2024
-                          </TableCell>
-                          <TableCell className="text-right">C4</TableCell>
-                        </TableRow>
+                        {users.map((user) => (
+                          <TableRow key={user.Rut}>
+                            <TableCell>{user.Nombre}</TableCell>
+                            <TableCell>{user.Rut}</TableCell>
+                            <TableCell>{user.Correo}</TableCell>
+                            <TableCell>
+                              <Badge variant="secondary">{user.Rol}</Badge>
+                            </TableCell>
+                            <TableCell align="end">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                  <Button variant="outline" size="icon">
+                                    <EllipsisVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                  <DropdownMenuItem>
+                                    <Link
+                                      to={`/edit-user/${user.Rut}`}
+                                      state={{ user }}
+                                    >
+                                      Editar
+                                    </Link>
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                       </TableBody>
                     </Table>
                   </CardContent>
