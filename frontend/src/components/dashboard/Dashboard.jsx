@@ -53,11 +53,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { deleteUser, getUsers } from "@/services/user.service";
 import { EllipsisVertical } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
 
   const handleDelete = async (rut) => {
     try {
