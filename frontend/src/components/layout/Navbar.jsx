@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "@/services/auth.service.js";
+import { logout, profile } from "@/services/auth.service.js";
 import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -46,6 +48,23 @@ const Navbar = () => {
       console.error("Error al cerrar sesión:", error);
     }
   };
+
+  const [userProfile, setUserProfile] = useState({
+    username: "",
+  });
+
+  const dataProfile = async () => {
+    try {
+      const { data } = await profile();
+      setUserProfile(data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    dataProfile();
+  }, []);
 
   const getNavLinkClass = ({ isActive }) =>
     isActive
@@ -91,32 +110,49 @@ const Navbar = () => {
               </TooltipTrigger>
               <TooltipContent side="right">Usuarios</TooltipContent>
             </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  to="/vehicle"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}
-                >
-                  <Car className="h-5 w-5" />
-                  <span className="sr-only">Vehiculos</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Vehiculos</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  to="/parking-spots"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}
-                >
-                  <ParkingSquare className="h-5 w-5" />
-                  <span className="sr-only">Estacionamientos</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Estacionamientos</TooltipContent>
-            </Tooltip>
+            {userProfile.role === "admin" && (
+              <>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/users"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <Users className="h-5 w-5" />
+                      <span className="sr-only">Usuarios</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Usuarios</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/vehicle"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <Car className="h-5 w-5" />
+                      <span className="sr-only">Vehiculos</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Vehiculos</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/parking-spots"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <ParkingSquare className="h-5 w-5" />
+                      <span className="sr-only">Estacionamientos</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Estacionamientos</TooltipContent>
+                </Tooltip>
+              </>
+            )}
           </TooltipProvider>
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
