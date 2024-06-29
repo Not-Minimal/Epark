@@ -1,7 +1,16 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "@/services/auth.service.js";
 import { useToast } from "@/components/ui/use-toast";
-
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "../ui/button";
+import profileImage from "@/assets/png/avatar.png";
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,7 +34,7 @@ const Navbar = () => {
   return (
     <header className="flex h-16 w-full items-center justify-between bg-gray-900 px-4 md:px-6">
       <NavLink
-        to="/"
+        to="/home"
         className="flex items-center gap-2 text-lg font-semibold text-white"
       >
         <svg
@@ -63,19 +72,38 @@ const Navbar = () => {
             Usuarios
           </NavLink>
         )}
-        <NavLink
-          to="/profile"
-          className={`inline-flex h-8 items-center justify-center rounded-md px-4 transition-colors hover:bg-gray-800 hover:text-gray-50 focus:bg-gray-800 focus:text-gray-50 focus:outline-none ${location.pathname === "/perfil" ? "text-white" : ""}`}
-        >
-          Perfil
-        </NavLink>
-        <NavLink
-          to="/"
-          onClick={logoutSubmit}
-          className={`inline-flex h-8 items-center justify-center rounded-md px-4 transition-colors hover:bg-gray-800 hover:text-gray-50 focus:bg-gray-800 focus:text-gray-50 focus:outline-none ${location.pathname === "/" ? "text-white" : ""}`}
-        >
-          Cerrar
-        </NavLink>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="overflow-hidden rounded-full"
+            >
+              <img
+                src={profileImage}
+                width="96"
+                height="96"
+                alt="Avatar"
+                className="rounded-full"
+              />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>
+              <NavLink to="/profile">Mi Perfil</NavLink>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Ajustes</DropdownMenuItem>
+            <DropdownMenuItem>Soporte</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <NavLink to="/" onClick={logoutSubmit}>
+                Cerrar Sesión
+              </NavLink>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </nav>
     </header>
   );

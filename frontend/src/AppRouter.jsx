@@ -7,6 +7,8 @@ import Error404 from "./pages/public/Error404";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import Users from "./pages/protected/Users";
 import Landing from "./pages/public/Landing";
+import Vehicle from "./pages/protected/Vehicle";
+import ParkingSpots from "./pages/protected/ParkingSpots";
 
 const AppRouter = () => {
   return (
@@ -37,6 +39,22 @@ const AppRouter = () => {
         element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/vehicle"
+        element={
+          <ProtectedRoute>
+            <Vehicle />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/parking-spots"
+        element={
+          <ProtectedRoute>
+            <ParkingSpots />
           </ProtectedRoute>
         }
       />

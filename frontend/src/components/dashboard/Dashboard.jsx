@@ -12,23 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+
 import {
   Card,
   CardHeader,
@@ -41,6 +25,13 @@ import { Progress } from "@/components/ui/progress";
 
 // import { Users } from "./Users";
 import { UsersTable } from "./UsersTable";
+import {
+  Car,
+  LayoutDashboard,
+  ParkingMeter,
+  ParkingSquare,
+  User,
+} from "lucide-react";
 
 export function Dashboard() {
   return (
@@ -63,7 +54,7 @@ export function Dashboard() {
                   className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   prefetch={false}
                 >
-                  <HomeIcon className="h-5 w-5" />
+                  <LayoutDashboard className="h-5 w-5" />
                   <span className="sr-only">Dashboard</span>
                 </Link>
               </TooltipTrigger>
@@ -76,7 +67,7 @@ export function Dashboard() {
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   prefetch={false}
                 >
-                  <ShoppingCartIcon className="h-5 w-5" />
+                  <UsersIcon className="h-5 w-5" />
                   <span className="sr-only">Orders</span>
                 </Link>
               </TooltipTrigger>
@@ -89,7 +80,7 @@ export function Dashboard() {
                   className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   prefetch={false}
                 >
-                  <PackageIcon className="h-5 w-5" />
+                  <Car className="h-5 w-5" />
                   <span className="sr-only">Products</span>
                 </Link>
               </TooltipTrigger>
@@ -102,7 +93,7 @@ export function Dashboard() {
                   className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   prefetch={false}
                 >
-                  <UsersIcon className="h-5 w-5" />
+                  <ParkingSquare className="h-5 w-5" />
                   <span className="sr-only">Customers</span>
                 </Link>
               </TooltipTrigger>
@@ -161,36 +152,36 @@ export function Dashboard() {
                   <span className="sr-only">Acme Inc</span>
                 </Link>
                 <Link
-                  href="#"
+                  to="/home"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                   prefetch={false}
                 >
-                  <HomeIcon className="h-5 w-5" />
+                  <LayoutDashboard className="h-5 w-5" />
                   Dashboard
                 </Link>
                 <Link
-                  href="#"
+                  to="/users"
                   className="flex items-center gap-4 px-2.5 text-foreground"
                   prefetch={false}
                 >
-                  <ShoppingCartIcon className="h-5 w-5" />
-                  Orders
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  prefetch={false}
-                >
-                  <PackageIcon className="h-5 w-5" />
-                  Products
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  prefetch={false}
-                >
                   <UsersIcon className="h-5 w-5" />
-                  Customers
+                  Usuarios
+                </Link>
+                <Link
+                  to="/vehicle"
+                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  prefetch={false}
+                >
+                  <Car className="h-5 w-5" />
+                  Vehiculos
+                </Link>
+                <Link
+                  to="/parking-spots"
+                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  prefetch={false}
+                >
+                  <ParkingSquare className="h-5 w-5" />
+                  Estacionamientos
                 </Link>
                 <Link
                   href="#"
@@ -203,62 +194,8 @@ export function Dashboard() {
               </nav>
             </SheetContent>
           </Sheet>
-          <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#" prefetch={false}>
-                    Dashboard
-                  </Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#" prefetch={false}>
-                    Orders
-                  </Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                <img
-                  src="/placeholder.svg"
-                  width={36}
-                  height={36}
-                  alt="Avatar"
-                  className="overflow-hidden rounded-full"
-                />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+
+          <div className="relative ml-auto flex-1 md:grow-0"></div>
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
           <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
