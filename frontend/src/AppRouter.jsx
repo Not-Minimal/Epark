@@ -4,7 +4,6 @@ import Register from "./pages/public/Register";
 import Home from "./pages/protected/Home";
 import Profile from "./pages/protected/Profile";
 import Error404 from "./pages/public/Error404";
-import EditUser from "./pages/protected/EditUser";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import Users from "./pages/protected/Users";
 import Landing from "./pages/public/Landing";
@@ -38,14 +37,6 @@ const AppRouter = () => {
         element={
           <ProtectedRoute>
             <Profile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/edit-user/:rut"
-        element={
-          <ProtectedRoute>
-            <EditUser />
           </ProtectedRoute>
         }
       />
