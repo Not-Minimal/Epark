@@ -12,13 +12,7 @@ import {
 import { Button } from "../ui/button";
 import profileImage from "@/assets/png/avatar.png";
 
-import {
-  Car,
-  LayoutDashboard,
-  ParkingMeter,
-  ParkingSquare,
-  User,
-} from "lucide-react";
+import { Car, LayoutDashboard, ParkingSquare } from "lucide-react";
 import {
   TooltipProvider,
   Tooltip,
@@ -49,8 +43,8 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <header className="flex h-16 w-full items-center justify-between bg-gray-900 px-4 md:px-6">
+    <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 mt-4">
+      <header className="fixed top-0 left-0 w-full z-50 flex h-16 items-center justify-between bg-gray-900 px-4 md:px-6">
         <NavLink
           to="/home"
           className="flex items-center gap-2 text-lg font-semibold text-white"

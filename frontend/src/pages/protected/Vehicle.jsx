@@ -4,7 +4,7 @@ export default function Vehicle() {
   return (
     <div>
       <Navbar />
-      <h1>Vehicle</h1>
+      <h1>VehicleVehicleVehicleVehicleVehicle</h1>
     </div>
   );
 }
