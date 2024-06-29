@@ -87,9 +87,9 @@ const Profile = () => {
 
   return (
     <main className="profile_page flex-grow flex-col min-h-screen">
-      <div className="sections py-8 justify-center items-center flex min-h-full"></div>
-      <div className="flex min-h-full items-center justify-center p-8">
-        <div className="max-w-3xl w-full space-y-6 bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
+      <div className="sections  justify-center items-center flex min-h-full"></div>
+      <div className="flex min-h-full items-center justify-center ">
+        <div className="max-w-4xl w-full space-y-6 bg-gray-50 dark:bg-gray-800  rounded-lg">
           <Card className="py-4">
             <CardContent className="space-y-4">
               <Avatar className="w-12 h-12">

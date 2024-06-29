@@ -47,13 +47,18 @@ const Navbar = () => {
     }
   };
 
+  const getNavLinkClass = ({ isActive }) =>
+    isActive
+      ? "flex items-center gap-4 px-2.5 text-xl bg-gray-50 py-4 rounded-lg"
+      : "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground";
+
   return (
     <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex ">
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
           <TooltipProvider>
             <Link
-              href="#"
+              to="/home"
               className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
               prefetch={false}
             >
@@ -164,62 +169,62 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
               <nav className="grid gap-6 text-lg font-medium">
-                <Link
+                <NavLink
                   href="/home"
                   className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                   prefetch={false}
                 >
                   <ParkingSquare className="h-5 w-5 transition-all group-hover:scale-110" />
                   <span className="sr-only">Acme Inc</span>
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/home"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  className={getNavLinkClass}
                   prefetch={false}
                 >
                   <LayoutDashboard className="h-5 w-5" />
                   Dashboard
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/users"
-                  className="flex items-center gap-4 px-2.5 text-foreground"
+                  className={getNavLinkClass}
                   prefetch={false}
                 >
                   <Users className="h-5 w-5" />
                   Usuarios
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/vehicle"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  className={getNavLinkClass}
                   prefetch={false}
                 >
                   <Car className="h-5 w-5" />
                   Vehiculos
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/parking-spots"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  className={getNavLinkClass}
                   prefetch={false}
                 >
                   <ParkingSquare className="h-5 w-5" />
                   Estacionamientos
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/settings"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  className={getNavLinkClass}
                   prefetch={false}
                 >
                   <Settings className="h-5 w-5" />
                   Ajustes
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/profile"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  className={getNavLinkClass}
                   prefetch={false}
                 >
                   <User className="h-5 w-5" />
                   Mi Perfil
-                </Link>
+                </NavLink>
 
                 <Button className="bg-red-500">
                   <NavLink to="/" onClick={logoutSubmit}>
