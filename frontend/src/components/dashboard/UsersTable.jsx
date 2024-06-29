@@ -1,14 +1,6 @@
 // import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu";
-import {
   Card,
   CardHeader,
   CardTitle,
@@ -29,7 +21,6 @@ import { useState, useEffect } from "react";
 import { deleteUser, getUsers, updateUser } from "@/services/user.service";
 import { Paperclip, Pencil, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -58,7 +49,6 @@ import {
 export function UsersTable() {
   const [users, setUsers] = useState([]);
   const { toast } = useToast();
-  // const navigate = useNavigate();
   const [editUser, setEditUser] = useState(null);
   const [formState, setFormState] = useState({
     username: "",
@@ -193,7 +183,7 @@ export function UsersTable() {
                           )}
                         </TableCell>
                         <TableCell align="end">
-                          <div className="space-x-2">
+                          <div className="space-x-2 space-y-2">
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger>
