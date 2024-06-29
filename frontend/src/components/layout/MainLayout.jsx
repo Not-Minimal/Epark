@@ -22,7 +22,7 @@ const MainLayout = () => {
     dataProfile();
   }, []);
   return (
-    <div className="">
+    <div className="bg-stone-50">
       <Navbar />
       <main className="sm:px-16 p-4 sm:ml-4">
         <h1 className="text-4xl py-4">Hola, {userProfile.username} 👋🏻</h1>

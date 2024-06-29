@@ -82,7 +82,7 @@ export default function Component() {
         {filteredEspacios.map((Espacio) => (
           <div
             key={Espacio.id}
-            className="bg-muted p-4 rounded-lg cursor-pointer hover:bg-muted/50"
+            className="bg-white p-4 rounded-lg cursor-pointer hover:bg-muted/50"
             onClick={() => handleEspacioClick(Espacio)}
           >
             <div className="flex items-center justify-between">
