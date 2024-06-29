@@ -89,7 +89,7 @@ export default function Users() {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <div className="md:px-14 flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col p-8">
           <UsersTable />
         </div>
