@@ -137,7 +137,10 @@ const Navbar = () => {
                   <NavLink to="/profile">Mi Perfil</NavLink>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Ajustes</DropdownMenuItem>
+                <DropdownMenuItem>
+                  {" "}
+                  <NavLink to="/settings">Ajustes</NavLink>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Soporte</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>

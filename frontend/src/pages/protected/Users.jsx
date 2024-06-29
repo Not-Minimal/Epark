@@ -6,7 +6,6 @@
 // import searchIcon from "@/assets/searchIcon.svg";
 
 import { UsersTable } from "@/components/dashboard/UsersTable";
-import Navbar from "@/components/layout/Navbar";
 
 // const Users = () => {
 //   const [users, setUsers] = useState([]);
@@ -88,7 +87,6 @@ import Navbar from "@/components/layout/Navbar";
 export default function Users() {
   return (
     <>
-      <Navbar />
       <div className="md:px-14 flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col p-8">
           <UsersTable />

@@ -1,4 +1,3 @@
-import Navbar from "@/components/layout/Navbar";
 import { profile } from "@/services/auth.service";
 import { updateUser } from "@/services/user.service";
 import { useState, useEffect } from "react";
@@ -88,7 +87,6 @@ const Profile = () => {
 
   return (
     <main className="profile_page flex-grow flex-col min-h-screen">
-      <Navbar />
       <div className="sections py-8 justify-center items-center flex min-h-full"></div>
       <div className="flex min-h-full items-center justify-center p-8">
         <div className="max-w-3xl w-full space-y-6 bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
