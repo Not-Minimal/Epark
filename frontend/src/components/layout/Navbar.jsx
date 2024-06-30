@@ -96,18 +96,35 @@ const Navbar = () => {
                   prefetch={false}
                 >
                   <LayoutDashboard className="h-5 w-5" />
-                  <span className="sr-only">Dashboard</span>
+                  <span className="sr-only">Mi vehiculo</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Dashboard</TooltipContent>
+              <TooltipContent side="right">Mi vehiculo</TooltipContent>
             </Tooltip>
+            {userProfile.rolName === "usuario" && (
+              <>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/car"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <Car className="h-5 w-5" />
+                      <span className="sr-only">Mi Vehiculo</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Dashboard</TooltipContent>
+                </Tooltip>
+              </>
+            )}
             {userProfile.rolName === "administrador" && (
               <>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
                       to="/users"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                       prefetch={false}
                     >
                       <Users className="h-5 w-5" />
@@ -212,6 +229,18 @@ const Navbar = () => {
                   <LayoutDashboard className="h-5 w-5" />
                   Dashboard
                 </NavLink>
+                {userProfile.rolName === "usuario" && (
+                  <>
+                    <NavLink
+                      to="/car"
+                      className={getNavLinkClass}
+                      prefetch={false}
+                    >
+                      <Car className="h-5 w-5" />
+                      Mi Vehiculo
+                    </NavLink>
+                  </>
+                )}
                 {userProfile.rolName === "administrador" && (
                   <>
                     <NavLink

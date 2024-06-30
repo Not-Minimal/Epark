@@ -1,7 +1,7 @@
 export default function Vehicle() {
   return (
     <div>
-      <h1>VehicleVehicleVehicleVehicleVehicle</h1>
+      <h1>Vehiculos</h1>
     </div>
   );
 }

@@ -24,8 +24,10 @@ const MainLayout = () => {
   return (
     <div className="bg-stone-50">
       <Navbar />
-      <main className="sm:px-16 p-4 sm:ml-4">
-        <h1 className="text-4xl py-4">Hola, {userProfile.username} 👋🏻</h1>
+      <main className="sm:px-16 px-4 sm:ml-4 pt-4">
+        <h1 className="text-4xl mb-4 text-gray-700">
+          Hola, {userProfile.username} 👋🏻
+        </h1>
         <Outlet />
       </main>
     </div>
