@@ -50,7 +50,7 @@ const Navbar = () => {
   };
 
   const [userProfile, setUserProfile] = useState({
-    username: "",
+    rolName: "",
   });
 
   const dataProfile = async () => {
@@ -61,6 +61,10 @@ const Navbar = () => {
       console.error("Error fetching profile:", error);
     }
   };
+
+  useEffect(() => {
+    dataProfile();
+  }, []);
 
   useEffect(() => {
     dataProfile();
@@ -97,20 +101,7 @@ const Navbar = () => {
               </TooltipTrigger>
               <TooltipContent side="right">Dashboard</TooltipContent>
             </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  to="/users"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}
-                >
-                  <Users className="h-5 w-5" />
-                  <span className="sr-only">Usuarios</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Usuarios</TooltipContent>
-            </Tooltip>
-            {userProfile.role === "admin" && (
+            {userProfile.rolName === "administrador" && (
               <>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -211,7 +202,7 @@ const Navbar = () => {
                   prefetch={false}
                 >
                   <ParkingSquare className="h-5 w-5 transition-all group-hover:scale-110" />
-                  <span className="sr-only">Acme Inc</span>
+                  <span className="sr-only">Epark</span>
                 </NavLink>
                 <NavLink
                   to="/home"
@@ -221,30 +212,34 @@ const Navbar = () => {
                   <LayoutDashboard className="h-5 w-5" />
                   Dashboard
                 </NavLink>
-                <NavLink
-                  to="/users"
-                  className={getNavLinkClass}
-                  prefetch={false}
-                >
-                  <Users className="h-5 w-5" />
-                  Usuarios
-                </NavLink>
-                <NavLink
-                  to="/vehicle"
-                  className={getNavLinkClass}
-                  prefetch={false}
-                >
-                  <Car className="h-5 w-5" />
-                  Vehiculos
-                </NavLink>
-                <NavLink
-                  to="/parking-spots"
-                  className={getNavLinkClass}
-                  prefetch={false}
-                >
-                  <ParkingSquare className="h-5 w-5" />
-                  Estacionamientos
-                </NavLink>
+                {userProfile.rolName === "administrador" && (
+                  <>
+                    <NavLink
+                      to="/users"
+                      className={getNavLinkClass}
+                      prefetch={false}
+                    >
+                      <Users className="h-5 w-5" />
+                      Usuarios
+                    </NavLink>
+                    <NavLink
+                      to="/vehicle"
+                      className={getNavLinkClass}
+                      prefetch={false}
+                    >
+                      <Car className="h-5 w-5" />
+                      Vehiculos
+                    </NavLink>
+                    <NavLink
+                      to="/parking-spots"
+                      className={getNavLinkClass}
+                      prefetch={false}
+                    >
+                      <ParkingSquare className="h-5 w-5" />
+                      Estacionamientos
+                    </NavLink>
+                  </>
+                )}
                 <NavLink
                   to="/settings"
                   className={getNavLinkClass}
@@ -261,7 +256,6 @@ const Navbar = () => {
                   <User className="h-5 w-5" />
                   Mi Perfil
                 </NavLink>
-
                 <Button className="bg-red-500">
                   <NavLink to="/" onClick={logoutSubmit}>
                     Cerrar Sesión
