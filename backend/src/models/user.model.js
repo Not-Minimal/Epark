@@ -42,6 +42,11 @@ const userSchema = new mongoose.Schema(
         ref: "Role",
       },
     ],
+    vehicle: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicle",
+      required: false
+    },
   },
   {
     versionKey: false,
