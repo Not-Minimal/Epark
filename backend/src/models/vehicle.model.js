@@ -16,7 +16,10 @@ const VehicleSchema = new mongoose.Schema({
     },
     model: String,
     color: String,
-});
+},  {
+        versionKey: false,
+    },
+);
 
 
 // Modelo de datos de usuario
