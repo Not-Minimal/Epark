@@ -30,3 +30,16 @@ export async function createVehicle(req, res)  {
         res.status(500).json({ message: error.message });
     }
 };
+export async function getVehicles(req, res) {
+    try {
+        const vehicles = await Vehicle.find().populate("user", "username");
+        res.status(200).json({
+            message: "Lista de vehículos",
+            data: vehicles,
+        });
+    } catch (error) {
+        console.log("Error en vehicle.controller.js -> getVehicle(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+  

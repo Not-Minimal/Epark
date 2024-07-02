@@ -5,7 +5,7 @@ import express from "express";
 // Se importa las funciones del controlador
 import { login, register, profile, logout } from "../controllers/auth.controller.js";
 
-import { createVehicle } from "../controllers/vehicle.controller.js";
+import { createVehicle, getVehicles } from "../controllers/vehicle.controller.js";
 // Se realiza una instancia de express
 const router = express.Router();
 
@@ -20,4 +20,5 @@ router.post("/logout", logout);
 
 router.post("/createV", createVehicle);
 
+router.get("/getVehicles", getVehicles);
 export default router;
