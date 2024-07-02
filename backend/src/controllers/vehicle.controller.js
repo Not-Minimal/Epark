@@ -21,8 +21,9 @@ export async function createVehicle(req, res)  {
         user.vehicle = savedVehicle._id;
         await user.save();
 
+        await User.findByIdAndUpdate(userId, { vehicle: savedVehicle._id }); 
         res.status(201).json({
-            message: "Vehiculo creado correctamente",
+            message: "Vehiculo creado correctamente y asociado al usuario ",
             data: newVehicle,
         });
     }catch (error) {
