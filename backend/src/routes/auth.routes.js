@@ -5,6 +5,7 @@ import express from "express";
 // Se importa las funciones del controlador
 import { login, register, profile, logout } from "../controllers/auth.controller.js";
 
+import { createVehicle, getVehicles, getVehicleById , getVehicleByOwnerId, updateVehicleByOwnerId ,updateVehicleById} from "../controllers/vehicle.controller.js";
 // Se realiza una instancia de express
 const router = express.Router();
 
@@ -16,5 +17,17 @@ router.post("/register", register);
 router.get("/profile", profile);
 // Petición de tipo post para la ruta del logout
 router.post("/logout", logout);
+
+router.post("/createV", createVehicle);
+
+router.get("/getVehicles", getVehicles);
+
+router.get("/getVehicleById/:id",getVehicleById);
+
+router.get("/getVehicleByOwnerId/:id",getVehicleByOwnerId);
+
+router.put("/updateVehicleByOwnerId/:id",updateVehicleByOwnerId);
+
+router.put("/updateVehicleById/:id",updateVehicleById);
 
 export default router;
