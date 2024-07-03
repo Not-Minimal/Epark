@@ -101,3 +101,83 @@ export async function getVehicleByOwnerId(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+
+export async function updateVehicleByOwnerId(req, res) {
+    try {
+        const userId = req.params.id;
+        const { licensePlate, model, color } = req.body;
+
+        // Verificar que el usuario exista
+        const user = await User.findById(userId);
+        if (!user) {
+            res.status(404).json({
+                message: "Usuario no encontrado",
+                data: null,
+            });
+            return;
+        }
+
+        // Buscar el vehículo asociado al usuario
+        const vehicle = await Vehicle.findOne({ user: userId });
+        if (!vehicle) {
+            res.status(404).json({
+                message: "El usuario no posee vehículo",
+                data: null,
+            });
+            return;
+        }
+
+        // Actualizar los campos del vehículo
+        if (licensePlate) vehicle.licensePlate = licensePlate;
+        if (model) vehicle.model = model;
+        if (color) vehicle.color = color;
+
+        const updatedVehicle = await vehicle.save();
+        // retornar el dato
+        res.status(200).json({
+            message: "Vehículo actualizado",
+            data: {
+                vehicle: updatedVehicle,
+                owner: user.username,
+            },
+        });
+    } catch (error) {
+        console.log("Error en updateVehicleByOwnerId(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export async function updateVehicleById(req, res) {
+    try {
+        const vehicleId = req.params.id;
+        const { licensePlate, model, color } = req.body;
+
+        // Buscar el vehículo por su ID
+        const vehicle = await Vehicle.findById(vehicleId).populate("user", "username");
+        if (!vehicle) {
+            res.status(404).json({
+                message: "Vehículo no encontrado",
+                data: null,
+            });
+            return;
+        }
+
+        // Actualizar los campos del vehículo
+        if (licensePlate) vehicle.licensePlate = licensePlate;
+        if (model) vehicle.model = model;
+        if (color) vehicle.color = color;
+
+        const updatedVehicle = await vehicle.save();
+
+        // Retornar el vehículo actualizado con el nombre del dueño
+        res.status(200).json({
+            message: "Vehículo actualizado",
+            data: {
+                vehicle: updatedVehicle,
+            },
+        });
+    } catch (error) {
+        console.log("Error en updateVehicleById(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+}
