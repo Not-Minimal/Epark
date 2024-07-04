@@ -1,4 +1,5 @@
 "use strict";
+
 // Importa el modulo 'express' para crear las rutas
 import { Router } from "express";
 
@@ -8,6 +9,9 @@ import userRoutes from "./user.routes.js";
 /** Enrutador de autenticación */
 import authRoutes from "./auth.routes.js";
 
+/** Enrutador de vehicle */
+import vehicleRoutes from "./vehicle.routes.js";
+
 // Se realiza una instancia de express
 const router = Router();
 
@@ -15,5 +19,7 @@ const router = Router();
 router.use("/user",  userRoutes);
 // Define las rutas para la autenticación /api/auth
 router.use("/auth", authRoutes);
+// Define las rutas para los usuarios /api/vehicle
+router.use("/vehicle",vehicleRoutes);
 
 export default router;
