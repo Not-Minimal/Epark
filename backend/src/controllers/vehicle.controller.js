@@ -5,7 +5,7 @@ import Vehicle from "../models/vehicle.model.js";
 
 export async function createVehicle(req, res)  {
     try {
-        const { userId, licensePlate, model, color } = req.body;
+        const { userId, licensePlate, model, color,marca } = req.body;
 
       // Verificar que el usuario exista
         const user = await User.findById(userId);
@@ -14,7 +14,7 @@ export async function createVehicle(req, res)  {
     }
 
       // Crear el vehículo
-        const newVehicle = new Vehicle({ user: userId, licensePlate, model, color });
+        const newVehicle = new Vehicle({ user: userId, licensePlate, model, color ,marca});
         const savedVehicle = await newVehicle.save();
 
       // Asociar el vehículo al usuario
@@ -105,7 +105,7 @@ export async function getVehicleByOwnerId(req, res) {
 export async function updateVehicleByOwnerId(req, res) {
     try {
         const userId = req.params.id;
-        const { licensePlate, model, color } = req.body;
+        const { licensePlate, model, color,marca } = req.body;
 
         // Verificar que el usuario exista
         const user = await User.findById(userId);
@@ -131,6 +131,7 @@ export async function updateVehicleByOwnerId(req, res) {
         if (licensePlate) vehicle.licensePlate = licensePlate;
         if (model) vehicle.model = model;
         if (color) vehicle.color = color;
+        if (marca) vehicle.marca = marca;
 
         const updatedVehicle = await vehicle.save();
         // retornar el dato
@@ -166,7 +167,7 @@ export async function updateVehicleById(req, res) {
         if (licensePlate) vehicle.licensePlate = licensePlate;
         if (model) vehicle.model = model;
         if (color) vehicle.color = color;
-
+        if (marca) vehicle.marca = marca;
         const updatedVehicle = await vehicle.save();
 
         // Retornar el vehículo actualizado con el nombre del dueño

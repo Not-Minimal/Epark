@@ -16,6 +16,7 @@ const VehicleSchema = new mongoose.Schema({
     },
     model: String,
     color: String,
+    marca:String,
 },  {
         versionKey: false,
     },
