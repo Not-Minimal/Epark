@@ -50,6 +50,8 @@ export async function createUsers() {
         rut: "12345678-9",
         password: await User.encryptPassword("eparkuser123"),
         roles: user._id,
+        tipoUsuario:"Estudiante",
+
       }).save(),
       new User({
         username: "Nombre Administrador",
@@ -57,6 +59,8 @@ export async function createUsers() {
         rut: "12345678-0",
         password: await User.encryptPassword("eparkadmin123"),
         roles: admin._id,
+        tipoUsuario:"Funcionario",
+        
       }).save(),
     ]);
     console.log("* => Usuarios creados exitosamente");
