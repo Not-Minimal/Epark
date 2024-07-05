@@ -1,24 +1,140 @@
-> [!TIP]
-> Les recomiendo usar la plantilla, debido a que les ahorrará tiempo al ya tener la implementación del login.
+# E-Park
+# Sistema de Gestión de Estacionamiento para la Universidad
 
-# Template Proyecto Metodología de Desarrollo 👨‍💻
+![Licencia](https://img.shields.io/badge/Licencia-MIT-green)
 
-Esta plantilla está diseñada para proporcionar a los estudiantes del curso de Metodología de Desarrollo las bases de un proyecto, incluyendo un backend con una funcionalidad de inicio de sesión básica y un frontend correspondiente.
+## Descripción
 
-## Cosas a tener en cuenta 📚
+Este proyecto es un sistema de gestión de estacionamiento diseñado para la universidad, que permite a los usuarios (estudiantes, profesores y personal administrativo) reservar espacios de estacionamiento, gestionar vehículos, y reportar incidencias. Los administradores tienen capacidades adicionales para gestionar usuarios, espacios de estacionamiento y generar reportes.
 
-Este proyecto consta de dos componentes principales:
+## Características
 
-#### Backend 🚀
+- **Gestión de Usuarios**: Registro, actualización y eliminación de usuarios.
+- **Gestión de Vehículos**: Registro y gestión de vehículos de los usuarios.
+- **Reservas de Estacionamiento**: Creación, actualización y cancelación de reservas de espacios de estacionamiento.
+- **Gestión de Espacios de Estacionamiento**: Administración de los espacios de estacionamiento disponibles.
+- **Reportes**: Generación de reportes sobre el uso del estacionamiento.
+- **Incidencias**: Reporte y gestión de problemas relacionados con el estacionamiento.
 
-El backend del proyecto proporciona la lógica y la funcionalidad del lado del servidor. Incluye una implementación básica de inicio de sesión. Este inicio de sesión no utiliza tokens para la autenticación. Los estudiantes pueden encontrar más información y acceder al código del backend en el siguiente enlace:
+## Tecnologías Utilizadas
 
-- [Backend](./backend/)
+- **Frontend**: React, JavaScript, HTML, CSS
+- **Backend**: Node.js, Express
+- **Base de Datos**: MongoDB
+- **Autenticación**: JWT (JSON Web Tokens)
+- **Control de Versiones**: Git, GitHub
 
-#### Frontend 🚀
+## Instalación
 
-El frontend del proyecto es la interfaz de usuario con la que interactuan los usuarios finales. Incluye la interfaz de inicio de sesión que se conecta al backend. Los estudiantes pueden acceder al código del frontend y explorar su implementación en el siguiente enlace:
+### Prerrequisitos
 
-- [Frontend](./frontend)
+- Node.js
+- MongoDB
 
-⌨️ with ❤️ by [@Didudocl](https://github.com/DiegoSalazarJara) & [@Metalcl](https://github.com/Metalcl)
+### Pasos
+
+1. Clona el repositorio:
+
+    ```bash
+    git clone https://github.com/Not-Minimal/Epark
+    ```
+
+2. Navega al directorio del proyecto:
+
+    ```bash
+    cd Epark
+    ```
+
+3. Instala las dependencias del servidor:
+
+    ```bash
+    cd backend
+    npm install
+    ```
+
+4. Configura las variables de entorno en un archivo `.env` en el directorio `server`:
+
+    ```bash
+    PORT=3000
+    HOST=localhost
+    DB_URL=tu_conexion_a_mongodb
+    PASS_SECRET=tu_secreto_para_jwt
+    ```
+
+5. Inicia el servidor:
+
+    ```bash
+    npm run dev
+    ```
+
+6. Navega al directorio del cliente:
+
+    ```bash
+    cd ../frontend
+    ```
+
+7. Instala las dependencias del cliente:
+
+    ```bash
+    npm install
+    ```
+
+8. Inicia la aplicación del cliente:
+
+    ```bash
+    npm run dev
+    ```
+
+## Uso
+
+### Roles y Funcionalidades
+
+- **Administrador**:
+  - Gestión de usuarios, vehículos, reservas, espacios de estacionamiento e incidencias.
+  - Generación de reportes.
+
+- **Usuario**:
+  - Registro y gestión de vehículos.
+  - Creación, actualización y cancelación de reservas de estacionamiento.
+  - Reporte de incidencias.
+
+### Navegación
+
+1. **Página de Inicio**: Presentación y acceso rápido a las funciones principales.
+2. **Perfil de Usuario**: Gestión de la información del usuario y sus vehículos.
+3. **Reservas de Estacionamiento**: Ver disponibilidad y gestionar reservas.
+4. **Gestión de Incidencias**: Reportar y ver el estado de incidencias.
+
+## Contribución
+
+1. Haz un fork del proyecto.
+2. Crea una nueva rama (feature/nueva-funcionalidad).
+3. Realiza los cambios y haz commit.
+4. Envía un pull request.
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+## Contactos
+
+### 1 Colaborador
+- **Autor**: Saul Muñoz Pedreros
+- **Email**: nottminimal@gmail.com
+- **LinkedIn**: [NotMinimal](https://www.linkedin.com/in/notminimal/)
+
+### 2 Colaborador
+- **Autor**: Matias Arenas
+- **Email**: matias.arenas2201@alumnos.ubiobio.cl
+### 3 Colaborador
+- **Autor**: Tomas Mendez
+- **Email**: tomas.mendez2201@alumnos.ubiobio.cl
+### 4 Colaborador
+- **Autor**: Nicolas Muñoz
+- **Email**: nicolas.munoz2201@alumnos.ubiobio.cl
+### 5 Colaborador
+- **Autor**: Francisca Huaique
+- **Email**: francisca.huaique2201@alumnos.ubiobio.cl
+### 6 Colaborador
+- **Autor**: Deivid Sandoval
+- **Email**: deivid.sandoval2201@alumnos.ubiobio.cl
