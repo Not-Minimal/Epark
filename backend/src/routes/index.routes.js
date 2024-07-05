@@ -12,6 +12,9 @@ import authRoutes from "./auth.routes.js";
 /** Enrutador de vehicle */
 import vehicleRoutes from "./vehicle.routes.js";
 
+//** Enrutador de cuadrantes */
+import quadrantRoutes from "./quadrant.routes.js";
+
 // Se realiza una instancia de express
 const router = Router();
 
@@ -21,5 +24,8 @@ router.use("/user",  userRoutes);
 router.use("/auth", authRoutes);
 // Define las rutas para los usuarios /api/vehicle
 router.use("/vehicle",vehicleRoutes);
+// Define las rugtas para los cuadrantes /api/quadrant
+router.use("/quadrant", quadrantRoutes);
+
 
 export default router;
