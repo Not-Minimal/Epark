@@ -52,7 +52,7 @@ Este proyecto es un sistema de gestión de estacionamiento diseñado para la uni
     npm install
     ```
 
-4. Configura las variables de entorno en un archivo `.env` en el directorio `server`:
+4. Configura las variables de entorno en un archivo `.env` en el directorio `backend/src/config`:
 
     ```bash
     PORT=3000
