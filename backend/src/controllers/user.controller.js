@@ -1,6 +1,7 @@
 // Importa el modelo de datos 'User'
 import User from "../models/user.model.js";
 import Role from "../models/role.model.js";
+import Vehicle from "../models/vehicle.model.js";
 
 export async function getUser(req, res) {
   try {
@@ -104,14 +105,14 @@ export async function deleteUser(req, res) {
   try {
     const rutUser = req.query.rut;
     if (!rutUser) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "El parámetro 'rut' es requerido.",
         data: null,
       });
-      return;
     }
-
-    const user = await User.findOneAndDelete({ rut: rutUser });
+    
+    // Buscar el usuario
+    const user = await User.findOne({ rut: rutUser });
 
     if (!user) {
       return res.status(404).json({
@@ -119,13 +120,26 @@ export async function deleteUser(req, res) {
         data: null,
       });
     }
+    
+    // Buscar y eliminar el vehículo asociado al usuario, si existe
+    const vehicle = await Vehicle.findOneAndDelete({ user: user._id });
+
+    if (vehicle) {
+      console.log(`Vehículo del usuario ${user._id} eliminado correctamente: ${vehicle}`);
+    } else {
+      console.log(`El usuario ${user._id} no tenía un vehículo asociado.`);
+    }
+
+    // Eliminar el usuario
+    await User.findOneAndDelete({ rut: rutUser });
 
     res.status(200).json({
-      message: "Usuario eliminado exitosamente!",
-      data: user,
+      message: "Usuario y vehículo (si existía) eliminados exitosamente!",
+      userData: user,
+      vehicleData: vehicle,
     });
   } catch (error) {
-    console.log("Error en user.controller.js -> deleteUser(): ", error);
+    console.error("Error en deleteUser(): ", error);
     res.status(500).json({ message: error.message });
   }
 }
