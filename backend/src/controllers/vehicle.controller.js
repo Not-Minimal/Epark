@@ -2,7 +2,6 @@ import User from "../models/user.model.js";
 import Role  from "../models/role.model.js";
 import Vehicle from "../models/vehicle.model.js";
 
-import bcrypt from 'bcryptjs';
 
 export async function createVehicle(req, res) {
     try {
@@ -56,6 +55,37 @@ export async function getVehicles(req, res) {
         });
     } catch (error) {
         console.log("Error en vehicle.controller.js -> getVehicle(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export async function getVehiclesByQuery(req, res) {
+    try {
+        const { marca, model, color, licensePlate } = req.query;
+
+        // Construir el objeto de consulta dinámicamente
+        let query = {};
+        if (marca) query.marca = marca;
+        if (model) query.model = model;
+        if (color) query.color = color;
+        if (licensePlate) query.licensePlate = licensePlate;
+
+        const vehicles = await Vehicle.find(query).populate("user", "username");
+
+        if (vehicles.length === 0) {
+            res.status(404).json({
+                message: "Vehículos no encontrados",
+                data: null,
+            });
+            return;
+        }
+
+        res.status(200).json({
+            message: "Vehículos encontrados",
+            data: vehicles,
+        });
+    } catch (error) {
+        console.log("Error en getVehiclesByQuery(): ", error);
         res.status(500).json({ message: error.message });
     }
 }
@@ -200,72 +230,5 @@ export async function updateVehicleByPatente(req, res) {
     } catch (error) {
         console.log("Error en updateVehicleByPatente(): ", error);
         res.status(500).json({ message: error.message });
-    }
-}
-
-// ! funcion de prueba rapida
-
-// Función para generar un número aleatorio de 1 a max
-function getRandomNumber(max) {
-    return Math.floor(Math.random() * max) + 1;
-}
-
-// Función para generar un string aleatorio de longitud length
-function generateRandomString(length) {
-    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-}
-
-//! Función para crear usuarios con valores aleatorios y sin vehículo
-
-export async function createRandomUser(req,res) {
-    try {
-        // Obtener roles existentes desde la base de datos
-        const roles = await Role.find();
-        if (roles.length === 0) {
-            console.log("No se encontraron roles en la base de datos.");
-            return null;
-        }
-
-        // Generar datos aleatorios
-        const username = `User_${getRandomNumber(1000)}`;
-        const rut = `${getRandomNumber(99999999)}-${getRandomNumber(9)}`;
-        const celular = `+56 9 ${getRandomNumber(99999999)}`;
-        const randomRole = roles[getRandomNumber(roles.length) - 1]; // Elegir un rol aleatorio
-        const tipoUsuario = randomRole.name === "administrador" ? "Funcionario" : "Estudiante"; // Asignar tipo de usuario según el rol
-        const password = await bcrypt.hash(generateRandomString(10), 10); // Generar contraseña aleatoria
-        const email = `user${getRandomNumber(1000)}@example.com`;
-
-        // Verificar si el rut y el email ya existen en la base de datos
-        const existingUser = await User.findOne({ $or: [{ rut }, { email }] });
-        if (existingUser) {
-            console.log(`Usuario con rut '${rut}' o email '${email}' ya existe en la base de datos.`);
-            return null;
-        }
-
-        // Crear el usuario
-        const newUser = new User({
-            username,
-            rut,
-            celular,
-            tipoUsuario,
-            password,
-            email,
-            roles: [randomRole._id], // Asignar el rol aleatorio al usuario
-        });
-
-        await newUser.save();
-        console.log(`Usuario creado: ${username} - ${email}`);
-        res.status(200).json({
-            message: "Usuario random creado",
-            data: newUser,
-        });
-    } catch (error) {
-        console.error("Error creando usuario:", error);
-        return null;
     }
 }

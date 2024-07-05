@@ -57,7 +57,7 @@ export async function createUsers() {
         // Crear vehículo asociado al usuario
         await createVehicleHelper(user._id, {
           licensePlate: "XYZ789",
-          model: "Toyota Corolla",
+          model: "Corolla",
           color: "Blue",
           marca: "Toyota",
         });
@@ -74,7 +74,7 @@ export async function createUsers() {
         // Crear vehículo asociado al usuario
         await createVehicleHelper(user._id, {
           licensePlate: "ABC123",
-          model: "Tesla Model S",
+          model: "Model S",
           color: "Red",
           marca: "Tesla",
         });

@@ -4,7 +4,7 @@
 import express from "express";
 
 // se importan funciones controller del vehicle
-import { createVehicle, getVehicles, getVehicleByPatente , getVehicleByOwnerId, updateVehicleByOwnerId ,updateVehicleByPatente, createRandomUser} from "../controllers/vehicle.controller.js";
+import { createVehicle, getVehicles, getVehicleByPatente , getVehicleByOwnerId, updateVehicleByOwnerId ,updateVehicleByPatente,getVehiclesByQuery} from "../controllers/vehicle.controller.js";
 
 // Se realiza una instancia de express
 const router = express.Router();
@@ -21,8 +21,7 @@ router.get("/getVehicleByOwnerId/:id",getVehicleByOwnerId);
 router.put("/updateVehicleByOwnerId/:id",updateVehicleByOwnerId);
 // peticion put para editar vehicle por su id
 router.put("/updateVehicleByPatente/:patente",updateVehicleByPatente);
-
-// ! funcion de prueba rapida
-router.post("/createRandomUser",createRandomUser);
+// peticion get para obtener vehiculos segun los datos de la query
+router.get("/getVehiclesByQuery",getVehiclesByQuery);
 
 export default router;
