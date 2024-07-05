@@ -2,34 +2,50 @@ import User from "../models/user.model.js";
 import Role  from "../models/role.model.js";
 import Vehicle from "../models/vehicle.model.js";
 
+import bcrypt from 'bcryptjs';
 
-export async function createVehicle(req, res)  {
+export async function createVehicle(req, res) {
     try {
-        const { userId, licensePlate, model, color,marca } = req.body;
+        const userId = req.params.id;
+        const { licensePlate, model, color, marca } = req.body;
 
-      // Verificar que el usuario exista
+        // Verificar que el usuario exista
         const user = await User.findById(userId);
         if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-    }
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
 
-      // Crear el vehículo
-        const newVehicle = new Vehicle({ user: userId, licensePlate, model, color ,marca});
+        // Verificar que todos los campos del vehículo estén presentes
+        if (!licensePlate) {
+            return res.status(400).json({ message: "La matrícula (licensePlate) es requerida" });
+        }
+        if (!model) {
+            return res.status(400).json({ message: "El modelo (model) es requerido" });
+        }
+        if (!color) {
+            return res.status(400).json({ message: "El color (color) es requerido" });
+        }
+        if (!marca) {
+            return res.status(400).json({ message: "La marca (marca) es requerida" });
+        }
+
+        // Crear el vehículo
+        const newVehicle = new Vehicle({ user: userId, licensePlate, model, color, marca });
         const savedVehicle = await newVehicle.save();
 
-      // Asociar el vehículo al usuario
+        // Asociar el vehículo al usuario
         user.vehicle = savedVehicle._id;
         await user.save();
 
-        await User.findByIdAndUpdate(userId, { vehicle: savedVehicle._id }); 
         res.status(201).json({
-            message: "Vehiculo creado correctamente y asociado al usuario ",
+            message: "Vehículo creado correctamente y asociado al usuario",
             data: newVehicle,
         });
-    }catch (error) {
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+}
+
 
 export async function getVehicles(req, res) {
     try {
@@ -44,25 +60,28 @@ export async function getVehicles(req, res) {
     }
 }
 
-export async function getVehicleById(req,res) {
+export async function getVehicleByPatente(req, res) {
     try {
-        const id =req.params.id;
-        const vehicle = await Vehicle.findById(id).populate("user", "username");
+        const { patente } = req.params;
 
-        if(!vehicle){
-            res.status(400).json({
-                message: "vehiculo no encontrado",
+        // Buscar el vehículo por su matrícula (patente)
+        const vehicle = await Vehicle.findOne({ licensePlate: patente }).populate("user", "username");
+
+        if (!vehicle) {
+            res.status(404).json({
+                message: "Vehículo no encontrado",
                 data: null,
-            })
+            });
+            return;
         }
 
         res.status(200).json({
-            message: "vehicle encontrado",
+            message: "Vehículo encontrado",
             data: vehicle,
-        })
+        });
     } catch (error) {
-        console.log("Error en getVehicleById(): ", error);
-        return null;
+        console.log("Error en getVehicleByPatente(): ", error);
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -148,13 +167,13 @@ export async function updateVehicleByOwnerId(req, res) {
     }
 }
 
-export async function updateVehicleById(req, res) {
+export async function updateVehicleByPatente(req, res) {
     try {
-        const vehicleId = req.params.id;
-        const { licensePlate, model, color } = req.body;
+        const { patente } = req.params;
+        const { licensePlate, model, color, marca } = req.body;
 
-        // Buscar el vehículo por su ID
-        const vehicle = await Vehicle.findById(vehicleId).populate("user", "username");
+        // Buscar el vehículo por su matrícula (patente)
+        const vehicle = await Vehicle.findOne({ licensePlate: patente }).populate("user", "username");
         if (!vehicle) {
             res.status(404).json({
                 message: "Vehículo no encontrado",
@@ -175,10 +194,78 @@ export async function updateVehicleById(req, res) {
             message: "Vehículo actualizado",
             data: {
                 vehicle: updatedVehicle,
+                owner: vehicle.user.username,
             },
         });
     } catch (error) {
-        console.log("Error en updateVehicleById(): ", error);
+        console.log("Error en updateVehicleByPatente(): ", error);
         res.status(500).json({ message: error.message });
+    }
+}
+
+// ! funcion de prueba rapida
+
+// Función para generar un número aleatorio de 1 a max
+function getRandomNumber(max) {
+    return Math.floor(Math.random() * max) + 1;
+}
+
+// Función para generar un string aleatorio de longitud length
+function generateRandomString(length) {
+    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+//! Función para crear usuarios con valores aleatorios y sin vehículo
+
+export async function createRandomUser(req,res) {
+    try {
+        // Obtener roles existentes desde la base de datos
+        const roles = await Role.find();
+        if (roles.length === 0) {
+            console.log("No se encontraron roles en la base de datos.");
+            return null;
+        }
+
+        // Generar datos aleatorios
+        const username = `User_${getRandomNumber(1000)}`;
+        const rut = `${getRandomNumber(99999999)}-${getRandomNumber(9)}`;
+        const celular = `+56 9 ${getRandomNumber(99999999)}`;
+        const randomRole = roles[getRandomNumber(roles.length) - 1]; // Elegir un rol aleatorio
+        const tipoUsuario = randomRole.name === "administrador" ? "Funcionario" : "Estudiante"; // Asignar tipo de usuario según el rol
+        const password = await bcrypt.hash(generateRandomString(10), 10); // Generar contraseña aleatoria
+        const email = `user${getRandomNumber(1000)}@example.com`;
+
+        // Verificar si el rut y el email ya existen en la base de datos
+        const existingUser = await User.findOne({ $or: [{ rut }, { email }] });
+        if (existingUser) {
+            console.log(`Usuario con rut '${rut}' o email '${email}' ya existe en la base de datos.`);
+            return null;
+        }
+
+        // Crear el usuario
+        const newUser = new User({
+            username,
+            rut,
+            celular,
+            tipoUsuario,
+            password,
+            email,
+            roles: [randomRole._id], // Asignar el rol aleatorio al usuario
+        });
+
+        await newUser.save();
+        console.log(`Usuario creado: ${username} - ${email}`);
+        res.status(200).json({
+            message: "Usuario random creado",
+            data: newUser,
+        });
+    } catch (error) {
+        console.error("Error creando usuario:", error);
+        return null;
     }
 }
