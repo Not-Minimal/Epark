@@ -3,12 +3,12 @@
 // Se importa el módulo de 'mongoose'
 import mongoose from "mongoose";
 
-const StockEspacioSchema = new mongoose.Schema({
-    numero: {
+const parkingStockSchema = new mongoose.Schema({
+    number: {
         type: Number,
         require: true
     },
-    estaOcupado:{
+    isOccupied:{
         type: Boolean,
         default: false
     }
@@ -16,6 +16,6 @@ const StockEspacioSchema = new mongoose.Schema({
         versionKey: false,
     },
 );
-const Espacio = mongoose.model("Espacio", StockEspacioSchema);
+const Space = mongoose.model("Space", parkingStockSchema);
 
-export default Espacio;
+export default Space;

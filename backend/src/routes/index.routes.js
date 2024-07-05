@@ -12,8 +12,8 @@ import authRoutes from "./auth.routes.js";
 /** Enrutador de vehicle */
 import vehicleRoutes from "./vehicle.routes.js";
 
-//Enrutador de stockEspacios
-import stockEspaciosRoutes from "./stockEspacio.routes.js"
+//Enrutador de parkingStock
+import parkingStockRoutes from "./parkingStock.routes.js"
 
 // Se realiza una instancia de express
 const router = Router();
@@ -25,6 +25,6 @@ router.use("/auth", authRoutes);
 // Define las rutas para los usuarios /api/vehicle
 router.use("/vehicle",vehicleRoutes);
 // Define las rutas para los espacios /api/stockEspacios
-router.use("/stockEspacios",stockEspaciosRoutes);
+router.use("/parkingStock",parkingStockRoutes);
 
 export default router;
