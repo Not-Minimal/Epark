@@ -3,33 +3,48 @@ import Role  from "../models/role.model.js";
 import Vehicle from "../models/vehicle.model.js";
 
 
-export async function createVehicle(req, res)  {
+export async function createVehicle(req, res) {
     try {
-        const { userId, licensePlate, model, color,marca } = req.body;
+        const userId = req.params.id;
+        const { licensePlate, model, color, marca } = req.body;
 
-      // Verificar que el usuario exista
+        // Verificar que el usuario exista
         const user = await User.findById(userId);
         if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-    }
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
 
-      // Crear el vehículo
-        const newVehicle = new Vehicle({ user: userId, licensePlate, model, color ,marca});
+        // Verificar que todos los campos del vehículo estén presentes
+        if (!licensePlate) {
+            return res.status(400).json({ message: "La matrícula (licensePlate) es requerida" });
+        }
+        if (!model) {
+            return res.status(400).json({ message: "El modelo (model) es requerido" });
+        }
+        if (!color) {
+            return res.status(400).json({ message: "El color (color) es requerido" });
+        }
+        if (!marca) {
+            return res.status(400).json({ message: "La marca (marca) es requerida" });
+        }
+
+        // Crear el vehículo
+        const newVehicle = new Vehicle({ user: userId, licensePlate, model, color, marca });
         const savedVehicle = await newVehicle.save();
 
-      // Asociar el vehículo al usuario
+        // Asociar el vehículo al usuario
         user.vehicle = savedVehicle._id;
         await user.save();
 
-        await User.findByIdAndUpdate(userId, { vehicle: savedVehicle._id }); 
         res.status(201).json({
-            message: "Vehiculo creado correctamente y asociado al usuario ",
+            message: "Vehículo creado correctamente y asociado al usuario",
             data: newVehicle,
         });
-    }catch (error) {
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+}
+
 
 export async function getVehicles(req, res) {
     try {
@@ -44,25 +59,59 @@ export async function getVehicles(req, res) {
     }
 }
 
-export async function getVehicleById(req,res) {
+export async function getVehiclesByQuery(req, res) {
     try {
-        const id =req.params.id;
-        const vehicle = await Vehicle.findById(id).populate("user", "username");
+        const { marca, model, color, licensePlate } = req.query;
 
-        if(!vehicle){
-            res.status(400).json({
-                message: "vehiculo no encontrado",
+        // Construir el objeto de consulta dinámicamente
+        let query = {};
+        if (marca) query.marca = marca;
+        if (model) query.model = model;
+        if (color) query.color = color;
+        if (licensePlate) query.licensePlate = licensePlate;
+
+        const vehicles = await Vehicle.find(query).populate("user", "username");
+
+        if (vehicles.length === 0) {
+            res.status(404).json({
+                message: "Vehículos no encontrados",
                 data: null,
-            })
+            });
+            return;
         }
 
         res.status(200).json({
-            message: "vehicle encontrado",
-            data: vehicle,
-        })
+            message: "Vehículos encontrados",
+            data: vehicles,
+        });
     } catch (error) {
-        console.log("Error en getVehicleById(): ", error);
-        return null;
+        console.log("Error en getVehiclesByQuery(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export async function getVehicleByPatente(req, res) {
+    try {
+        const { patente } = req.params;
+
+        // Buscar el vehículo por su matrícula (patente)
+        const vehicle = await Vehicle.findOne({ licensePlate: patente }).populate("user", "username");
+
+        if (!vehicle) {
+            res.status(404).json({
+                message: "Vehículo no encontrado",
+                data: null,
+            });
+            return;
+        }
+
+        res.status(200).json({
+            message: "Vehículo encontrado",
+            data: vehicle,
+        });
+    } catch (error) {
+        console.log("Error en getVehicleByPatente(): ", error);
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -148,13 +197,13 @@ export async function updateVehicleByOwnerId(req, res) {
     }
 }
 
-export async function updateVehicleById(req, res) {
+export async function updateVehicleByPatente(req, res) {
     try {
-        const vehicleId = req.params.id;
-        const { licensePlate, model, color } = req.body;
+        const { patente } = req.params;
+        const { licensePlate, model, color, marca } = req.body;
 
-        // Buscar el vehículo por su ID
-        const vehicle = await Vehicle.findById(vehicleId).populate("user", "username");
+        // Buscar el vehículo por su matrícula (patente)
+        const vehicle = await Vehicle.findOne({ licensePlate: patente }).populate("user", "username");
         if (!vehicle) {
             res.status(404).json({
                 message: "Vehículo no encontrado",
@@ -175,10 +224,11 @@ export async function updateVehicleById(req, res) {
             message: "Vehículo actualizado",
             data: {
                 vehicle: updatedVehicle,
+                owner: vehicle.user.username,
             },
         });
     } catch (error) {
-        console.log("Error en updateVehicleById(): ", error);
+        console.log("Error en updateVehicleByPatente(): ", error);
         res.status(500).json({ message: error.message });
     }
 }
