@@ -11,6 +11,11 @@ const parkingStockSchema = new mongoose.Schema({
     isOccupied:{
         type: Boolean,
         default: false
+    },
+    quadrant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quadrant',
+        require: true
     }
 },  {
         versionKey: false,

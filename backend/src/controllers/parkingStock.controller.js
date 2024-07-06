@@ -1,44 +1,61 @@
 import Space from "../models/parkingStock.model.js" 
-
+//!Importar desde el quadrant.controller.js
 
 //Crear espacios espesificados por el admin
-export async function createSpecifiedSpaces(req, res){
+export async function createSpecifiedSpaces(req,res){
     try {
 
-        const {num} = req.body;
-        if(num!= null && num!= undefined && num>0){
-            //Contar cantidad de espacio
-            const count = await Space.countDocuments();
-            //Sumarle los espacios de num a los que ya existen
-            for ( let i= count+1 ; i <= num+count; i++){ 
-                const newSpace = new Space({ number: i });
-                await newSpace.save();
+        const quadrantId = req.params.id;
+
+        // Buscar el cuadrante por su id
+        const quadrant = await Quadrant.findById(quadrantId);
+        if (!quadrant) {
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
+        }else{
+            if(num!= null && num!= undefined && num>0){
+                //Contar cantidad de espacio
+                const count = await Space.countDocuments();
+                //Sumarle los espacios de num a los que ya existen
+                for ( let i= count+1 ; i <= num+count; i++){ 
+                    const newSpace = new Space({ number: i ,quadrant: quadrant._id });
+                    await newSpace.save();
+                }
+                console.log("Se crearon los espacios correctamente");
             }
-            console.log("Se crearon los espacios correctamente");
-          res.status(201).json({message: "Espacios creados correctamente"});
         }
+
+        
     } catch (error) {
         console.log("Error en user.controller.js -> createSpecifiedSpace(): ", error);
-        res.status(500).json({ message: error.message });
+        throw new Error(error.message)
     }
 };
 
 
-//Crear espacios defaul
-export async function initializeSpaces(req,res){
+// Crear espacios default
+export async function initializeSpaces(req, res) {
     try {
-        //Contar cuantos espacios hay creados
-        const count = await Space.countDocuments();
-        if (count === 0) {
-          for (let i = 1; i <= 100; i++) {// Crear 100 espacios
-            const newSpace = new Space({ number: i });
-            await newSpace.save();
-          }
-          console.log("Se inicializaron los espacios correctamente");
-          res.status(201).json({message: "Espacios creados correctamente"});
+        
+        const quadrantId = req.params.id;
+
+        // Buscar el cuadrante por su id
+        const quadrant = await Quadrant.findById(quadrantId);
+        if (!quadrant){
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
         }else{
-            console.log("Los espacios ya estan inicializados");
-            res.status(400).send('Los espacios de estacionamiento ya han sido inicializados');
+            // Contar cuántos espacios hay creados para el cuadrante
+            const count = await Space.countDocuments({ quadrant: quadrantName });
+            if (count === 0) {
+                for (let i = 1; i <= 100; i++) { // Crear 100 espacios
+                    const newSpace = new Space({ number: i, quadrant: quadrant._id });
+                    await newSpace.save();
+                }
+                console.log("Se inicializaron los espacios correctamente");
+                res.status(201).json({ message: "Espacios creados correctamente" });
+            } else {
+                console.log("Los espacios ya están inicializados");
+                res.status(400).send('Los espacios de estacionamiento ya han sido inicializados');
+            }
         }
 
     } catch (error) {
@@ -47,23 +64,37 @@ export async function initializeSpaces(req,res){
     }
 };
 
-//Crear un solo espacio
-export async function createSpace(req,res){
+
+// Crear un solo espacio
+export async function createSpace(req, res) {
     try {
-        //Contar cuantos espacios hay creados
-        const count = await Space.countDocuments()+1;
-        
-        const newSpace = new Space({ number: count });
-        await newSpace.save();
-        console.log("Se creo el espacio correctamente");
-        res.status(201).json({message: "Espacio creado correctamente"});
-        
+        const quadrantId = req.params.id;
+
+        // Buscar el cuadrante por su id
+        const quadrant = await Quadrant.findById(quadrantId);
+
+        if (!quadrant) {
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
+        }else{
+            // Contar cuántos espacios hay creados para el cuadrante
+            const count = await Space.countDocuments({ quadrant: quadrant._id });
+
+            // Crear el nuevo espacio asociado al cuadrante
+            const newSpace = new Space({ number: count + 1, quadrant: quadrant._id });
+            await newSpace.save();
+
+            console.log("Se creó el espacio correctamente");
+            res.status(201).json({ message: "Espacio creado correctamente", data: newSpace });
+        }
+
+
 
     } catch (error) {
         console.log("Error en parkingStock.controller.js -> createSpace(): ", error);
         res.status(500).json({ message: error.message });
     }
 };
+
 
 //Obtener todos los espacios
 export async function getAllSpaces(req,res){
@@ -104,40 +135,53 @@ export async function getAvailableSpaces(req,res){
 
 };
 
-//Ocupar un espacio 
-export async function occupiesSpace(req,res){
-
+// Ocupar un espacio
+export async function occupiesSpaceOnQuadrant(req, res) {
     try {
+        const quadrantId = req.params.id;
 
-        const space = await Space.findOne({ isOccupied: false });
-        if (space) {
-          space.isOccupied = true;
-          await space.save();
-          res.status(200).json({message: `Accion realizada correctamente, espacio usado: ${space.number}`});
-        } else {
-            
-            res.status(400).send('No hay espacios disponibles para ocupar');
+        // Buscar el cuadrante por su id
+        const quadrant = await Quadrant.findById(quadrantId);
+
+        if (!quadrant) {
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
+        }else{
+            const space = await Space.findOne({ quadrant: quadrant._id, isOccupied: false });
+            if (space) {
+                space.isOccupied = true;
+                await space.save();
+                res.status(200).json({ message: `Acción realizada correctamente, espacio usado: ${space.number}` });
+            } else {
+                res.status(400).send('No hay espacios disponibles para ocupar en este cuadrante');
+            }
         }
-        
+
     } catch (error) {
-        console.log("Error en parkingStock.controller.js -> ocuparEspacio(): ", error);
+        console.log("Error en parkingStock.controller.js -> occupiesSpace(): ", error);
         res.status(500).json({ message: error.message });
     }
-
-};
+}
 
 //Desocupar un espacio 
-export async function vacateSpace(req,res){
+export async function vacateSpaceOnQuadrant(req,res){
 
     try {
+        //Obtener el id del cuadrante de los parametros
+        const quadrantId = req.params.id;
 
-        const space = await Space.findOne({ isOccupied: true });
-        if (space) {
-          space.isOccupied = false;
-          await space.save();
-          res.status(200).json({message: `Accion realizada correctamente, se libero un espacio`});
-        } else {
-          res.status(400).send('No hay espacios ocupados');
+        // Buscar el cuadrante por su nombre
+        const quadrant = await Quadrant.findById(quadrantId);
+        if (!quadrant) {
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
+        }else{
+            const space = await Space.findOne({ quadrant: quadrant._id , isOccupied: true });
+            if (space) {
+              space.isOccupied = false;
+              await space.save();
+              res.status(200).json({message: `Accion realizada correctamente, se libero un espacio`});
+            } else {
+              res.status(400).send('No hay espacios ocupados');
+            }
         }
         
     } catch (error) {
@@ -169,25 +213,35 @@ export async function deleteAllSpaces(req,res){
 };
 
 //Eliminar solo un espacio
-export async function deleteSpace(req, res) {
+export async function deleteSpaceOnQuadrant(req, res) {
     try {
-        // Verificar si hay espacios en la base de datos
-        const count = await Space.countDocuments();
-        if (count === 0) {
-            console.log("No hay espacios en la base de datos");
-            return res.status(404).json({ message: "No hay espacios en la base de datos" });
-        }
-        // Buscar un espacio desocupado
-        const freeSpace = await Space.findOne({ isOccupied: false });
-        if (!freeSpace) {
-            console.log("No hay espacios desocupados para eliminar");
-            return res.status(404).json({ message: "No hay espacios desocupados para eliminar" });
+        const quadrantId = req.params.id;
+
+        // Buscar el cuadrante por su nombre
+        const quadrant = await Quadrant.findById(quadrantId);
+        if (!quadrant) {
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
+        }else{
+            // Verificar si hay espacios en la base de datos
+            const count = await Space.countDocuments({quadrant: quadrant._id});
+            if (count === 0) {
+                console.log("No hay espacios en la base de datos");
+                return res.status(404).json({ message: "No hay espacios en la base de datos" });
+            }
+            // Buscar un espacio desocupado
+            const freeSpace = await Space.findOne({quadrant: quadrant._id, isOccupied: false });
+            if (!freeSpace) {
+                console.log("No hay espacios desocupados para eliminar");
+                return res.status(404).json({ message: "No hay espacios desocupados para eliminar" });
+            }else{
+                // Eliminar el espacio desocupado
+                await Space.deleteOne({ _id: freeSpace._id });
+                console.log(`El espacio ${freeSpace.number} fue eliminado correctamente`);
+                res.status(200).json({ message: `El espacio ${freeSpace.number} fue eliminado correctamente` });
+            }
+
         }
 
-        // Eliminar el espacio desocupado
-        await Space.deleteOne({ _id: freeSpace._id });
-        console.log(`El espacio ${freeSpace.number} fue eliminado correctamente`);
-        res.status(200).json({ message: `El espacio ${freeSpace.number} fue eliminado correctamente` });
 
     } catch (error) {
         console.log("Error en stockEspacio.controller.js -> eliminarEspacio(): ", error);
@@ -196,30 +250,43 @@ export async function deleteSpace(req, res) {
 };
 
 //Eliminar espacios espesificados por el admin
-export async function deleteSpecifiedSpaces(req, res) {
+export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
     try {
-        const { num } = req.body; // Obtener la cantidad de espacios a eliminar de la solicitud
+         // Obtener la cantidad de espacios a eliminar de la solicitud
+         const { num } = req.body;
 
-        if (!num || num <= 0) {
-            return res.status(400).json({ message: "Cantidad inválida" });
+        //Obtener el id de los parametros
+        const quadrantId = req.params.id;
+
+        // Buscar el cuadrante por su nombre
+        const quadrant = await Quadrant.findById(quadrantId);
+
+        if (!quadrant) {
+            return res.status(404).json({ message: 'Cuadrante no encontrado' });
         }else{
-
-            // Verificar si hay suficientes espacios desocupados en la base de datos
-            const freeSpaces = await Space.find({ isOccupied: false }).limit(num);
-            const countFreeSpace = freeSpaces.length;
-
-            if (countFreeSpace < num) {
-                console.log(`No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`);
-                return res.status(404).json({ message: `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}` });
+            
+            if (!num || num <= 0) {
+                return res.status(400).json({ message: "Cantidad inválida" });
             }else{
-                // Eliminar los espacios desocupados
-                for (const space of freeSpaces) {
-                    await Space.deleteOne({ _id: space._id });
+    
+                // Verificar si hay suficientes espacios desocupados en la base de datos
+                const freeSpaces = await Space.find({quadrant: quadrant._id, isOccupied: false }).limit(num);
+                const countFreeSpace = freeSpaces.length;
+    
+                if (countFreeSpace < num) {
+                    console.log(`No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`);
+                    return res.status(404).json({ message: `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}` });
+                }else{
+                    // Eliminar los espacios desocupados
+                    for (const space of freeSpaces) {
+                        await Space.deleteOne({ _id: space._id });
+                    }
+    
+                    console.log(`Se eliminaron ${num} espacios desocupados correctamente`);
+                    res.status(200).json({ message: `Se eliminaron ${num} espacios desocupados correctamente` });
                 }
-
-                console.log(`Se eliminaron ${num} espacios desocupados correctamente`);
-                res.status(200).json({ message: `Se eliminaron ${num} espacios desocupados correctamente` });
             }
+    
         }
 
 
@@ -229,3 +296,4 @@ export async function deleteSpecifiedSpaces(req, res) {
         res.status(500).json({ message: error.message });
     }
 };
+
