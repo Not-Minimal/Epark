@@ -19,7 +19,7 @@ const QuadrantSchema = new mongoose.Schema({
 
     full:{
         type: Boolean,
-        default: false 
+        default: true
     },
 
 });

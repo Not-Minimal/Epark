@@ -117,15 +117,18 @@ export async function updateQuadrantSpaces(quadrantId) {
           //* Contar espacios totales
           const totalSpaces = await Space.countDocuments({quadrant:quadrantId});
           //* Si los espacios ocupados son igual a los totales, esta completamente lleno
-          console.log(`Espacios totales: ${totalSpaces}, Espacios ocupados: ${occupiedSpaces}`);
-          if(occupiedSpaces == totalSpaces){
-            quadrant.full = true;//Completo
-            await quadrant.save()
-          }else{
-            quadrant.full = false;//Libre
-            await quadrant.save()
+          if(occupiedSpaces || totalSpaces ){
+              console.log(`Espacios totales: ${totalSpaces}, Espacios ocupados: ${occupiedSpaces}`);
+            if(occupiedSpaces == totalSpaces){
+              quadrant.full = true;//Completo
+              await quadrant.save()
+            }else{
+              quadrant.full = false;//Libre
+              await quadrant.save()
+            }
+            console.log("El cuadrante se actualizo")
           }
-          console.log("El cuadrante se actualizo")
+          
       }
 
   } catch (error) {

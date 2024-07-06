@@ -25,6 +25,8 @@ export async function createSpecifiedSpaces(req,res){
                         quadrant.spaces = spacesIds;
                         await quadrant.save();
                     }
+                    //Actualizar el cuadrante
+                    await updateQuadrantSpaces(quadrantId);
                     console.log("Se crearon los espacios correctamente");
                     res.status(201).json({ message: "Se crearon los espacios correctamente" });
                 }
@@ -63,6 +65,8 @@ export async function initializeSpaces(req, res) {
                         quadrant.spaces = spacesIds;
                         await quadrant.save();
                     }
+                    //Actualizar el cuadrante
+                    await updateQuadrantSpaces(quadrantId);
                     console.log("Se inicializaron los espacios correctamente");
                     res.status(201).json({ message: "Espacios creados correctamente" });
                 } else {
@@ -102,7 +106,8 @@ export async function createSpaceOnQuadrant(req, res) {
                 spacesIds.push(newSpace.id);
                 quadrant.spaces = spacesIds;
                 await quadrant.save();
-
+                //Actualizar el cuadrante
+                await updateQuadrantSpaces(quadrantId);
                 console.log("Se creó el espacio correctamente");
                 res.status(201).json({ message: "Espacio creado correctamente", data: newSpace });
             }          
@@ -237,6 +242,7 @@ export async function deleteAllSpaces(req,res){
         
         if (result.deletedCount > 0) {
             console.log("Todos los espacios fueron eliminados correctamente");
+    
             res.status(200).json({ message: "Todos los espacios fueron eliminados correctamente" });
         } else {
             console.log("No se encontraron espacios para eliminar");
@@ -333,6 +339,8 @@ export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
                             }
                         }
                         await quadrant.save();
+                        //Actualizar el cuadrante
+                        await updateQuadrantSpaces(quadrantId);
                     
                         console.log(`Se eliminaron ${num} espacios desocupados correctamente`);
                         res.status(200).json({ message: `Se eliminaron ${num} espacios desocupados correctamente` });
