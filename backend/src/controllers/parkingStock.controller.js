@@ -190,13 +190,6 @@ export async function occupiesSpaceOnQuadrant(req, res) {
     }
 }
 
-/*
-        if(quadrantId){
-
-        }else{
-            res.status(404).json({ message: 'Cuadrante no encontrado' });
-        }
-*/
 
 //Desocupar un espacio 
 export async function vacateSpaceOnQuadrant(req,res){
@@ -309,7 +302,7 @@ export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
     try {
         // Obtener la cantidad de espacios a eliminar de la solicitud
         const { num } = req.body;
-        
+
         //Obtener el id de los parametros
         const quadrantId = req.params.id;
         if(quadrantId){
