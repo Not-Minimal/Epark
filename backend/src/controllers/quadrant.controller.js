@@ -102,31 +102,35 @@ export async function deleteQuadrant(req,res){
 //*  Verificar si el cuadrante esta completamente ocupado
 
 
-export async function updateQuadrantSpaces(req, res) {
+export async function updateQuadrantSpaces(quadrantId) {
   try {
-      //*Buscar el id en los parametros
-
-      const quadrantId = req.params.id;
+      
       //*Buscar el cuadrante segun id
 
-      const quadrant = Quadrant.findById(quadrantId);
+      const quadrant = await Quadrant.findById(quadrantId);
       if(!quadrant){
-          return res.status(404).json({ message: 'Cuadrante no encontrado' });
+         console.log("Cuadrante no encontrado")
       }else{
           //*Contar espacios ocupados del cuadrante
 
-          const occupiedSpaces = await Space.countDocuments({quadrant:quadrant._id, isOccupied: true });
+          const occupiedSpaces = await Space.countDocuments({quadrant:quadrantId, isOccupied: true });
           //* Contar espacios totales
-          const totalSpaces = await Space.countDocuments({quadrant:quadrant._id});
+          const totalSpaces = await Space.countDocuments({quadrant:quadrantId});
           //* Si los espacios ocupados son igual a los totales, esta completamente lleno
+          console.log(`Espacios totales: ${totalSpaces}, Espacios ocupados: ${occupiedSpaces}`);
           if(occupiedSpaces == totalSpaces){
-              quadrant.full = true;//Completo
+            quadrant.full = true;//Completo
+            await quadrant.save()
+          }else{
+            quadrant.full = false;//Libre
+            await quadrant.save()
           }
+          console.log("El cuadrante se actualizo")
       }
 
   } catch (error) {
       console.log("Error en quadrant.controller.js -> updateQuadrant(): ", error);
-      res.status(500).json({ message: error.message });
+      
   }
 
 }

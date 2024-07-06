@@ -23,7 +23,7 @@ router.put('/UpdateQuadrantID/:id', updateQuadrant);
 router.delete('/DeleteQuadrantID/:id', deleteQuadrant);
 
 // Verificar espacio del cuadrante
-router.delete('/UpdateQuadrantSpaces/:id', updateQuadrantSpaces);
+router.put('/UpdateQuadrantSpaces/:id', updateQuadrantSpaces);
  
 export default router;
                                                                     

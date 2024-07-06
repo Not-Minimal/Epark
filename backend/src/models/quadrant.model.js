@@ -11,11 +11,11 @@ const QuadrantSchema = new mongoose.Schema({
         unique: true
     },
 
-    spaces:{
-        type : Number,
+    spaces:[{
+        type: mongoose.Schema.Types.ObjectId,
         require : true,
-        default : 25 // cada cuadrante tendra 25 espacios
-    },
+        ref: "Space"
+    }],
 
     full:{
         type: Boolean,
