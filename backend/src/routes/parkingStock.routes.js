@@ -17,7 +17,7 @@ router.get("/getAllSpaces",getAllSpaces);
 //Obtener espacios disponibles
 router.get("/getAvailableSpaces",getAvailableSpaces);
 //Obtener espacios ocupados
-router.get("/getOccupiedSpaces",getOccupiedSpaces);
+router.get("/getOccupiedSpaces/:id",getOccupiedSpaces);
 //Ocupar un espacio
 router.put("/occupiesSpace",occupiesSpace);
 //Desocupar un espacio
