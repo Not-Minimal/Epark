@@ -2,7 +2,7 @@
 
 import { Router } from "express";
 
-import {initializeSpaces,createSpecifiedSpaces,createSpaceOnQuadrant,occupiesSpaceOnQuadrant,vacateSpaceOnQuadrant,getAllSpaces,getAvailableSpaces,getOccupiedSpaces,deleteAllSpaces,deleteSpaceOnQuadrant,deleteSpecifiedSpacesOnQuadrant} from "../controllers/parkingStock.controller.js"
+import {initializeSpaces,createSpecifiedSpaces,createSpaceOnQuadrant,occupiesSpaceOnQuadrant,vacateSpaceOnQuadrant,getAllSpaces,getAvailableSpaces,getAvailableSpacesOnQuadrant,getOccupiedSpacesOnQuadrant,getOccupiedSpaces,deleteAllSpaces,deleteSpaceOnQuadrant,deleteSpecifiedSpacesOnQuadrant} from "../controllers/parkingStock.controller.js"
 
 const router = Router();
 
@@ -16,6 +16,10 @@ router.post("/createSpaceOnQuadrant/:id",createSpaceOnQuadrant)
 router.get("/getAllSpaces",getAllSpaces);
 //Obtener espacios disponibles
 router.get("/getAvailableSpaces",getAvailableSpaces);
+//Obtener espacios disponibles en un cuadrante
+router.get("/getAvailableSpacesOnQuadrant/:id",getAvailableSpacesOnQuadrant);
+//Obtener espacios ocupados en un cuadrante
+router.get("/getOccupiedSpacesOnQuadrant/:id",getOccupiedSpacesOnQuadrant);
 //Obtener espacios ocupados
 router.get("/getOccupiedSpaces",getOccupiedSpaces);
 //Ocupar un espacio

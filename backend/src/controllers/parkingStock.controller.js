@@ -135,6 +135,21 @@ export async function getAllSpaces(req,res){
 
 };
 
+
+//Obtener todos los espacios ocupados en un cuadrante
+export async function getOccupiedSpacesOnQuadrant(req,res){
+
+    try {
+        const quadrantId = req.params.id;
+        const occupiedSpaces = await Space.countDocuments({quadrant: quadrantId, isOccupied: true });
+        res.json(occupiedSpaces);
+    } catch (error) {
+        console.log("Error en parkingStock.controller.js -> getOccupiedSpaces(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+
+};
+
 //Obtener todos los espacios ocupados
 export async function getOccupiedSpaces(req,res){
 
@@ -153,6 +168,20 @@ export async function getAvailableSpaces(req,res){
 
     try {
         const availableSpaces = await Space.countDocuments({ isOccupied: false });
+        res.json(availableSpaces);
+    } catch (error) {
+        console.log("Error en parkingStock.controller.js -> getAvailableSpaces(): ", error);
+        res.status(500).json({ message: error.message });
+    }
+
+};
+
+//Obtener todos los espacios disponibles de un cuadrante
+export async function getAvailableSpacesOnQuadrant(req,res){
+
+    try {
+        const quadrantId = req.params.id;
+        const availableSpaces = await Space.countDocuments({quadrant: quadrantId, isOccupied: false });
         res.json(availableSpaces);
     } catch (error) {
         console.log("Error en parkingStock.controller.js -> getAvailableSpaces(): ", error);
