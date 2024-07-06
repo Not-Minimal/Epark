@@ -1,5 +1,6 @@
 "use strict";
 // Importar el modelo de dato Quadrant
+import Space from '../models/parkingStock.model.js';
 import Quadrant from '../models/quadrant.model.js';
 
 
@@ -9,8 +10,8 @@ export async function createQuadrant(req, res){
 
     try{
          //* Extrae el nombre y los espacios
-        const {name,spaces,status} = req.body;
-        const newQuadrant = new Quadrant({name,spaces,status});
+        const {name} = req.body;
+        const newQuadrant = new Quadrant({name});
 
         //* Guardamos el nuevo cuadrante en la base de datos
         await newQuadrant.save();
@@ -63,10 +64,10 @@ export const getQuadrantByID = async (req, res) => {
 
 export const updateQuadrant = async (req, res) => {
     try {
-      const { name, spaces } = req.body;
+      const { name } = req.body;
       const updatedQuadrant = await Quadrant.findByIdAndUpdate(
         req.params.id,
-        { name, spaces },
+        { name },
         { new: true }
       );
       if (!updatedQuadrant) return res.status(404).json({ message: 'Cuadrante no encontrado' });
@@ -98,12 +99,35 @@ export async function deleteQuadrant(req,res){
 
 
 
-//*   Ocupar un espacio por Id
-
-export async function ocuppySpace(req,res){
+//*  Verificar si el cuadrante esta completamente ocupado
 
 
+export async function updateQuadrantSpaces(req, res) {
+  try {
+      //*Buscar el id en los parametros
+
+      const quadrantId = req.params.id;
+      //*Buscar el cuadrante segun id
+
+      const quadrant = Quadrant.findById(quadrantId);
+      if(!quadrant){
+          return res.status(404).json({ message: 'Cuadrante no encontrado' });
+      }else{
+          //*Contar espacios ocupados del cuadrante
+
+          const occupiedSpaces = await Space.countDocuments({quadrant:quadrant._id, isOccupied: true });
+          //* Contar espacios totales
+          const totalSpaces = await Space.countDocuments({quadrant:quadrant._id});
+          //* Si los espacios ocupados son igual a los totales, esta completamente lleno
+          if(occupiedSpaces == totalSpaces){
+              quadrant.full = true;//Completo
+          }
+      }
+
+  } catch (error) {
+      console.log("Error en quadrant.controller.js -> updateQuadrant(): ", error);
+      res.status(500).json({ message: error.message });
+  }
 
 }
-
 

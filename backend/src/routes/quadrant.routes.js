@@ -3,24 +3,27 @@
 "use strict";
 
 import express from 'express';
-import { createQuadrant, getQuadrant, getQuadrantByID, updateQuadrant, deleteQuadrant } from '../controllers/quadrant.controller.js';
+import { createQuadrant, getQuadrant, getQuadrantByID, updateQuadrant, deleteQuadrant, updateQuadrantSpaces } from '../controllers/quadrant.controller.js';
 
 const router = express.Router();
 
 // Crear un nuevo cuadrante
-router.post('/Createquadrants', createQuadrant);
+router.post('/CreateQuadrant', createQuadrant);
 
 // Obtener todos los cuadrantes
-router.get('/Getquadrants', getQuadrant);
+router.get('/GetQuadrants', getQuadrant);
 
 // Obtener un cuadrante por ID
-router.get('/Getquadrants/:id', getQuadrantByID);
+router.get('/GetQuadrantID/:id', getQuadrantByID);
 
 // Actualizar un cuadrante por ID
-router.put('/Updatequadrants/:id', updateQuadrant);
+router.put('/UpdateQuadrantID/:id', updateQuadrant);
 
 // Eliminar un cuadrante por ID
-router.delete('/Deletequadrants/:id', deleteQuadrant);
+router.delete('/DeleteQuadrantID/:id', deleteQuadrant);
+
+// Verificar espacio del cuadrante
+router.delete('/UpdateQuadrantSpaces/:id', updateQuadrantSpaces);
  
 export default router;
                                                                     

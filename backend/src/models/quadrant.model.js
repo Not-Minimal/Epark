@@ -5,9 +5,10 @@ import mongoose from 'mongoose';
 //* Definimos el esquema para el cuadrante 
 const QuadrantSchema = new mongoose.Schema({
 
-    name :{
+    name:{
         type: String,
-        require : true // el nombre del cuadrante debe ser obligatorio
+        require : true, // el nombre del cuadrante debe ser obligatorio
+        unique: true
     },
 
     spaces:{
@@ -16,10 +17,9 @@ const QuadrantSchema = new mongoose.Schema({
         default : 25 // cada cuadrante tendra 25 espacios
     },
 
-    status :{
-        type: String,
-        enum: ['Libre','Ocupado'],
-        default: 'Libre' 
+    full:{
+        type: Boolean,
+        default: false 
     },
 
 });
