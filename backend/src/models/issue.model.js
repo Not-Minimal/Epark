@@ -25,6 +25,6 @@ const issueSchema = new mongoose.Schema(
 );
 
 // Modelo de datos de usuario
-const Issue = mongoose.model("Reclamos", issueSchema);
+const Issue = mongoose.model("issues", issueSchema);
 
 export default Issue;
