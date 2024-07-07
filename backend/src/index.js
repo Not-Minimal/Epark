@@ -14,6 +14,8 @@ import indexRoutes from "./routes/index.routes.js";
 import { connectDB } from "./config/configDB.js";
 // Importa la funcion para crear roles y usuarios
 import { createRoles, createUsers } from "./config/initSetup.js";
+// Importa las rutas de subida de archivos
+import uploadRoutes from "./routes/upload.routes.js";
 
 /**
  * Inicia el servidor web
@@ -44,6 +46,8 @@ async function setupServer() {
     app.use(morgan("dev"));
     // Agrega el enrutador principal al servidor
     app.use("/api", indexRoutes);
+    // Agrega las rutas de subida de archivos al servidor
+    app.use("/api", uploadRoutes);
 
     // Inicia el servidor en el puerto especificado
     app.listen(PORT, () => {
