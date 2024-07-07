@@ -55,11 +55,11 @@ export async function createUsers() {
         tipoUsuario: "Estudiante",
       }).save().then(async (user) => {
         // Crear vehículo asociado al usuario
-        await createVehicleHelper(user._id, {
+        await createVehicles(user._id, {
           licensePlate: "XYZ789",
           model: "Corolla",
           color: "Blue",
-          marca: "Toyota",
+          brand: "Toyota",
         });
       }),
 
@@ -72,11 +72,11 @@ export async function createUsers() {
         tipoUsuario: "Funcionario",
       }).save().then(async (user) => {
         // Crear vehículo asociado al usuario
-        await createVehicleHelper(user._id, {
+        await createVehicles(user._id, {
           licensePlate: "ABC123",
           model: "Model S",
           color: "Red",
-          marca: "Tesla",
+          brand: "Tesla",
         });
       })
     ]);
@@ -88,7 +88,7 @@ export async function createUsers() {
 }
 
 
-async function createVehicleHelper(userId, vehicleData) {
+async function createVehicles(userId, vehicleData) {
   try {
     // Verificar que el usuario exista
     const user = await User.findById(userId);
