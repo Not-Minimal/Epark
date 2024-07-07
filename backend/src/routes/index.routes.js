@@ -41,6 +41,6 @@ router.use("/quadrant", quadrantRoutes);
 // Define las rutas para los problemas
 router.use("/issues", issueRoutes);
 // Define las rutas de subida de archivos al servidor
-router.use("/upload", uploadRoutes);
+router.use("/files", uploadRoutes);
 
 export default router;
