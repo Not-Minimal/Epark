@@ -1,5 +1,5 @@
 "use strict";
-// Importar el modelo de dato Quadrant
+//? Importar el modelo de dato quadrant y parkinStock
 import Space from '../models/parkingStock.model.js';
 import Quadrant from '../models/quadrant.model.js';
 
@@ -17,15 +17,16 @@ export async function createQuadrant(req, res){
         await newQuadrant.save();
         
         //? Enviamos respuesta del cuadrante creado
-        res.status(201).json({
-            message: "Nuevo cuadrante creado",data: newQuadrant,});
+        res.status(201).json({message: 'Nuevo cuadrante creado.',data: newQuadrant,});
         
     }catch(error){
-        //! Eviamos respuesta de algun error
-        res.status(401).json({message: error.message});
+
+        //! Eviamos error si algo falla
+        res.status(500).json({message:'Error interno del servidor'});
     }
 
 };
+
 
 //*   Obtener todos los cuadrantes
 export async function getQuadrant(req,res){
@@ -33,49 +34,63 @@ export async function getQuadrant(req,res){
     try{
         //* Buscar todos los cuadrantes 
         const quadrants = await Quadrant.find();
+
+        //? Si no existen cuadrantes enviamos mensaje
+        if(quadrants.length === 0){return res.status(404).json({message: 'No existen cuadrantes creados.'});}
         
-        //* Enviamos respuesta con todos los cuadrantes
-        res.status(200).json(quadrants);
+        //? Enviamos respuesta con todos los cuadrantes
+         res.status(200).json({message:'Cuadrantes exitentes', data: quadrants});
         
     }catch(error){
 
-        //! Enviamos respuesta si algo falla 
-        res.status(500).json({message: error.message});
+        //! Enviamos error si algo falla 
+         res.status(500).json({message:'Error interno del servidor.'});
     }
 };
 
 
-
-
-
 //*   Obtener los cuadrantes por ID
 
-export const getQuadrantByID = async (req, res) => {
+export async function getQuadrantByID(req, res){
     try {
+      //* Buscamos cuadrante por ID
       const quadrant = await Quadrant.findById(req.params.id);
-      if (!quadrant) return res.status(404).json({ message: 'Cuadrante no encontrado' });
-      res.status(200).json(quadrant);
+
+      //? Si el ID no esta en la base de datos arroja mensaje
+      if (!quadrant) return res.status(404).json({ message: 'No existe un cuadrante con este ID.' });
+
+      //? Si existe enviamos respuesta con el cuadrante encontrado
+      res.status(200).json({message:'Cuadrante solicitado.', data: quadrant});
     } catch (error) {
-      res.status(500).json({ message: error.message });
+
+      //! Envia error si algo falla
+      res.status(500).json({ message:'Error interno del servidor.' });
     }
-  };
+};
 
 //*   Actualizar un cuadrante por ID
 
-export const updateQuadrant = async (req, res) => {
+export async function updateQuadrant(req, res){
     try {
+
+      //* Extrae el nombre solicidato
       const { name } = req.body;
-      const updatedQuadrant = await Quadrant.findByIdAndUpdate(
-        req.params.id,
-        { name },
-        { new: true }
-      );
-      if (!updatedQuadrant) return res.status(404).json({ message: 'Cuadrante no encontrado' });
-      res.status(200).json(updatedQuadrant);
+      
+
+      //* Toma el cuadrante y lo devuelve actualizado 
+      const updatedQuadrant = await Quadrant.findByIdAndUpdate(req.params.id,{ name },{ new: true });
+
+      //? Si el ID no esta en la base de datos arroja mensaje
+      if (!updatedQuadrant) return res.status(404).json({ message: 'Cuadrante no encontrado.' });
+
+      //? Enviamos mensaje con el cuadrante actualizao
+      res.status(200).json({message:'Cuadrante actualizado', data: updatedQuadrant});
     } catch (error) {
-      res.status(400).json({ message: error.message });
+
+      //! Enviamos error si algo falla
+      res.status(500).json({ message:'Error interno del servidor.'});
     }
-  }
+}
 
 
 //*   Eliminar un cuadrante por ID
@@ -83,24 +98,24 @@ export const updateQuadrant = async (req, res) => {
 export async function deleteQuadrant(req,res){
 
     try {
-        // Buscamos y eliminamos el cuadrante por ID
+
+        //* Buscamos y eliminamos el cuadrante por ID
         const deletedQuadrant = await Quadrant.findByIdAndDelete(req.params.id);
     
-        // Si no se encuentra el cuadrante, enviamos una respuesta de error
+        //? Si el ID no esta en la base de datos arroja mensaje
         if (!deletedQuadrant) return res.status(404).json({ message: 'Cuadrante no encontrado' });
     
-        // Enviamos una respuesta confirmando la eliminación
-        res.status(200).json({ message: 'Cuadrante eliminado' });
+        //? Enviamos mensaje con el cuadrante eliminado
+        res.status(200).json({ message: 'Cuadrante eliminado.' });
     } catch (error) {
-      // Enviamos una respuesta de error si algo falla
-    res.status(500).json({ message: error.message });
+
+      //! Enviamos error si algo falla
+    res.status(500).json({ message:'Error interno del servidor.'});
     }
 }
 
 
-
 //*  Verificar si el cuadrante esta completamente ocupado
-
 
 export async function updateQuadrantSpaces(quadrantId) {
   try {
@@ -111,21 +126,24 @@ export async function updateQuadrantSpaces(quadrantId) {
       if(!quadrant){
          console.log("Cuadrante no encontrado")
       }else{
-          //*Contar espacios ocupados del cuadrante
 
+          //*Contar espacios ocupados del cuadrante
           const occupiedSpaces = await Space.countDocuments({quadrant:quadrantId, isOccupied: true });
+
           //* Contar espacios totales
           const totalSpaces = await Space.countDocuments({quadrant:quadrantId});
+
           //* Si los espacios ocupados son igual a los totales, esta completamente lleno
           if(occupiedSpaces || totalSpaces ){
               console.log(`Espacios totales: ${totalSpaces}, Espacios ocupados: ${occupiedSpaces}`);
             if(occupiedSpaces == totalSpaces){
-              quadrant.full = true;//Completo
+              quadrant.full = true;  //?Completo
               await quadrant.save()
             }else{
-              quadrant.full = false;//Libre
+              quadrant.full = false; //?Libre
               await quadrant.save()
             }
+            res.status(200),json({message: 'El cuadrante se actualizo', data: updatedQuadrant});
             console.log("El cuadrante se actualizo")
           }
           
@@ -133,7 +151,7 @@ export async function updateQuadrantSpaces(quadrantId) {
 
   } catch (error) {
       console.log("Error en quadrant.controller.js -> updateQuadrant(): ", error);
-      
+      res.status(500).json({message:'Error interno del servidor'})   
   }
 
 }
