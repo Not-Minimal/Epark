@@ -21,6 +21,10 @@ import quadrantRoutes from "./quadrant.routes.js";
 // Enrutador de Problemas
 import issueRoutes from "./issue.routes.js";
 
+// Enrutador de las rutas de subida de archivos PDF
+import uploadRoutes from "./upload.routes.js";
+
+
 // Se realiza una instancia de express
 const router = Router();
 
@@ -32,9 +36,11 @@ router.use("/auth", authRoutes);
 router.use("/vehicle", vehicleRoutes);
 // Define las rutas para los espacios /api/stockEspacios
 router.use("/parkingStock", parkingStockRoutes);
-// Define las rugtas para los cuadrantes /api/quadrant
+// Define las rutas para los cuadrantes /api/quadrant
 router.use("/quadrant", quadrantRoutes);
-
+// Define las rutas para los problemas
 router.use("/issues", issueRoutes);
+// Define las rutas de subida de archivos al servidor
+router.use("/upload", uploadRoutes);
 
 export default router;

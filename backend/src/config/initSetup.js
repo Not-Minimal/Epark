@@ -90,22 +90,22 @@ export async function createUsers() {
 
 async function createVehicles(userId, vehicleData) {
   try {
-      // Verificar que el usuario exista
-      const user = await User.findById(userId);
-      if (!user) {
-          throw new Error("Usuario no encontrado");
-      }
+    // Verificar que el usuario exista
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
 
-      // Crear el vehículo
-      const newVehicle = new Vehicle({ user: userId, ...vehicleData });
-      const savedVehicle = await newVehicle.save();
+    // Crear el vehículo
+    const newVehicle = new Vehicle({ user: userId, ...vehicleData });
+    const savedVehicle = await newVehicle.save();
 
-      // Asociar el vehículo al usuario
-      user.vehicle = savedVehicle._id;
-      await user.save();
+    // Asociar el vehículo al usuario
+    user.vehicle = savedVehicle._id;
+    await user.save();
 
-      console.log(`Vehículo creado para el usuario ${user.username}`);
+    console.log(`Vehículo creado para el usuario ${user.username}`);
   } catch (error) {
-      console.log(`Error creando vehículo para usuario (${userId}):`, error);
+    console.log(`Error creando vehículo para usuario (${userId}):`, error);
   }
 }
