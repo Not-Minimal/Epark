@@ -71,6 +71,15 @@ export async function createVehicle(req, res) {
 export async function getVehicles(req, res) {
     try {
         const vehicles = await Vehicle.find().populate("user", "username");
+
+        // Verificar si no hay vehicles
+        if (vehicles.length === 0) {
+            return res.status(404).json({
+                message: "No hay vehiculos disponibles para mostrar",
+                data: null,
+            });
+        }
+
         const vehiclesMap = vehicles.map(vehicle => ({
             vehiculo_id: vehicle._id,
             patente: vehicle.licensePlate,
