@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 
-const uploadDir = './src/uploads/';
+const uploadDir = './src/files/';
 
 const normalizePath = (filePath) => filePath.replace(/\\/g, '/');
 
@@ -12,7 +12,7 @@ const handleError = (res, message, statusCode = 400) => {
 export const uploadFile = (upload) => (req, res) => {
     if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
-        console.log('Directorio "uploads" creado');
+        console.log('Directorio "files" creado');
     }
 
     upload.any()(req, res, function (err) {

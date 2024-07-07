@@ -35,7 +35,7 @@ router.use("/parkingStock", parkingStockRoutes);
 // Define las rugtas para los cuadrantes /api/quadrant
 router.use("/quadrant", quadrantRoutes);
 // Define las rutas de subida de archivos al servidor
-router.use("/upload", uploadRoutes);
+router.use("/files", uploadRoutes);
 
 
 export default router;

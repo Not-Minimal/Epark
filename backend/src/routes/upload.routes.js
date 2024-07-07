@@ -6,15 +6,15 @@ import { isAdmin, isUser } from '../middlewares/auth.middleware.js';
 const router = Router();
 
 // Ruta para subir archivos
-router.post('/', isUser, uploadFile(upload));
+router.post('/uploadFile', isUser, uploadFile(upload));
 
 // Ruta para listar archivos PDF
-router.get('/files', isAdmin, listFiles);
+router.get('/getFile/:filename', isAdmin, listFiles);
 
 // Ruta para servir un archivo PDF específico
-router.get('/files/:filename', isAdmin, getFile);
+router.get('/getFile/:filename', isAdmin, getFile);
 
 // Ruta para eliminar un archivo PDF específico
-router.delete('/files/:filename', isAdmin, deleteFile);
+router.delete('/deleteFile/:filename', isAdmin, deleteFile);
 
 export default router;
