@@ -2,31 +2,35 @@
 
 import { Router } from "express";
 
-import {initializeSpaces,createSpecifiedSpaces,createSpace,occupiesSpace,vacateSpace,getAllSpaces,getAvailableSpaces,getOccupiedSpaces,deleteAllSpaces,deleteSpace,deleteSpecifiedSpaces} from "../controllers/parkingStock.controller.js"
+import {initializeSpaces,createSpecifiedSpaces,createSpaceOnQuadrant,occupiesSpaceOnQuadrant,vacateSpaceOnQuadrant,getAllSpaces,getAvailableSpaces,getAvailableSpacesOnQuadrant,getOccupiedSpacesOnQuadrant,getOccupiedSpaces,deleteAllSpaces,deleteSpaceOnQuadrant,deleteSpecifiedSpacesOnQuadrant} from "../controllers/parkingStock.controller.js"
 
 const router = Router();
 
 //Inicializar espacios (100 por default)
 router.post("/initializeSpaces",initializeSpaces);
 //Create cantidad especifica de espacios
-router.post("/createSpecifiedSpaces",createSpecifiedSpaces);
+router.post("/createSpecifiedSpaces/:id",createSpecifiedSpaces);
 //Crear un solo espacio
-router.post("/createSpace",createSpace)
+router.post("/createSpaceOnQuadrant/:id",createSpaceOnQuadrant)
 //Obtener todos los espacios
 router.get("/getAllSpaces",getAllSpaces);
 //Obtener espacios disponibles
 router.get("/getAvailableSpaces",getAvailableSpaces);
+//Obtener espacios disponibles en un cuadrante
+router.get("/getAvailableSpacesOnQuadrant/:id",getAvailableSpacesOnQuadrant);
+//Obtener espacios ocupados en un cuadrante
+router.get("/getOccupiedSpacesOnQuadrant/:id",getOccupiedSpacesOnQuadrant);
 //Obtener espacios ocupados
 router.get("/getOccupiedSpaces",getOccupiedSpaces);
 //Ocupar un espacio
-router.put("/occupiesSpace",occupiesSpace);
+router.put("/occupiesSpaceOnQuadrant/:id",occupiesSpaceOnQuadrant);
 //Desocupar un espacio
-router.put("/vacateSpace",vacateSpace);
+router.put("/vacateSpaceOnQuadrant/:id",vacateSpaceOnQuadrant);
 //Eliminar todos los espacios
 router.delete("/deleteAllSpaces",deleteAllSpaces);
 //Eliminar un espacio
-router.delete("/deleteSpace",deleteSpace);
+router.delete("/deleteSpaceOnQuadrant/:id",deleteSpaceOnQuadrant);
 //Eliminar cantidad de espacios espesificados
-router.delete("/deleteSpecifiedSpaces",deleteSpecifiedSpaces);
+router.delete("/deleteSpecifiedSpacesOnQuadrant/:id",deleteSpecifiedSpacesOnQuadrant);
 
 export default router;

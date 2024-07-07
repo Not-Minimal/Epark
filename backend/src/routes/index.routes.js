@@ -15,6 +15,9 @@ import vehicleRoutes from "./vehicle.routes.js";
 //Enrutador de parkingStock
 import parkingStockRoutes from "./parkingStock.routes.js"
 
+//** Enrutador de cuadrantes */
+import quadrantRoutes from "./quadrant.routes.js";
+
 // Se realiza una instancia de express
 const router = Router();
 
@@ -26,5 +29,8 @@ router.use("/auth", authRoutes);
 router.use("/vehicle",vehicleRoutes);
 // Define las rutas para los espacios /api/stockEspacios
 router.use("/parkingStock",parkingStockRoutes);
+// Define las rugtas para los cuadrantes /api/quadrant
+router.use("/quadrant", quadrantRoutes);
+
 
 export default router;
