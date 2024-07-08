@@ -53,15 +53,25 @@ export async function createUsers() {
         password: await User.encryptPassword("eparkuser123"),
         roles: user._id,
         tipoUsuario: "Estudiante",
-      }).save().then(async (user) => {
-        // Crear vehículo asociado al usuario
-        await createVehicles(user._id, {
-          licensePlate: "XYZ789",
-          model: "Corolla",
-          color: "Blue",
-          brand: "Toyota",
-        });
-      }),
+      })
+        .save()
+        .then(async (user) => {
+          // Crear vehículo asociado al usuario
+          await createVehicles(user._id, {
+            licensePlate: "XYZ789",
+            model: "Corolla",
+            color: "Blue",
+            brand: "Toyota",
+          });
+        }),
+      new User({
+        username: "Mark 1",
+        email: "mark@gmail.com",
+        rut: "12345678-1",
+        password: await User.encryptPassword("mark123"),
+        roles: user._id,
+        tipoUsuario: "Estudiante",
+      }).save(),
 
       new User({
         username: "Nombre Administrador",
@@ -70,15 +80,17 @@ export async function createUsers() {
         password: await User.encryptPassword("eparkadmin123"),
         roles: admin._id,
         tipoUsuario: "Funcionario",
-      }).save().then(async (user) => {
-        // Crear vehículo asociado al usuario
-        await createVehicles(user._id, {
-          licensePlate: "ABC123",
-          model: "Model S",
-          color: "Red",
-          brand: "Tesla",
-        });
       })
+        .save()
+        .then(async (user) => {
+          // Crear vehículo asociado al usuario
+          await createVehicles(user._id, {
+            licensePlate: "ABC123",
+            model: "Model S",
+            color: "Red",
+            brand: "Tesla",
+          });
+        }),
     ]);
 
     console.log("* => Usuarios creados exitosamente");
@@ -86,7 +98,6 @@ export async function createUsers() {
     console.log("Error en initSetup.js -> createUsers(): ", error);
   }
 }
-
 
 async function createVehicles(userId, vehicleData) {
   try {

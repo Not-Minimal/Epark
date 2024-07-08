@@ -24,6 +24,9 @@ import issueRoutes from "./issue.routes.js";
 // Enrutador de las rutas de subida de archivos PDF
 import uploadRoutes from "./upload.routes.js";
 
+// Enrutador de QRCode
+import qrCodeRoutes from "./qrCode.routes.js";
+
 
 // Se realiza una instancia de express
 const router = Router();
@@ -42,5 +45,8 @@ router.use("/quadrant", quadrantRoutes);
 router.use("/issues", issueRoutes);
 // Define las rutas de subida de archivos al servidor
 router.use("/files", uploadRoutes);
+// Define las rutas para la generación de códigos QR
+router.use("/qrcode", qrCodeRoutes);
+
 
 export default router;
