@@ -49,12 +49,16 @@ router.get(
 router.get("/getOccupiedSpaces", isAdminOrUser, getOccupiedSpaces);
 //Ocupar un espacio
 router.put(
-  "/occupiesSpaceOnQuadrant/:id",
+  "/updateOccupiesSpaceOnQuadrant/:id",
   isAdminOrUser,
   occupiesSpaceOnQuadrant,
 );
 //Desocupar un espacio
-router.put("/vacateSpaceOnQuadrant/:id", isAdminOrUser, vacateSpaceOnQuadrant);
+router.put(
+  "/updateVacateSpaceOnQuadrant/:id",
+  isAdminOrUser,
+  vacateSpaceOnQuadrant,
+);
 //Eliminar todos los espacios
 router.delete("/deleteAllSpaces", isAdmin, deleteAllSpaces);
 //Eliminar un espacio

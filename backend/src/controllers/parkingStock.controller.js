@@ -6,39 +6,46 @@ export async function createSpecifiedSpaces(req, res) {
   try {
     const { num } = req.body;
     const quadrantId = req.params.id;
-    if (quadrantId) {
-      // Buscar el cuadrante por su id
-      const quadrant = await Quadrant.findById(quadrantId);
-      if (!quadrant) {
-        return res.status(404).json({ message: "Cuadrante no encontrado" });
-      } else {
-        if (num != null && num != undefined && num > 0) {
-          //Contar cantidad de espacio
-          const count = await Space.countDocuments({ quadrant: quadrant.id });
-          //Constante para guardar ids de los spacios
-          const spacesIds = quadrant.spaces;
-          //Sumarle los espacios de num a los que ya existen
-          for (let i = count + 1; i <= num + count; i++) {
-            const newSpace = new Space({ number: i, quadrant: quadrant._id });
-            await newSpace.save();
-            spacesIds.push(newSpace.id);
-            quadrant.spaces = spacesIds;
-            await quadrant.save();
-          }
-          //Actualizar el cuadrante
-          await updateQuadrantSpaces(quadrantId);
-          console.log("Se crearon los espacios correctamente");
-          res
-            .status(201)
-            .json({ message: "Se crearon los espacios correctamente" });
-        }
-      }
-    } else {
-      res.status(404).json({ message: "Cuadrante no encontrado" });
+
+    if (!quadrantId) {
+      return res.status(404).json({ message: "Cuadrante no encontrado" });
     }
+
+    // Buscar el cuadrante por su id
+    const quadrant = await Quadrant.findById(quadrantId);
+
+    if (!quadrant) {
+      return res.status(404).json({ message: "Cuadrante no encontrado" });
+    }
+
+    if (num == null || num <= 0) {
+      return res.status(400).json({ message: "Número inválido de espacios" });
+    }
+
+    // Contar cantidad de espacios
+    const count = await Space.countDocuments({ quadrant: quadrant.id });
+
+    // Constante para guardar ids de los espacios
+    const spacesIds = quadrant.spaces;
+
+    // Sumarle los espacios de num a los que ya existen
+    for (let i = count + 1; i <= num + count; i++) {
+      const newSpace = new Space({ number: i, quadrant: quadrant._id });
+      await newSpace.save();
+      spacesIds.push(newSpace.id);
+    }
+
+    // Actualizar el cuadrante
+    quadrant.spaces = spacesIds;
+    await quadrant.save();
+
+    await updateQuadrantSpaces(quadrantId);
+
+    console.log("Se crearon los espacios correctamente");
+    res.status(201).json({ message: "Se crearon los espacios correctamente" });
   } catch (error) {
     console.log(
-      "Error en user.controller.js -> createSpecifiedSpace(): ",
+      "Error en user.controller.js -> createSpecifiedSpaces(): ",
       error,
     );
     res.status(500).json({ message: error.message });
