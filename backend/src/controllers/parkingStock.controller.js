@@ -231,11 +231,9 @@ export async function occupiesSpaceOnQuadrant(req, res) {
           await space.save();
           //Actualizar el cuadrante
           await updateQuadrantSpaces(quadrantId);
-          res
-            .status(200)
-            .json({
-              message: `Acción realizada correctamente, espacio usado: ${space.number}`,
-            });
+          res.status(200).json({
+            message: `Acción realizada correctamente, espacio usado: ${space.number}`,
+          });
         } else {
           res
             .status(400)
@@ -274,11 +272,9 @@ export async function vacateSpaceOnQuadrant(req, res) {
           await space.save();
           //Actualizar el cuadrante
           await updateQuadrantSpaces(quadrantId);
-          res
-            .status(200)
-            .json({
-              message: `Accion realizada correctamente, se libero un espacio`,
-            });
+          res.status(200).json({
+            message: `Accion realizada correctamente, se libero un espacio`,
+          });
         } else {
           res.status(400).send("No hay espacios ocupados");
         }
@@ -306,11 +302,9 @@ export async function deleteAllSpaces(req, res) {
     if (result.deletedCount > 0) {
       console.log("Todos los espacios fueron eliminados correctamente");
 
-      res
-        .status(200)
-        .json({
-          message: "Todos los espacios fueron eliminados correctamente",
-        });
+      res.status(200).json({
+        message: "Todos los espacios fueron eliminados correctamente",
+      });
     } else {
       console.log("No se encontraron espacios para eliminar");
       res
@@ -367,11 +361,9 @@ export async function deleteSpaceOnQuadrant(req, res) {
           console.log(
             `El espacio ${freeSpace.number} fue eliminado correctamente`,
           );
-          res
-            .status(200)
-            .json({
-              message: `El espacio ${freeSpace.number} fue eliminado correctamente`,
-            });
+          res.status(200).json({
+            message: `El espacio ${freeSpace.number} fue eliminado correctamente`,
+          });
         }
       }
     } else {
@@ -414,11 +406,9 @@ export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
             console.log(
               `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`,
             );
-            return res
-              .status(404)
-              .json({
-                message: `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`,
-              });
+            return res.status(404).json({
+              message: `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`,
+            });
           } else {
             // Eliminar los espacios desocupados
             for (let i = 0; i < num; i++) {
@@ -440,11 +430,9 @@ export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
             console.log(
               `Se eliminaron ${num} espacios desocupados correctamente`,
             );
-            res
-              .status(200)
-              .json({
-                message: `Se eliminaron ${num} espacios desocupados correctamente`,
-              });
+            res.status(200).json({
+              message: `Se eliminaron ${num} espacios desocupados correctamente`,
+            });
           }
         }
       }
