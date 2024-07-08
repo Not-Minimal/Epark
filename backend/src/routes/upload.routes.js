@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import upload from '../middlewares/multer.middleware.js';
-import { uploadFile, listFiles, getFile, deleteFile } from '../controllers/uploadPdf.controller.js';
+import {
+	uploadFile,
+	listFiles,
+	getFile,
+	deleteFile
+} from '../controllers/uploadPdf.controller.js';
 import { isAdmin, isUser } from '../middlewares/auth.middleware.js';
 
 const router = Router();
@@ -9,7 +14,7 @@ const router = Router();
 router.post('/uploadFile', isUser, uploadFile(upload));
 
 // Ruta para listar archivos PDF
-router.get('/getFile/:filename', isAdmin, listFiles);
+router.get('/getFile/', isAdmin, listFiles);
 
 // Ruta para servir un archivo PDF específico
 router.get('/getFile/:filename', isAdmin, getFile);
