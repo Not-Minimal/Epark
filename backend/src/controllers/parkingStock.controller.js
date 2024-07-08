@@ -22,10 +22,12 @@ export async function createSpecifiedSpaces(req,res){
                         const newSpace = new Space({ number: i ,quadrant: quadrant._id }); 
                         await newSpace.save();
                         spacesIds.push(newSpace.id);
-                        quadrant.spaces = spacesIds;
-                        await quadrant.save();
+                        
                     }
                     //Actualizar el cuadrante
+                    quadrant.spaces = spacesIds;
+                    await quadrant.save();
+                    
                     await updateQuadrantSpaces(quadrantId);
                     console.log("Se crearon los espacios correctamente");
                     res.status(201).json({ message: "Se crearon los espacios correctamente" });
@@ -71,7 +73,7 @@ export async function initializeSpaces(req, res) {
                     res.status(201).json({ message: "Espacios creados correctamente" });
                 } else {
                     console.log("Los espacios ya están inicializados");
-                    res.status(400).send('Los espacios de estacionamiento ya han sido inicializados');
+                    res.status(400).json('Los espacios de estacionamiento ya han sido inicializados');
                 }
             }
         }else{
@@ -210,7 +212,7 @@ export async function occupiesSpaceOnQuadrant(req, res) {
                     res.status(200).json({ message: `Acción realizada correctamente, espacio usado: ${space.number}` });
 
                 } else {
-                    res.status(400).send('No hay espacios disponibles para ocupar en este cuadrante');
+                    res.status(400).json('No hay espacios disponibles para ocupar en este cuadrante');
                 }
             }
         }else{

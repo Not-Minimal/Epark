@@ -6,8 +6,8 @@ import {initializeSpaces,createSpecifiedSpaces,createSpaceOnQuadrant,occupiesSpa
 
 const router = Router();
 
-//Inicializar espacios (100 por default)
-router.post("/initializeSpaces",initializeSpaces);
+//Inicializar espacios (100 por default) de un cuadrante
+router.post("/initializeSpaces/:id",initializeSpaces);
 //Create cantidad especifica de espacios
 router.post("/createSpecifiedSpaces/:id",createSpecifiedSpaces);
 //Crear un solo espacio
