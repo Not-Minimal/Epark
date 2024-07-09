@@ -2,101 +2,91 @@ import Space from "../models/parkingStock.model.js";
 import Quadrant from "../models/quadrant.model.js";
 import { updateQuadrantSpaces } from "../controllers/quadrant.controller.js";
 //Crear espacios espesificados por el admin
-export async function createSpecifiedSpaces(req, res) {
-  try {
-    const { num } = req.body;
-    const quadrantId = req.params.id;
+export async function createSpecifiedSpaces(req,res){
+    try {
+        const {num} = req.body;
+        const quadrantId = req.params.id;
+        if(quadrantId){
+            // Buscar el cuadrante por su id
+            const quadrant = await Quadrant.findById(quadrantId);
+            if (!quadrant) {
+                return res.status(404).json({ message: 'Cuadrante no encontrado' });
+            }else{
+                if(num!= null && num!= undefined && num>0){
+                    //Contar cantidad de espacio
+                    const count = await Space.countDocuments({quadrant: quadrant.id});
+                    //Constante para guardar ids de los spacios
+                    const spacesIds= quadrant.spaces;
+                    //Sumarle los espacios de num a los que ya existen
+                    for ( let i= count+1 ; i <= num+count; i++){ 
+                        const newSpace = new Space({ number: i ,quadrant: quadrant._id }); 
+                        await newSpace.save();
+                        spacesIds.push(newSpace.id);
+                        
+                    }
+                    //Actualizar el cuadrante
+                    quadrant.spaces = spacesIds;
+                    await quadrant.save();
+                    
+                    await updateQuadrantSpaces(quadrantId);
+                    console.log("Se crearon los espacios correctamente");
+                    res.status(201).json({ message: "Se crearon los espacios correctamente" });
+                }
+            }
+        }else{
+            res.status(404).json({ message: 'Cuadrante no encontrado' });
+        }
 
-    if (!quadrantId) {
-      return res.status(404).json({ message: "Cuadrante no encontrado" });
+    } catch (error) {
+        console.log("Error en user.controller.js -> createSpecifiedSpace(): ", error);
+        res.status(500).json({ message: error.message });
     }
+};
 
-    // Buscar el cuadrante por su id
-    const quadrant = await Quadrant.findById(quadrantId);
-
-    if (!quadrant) {
-      return res.status(404).json({ message: "Cuadrante no encontrado" });
-    }
-
-    if (num == null || num <= 0) {
-      return res.status(400).json({ message: "Número inválido de espacios" });
-    }
-
-    // Contar cantidad de espacios
-    const count = await Space.countDocuments({ quadrant: quadrant.id });
-
-    // Constante para guardar ids de los espacios
-    const spacesIds = quadrant.spaces;
-
-    // Sumarle los espacios de num a los que ya existen
-    for (let i = count + 1; i <= num + count; i++) {
-      const newSpace = new Space({ number: i, quadrant: quadrant._id });
-      await newSpace.save();
-      spacesIds.push(newSpace.id);
-    }
-
-    // Actualizar el cuadrante
-    quadrant.spaces = spacesIds;
-    await quadrant.save();
-
-    await updateQuadrantSpaces(quadrantId);
-
-    console.log("Se crearon los espacios correctamente");
-    res.status(201).json({ message: "Se crearon los espacios correctamente" });
-  } catch (error) {
-    console.log(
-      "Error en user.controller.js -> createSpecifiedSpaces(): ",
-      error,
-    );
-    res.status(500).json({ message: error.message });
-  }
-}
 
 // Crear espacios default
 export async function initializeSpaces(req, res) {
-  try {
-    const quadrantId = req.params.id;
-    if (quadrantId) {
-      // Buscar el cuadrante por su id
-      const quadrant = await Quadrant.findById(quadrantId);
-      if (!quadrant) {
-        return res.status(404).json({ message: "Cuadrante no encontrado" });
-      } else {
-        //Constante para guardar ids de los spacios
-        const spacesIds = quadrant.spaces;
-        // Contar cuántos espacios hay creados para el cuadrante
-        const count = await Space.countDocuments({ quadrant: quadrant._id });
-        if (count === 0) {
-          for (let i = 1; i <= 100; i++) {
-            // Crear 100 espacios
-            const newSpace = new Space({ number: i, quadrant: quadrant._id });
-            await newSpace.save();
-            spacesIds.push(newSpace.id);
-            quadrant.spaces = spacesIds;
-            await quadrant.save();
-          }
-          //Actualizar el cuadrante
-          await updateQuadrantSpaces(quadrantId);
-          console.log("Se inicializaron los espacios correctamente");
-          res.status(201).json({ message: "Espacios creados correctamente" });
-        } else {
-          console.log("Los espacios ya están inicializados");
-          res
-            .status(400)
-            .send("Los espacios de estacionamiento ya han sido inicializados");
+    try {
+        
+        const quadrantId = req.params.id;
+        if(quadrantId){
+            // Buscar el cuadrante por su id
+            const quadrant = await Quadrant.findById(quadrantId);
+            if (!quadrant){
+                return res.status(404).json({ message: 'Cuadrante no encontrado' });
+            }else{
+                //Constante para guardar ids de los spacios
+                const spacesIds= quadrant.spaces;
+                // Contar cuántos espacios hay creados para el cuadrante
+                const count = await Space.countDocuments({ quadrant: quadrant._id });
+                if (count === 0) {
+                    for (let i = 1; i <= 100; i++) { // Crear 100 espacios
+                        const newSpace = new Space({ number: i, quadrant: quadrant._id });
+                        await newSpace.save();
+                        spacesIds.push(newSpace.id);
+                        quadrant.spaces = spacesIds;
+                        await quadrant.save();
+                    }
+                    //Actualizar el cuadrante
+                    await updateQuadrantSpaces(quadrantId);
+                    console.log("Se inicializaron los espacios correctamente");
+                    res.status(201).json({ message: "Espacios creados correctamente" });
+                } else {
+                    console.log("Los espacios ya están inicializados");
+                    res.status(400).json('Los espacios de estacionamiento ya han sido inicializados');
+                }
+            }
+        }else{
+            res.status(404).json({ message: 'Cuadrante no encontrado' });
         }
-      }
-    } else {
-      res.status(404).json({ message: "Cuadrante no encontrado" });
+
+
+    } catch (error) {
+        console.log("Error en stockEspacio.controller.js -> initializeSpaces(): ", error);
+        res.status(500).json({ message: error.message });
     }
-  } catch (error) {
-    console.log(
-      "Error en stockEspacio.controller.js -> initializeSpaces(): ",
-      error,
-    );
-    res.status(500).json({ message: error.message });
-  }
-}
+};
+
 
 // Crear un solo espacio
 export async function createSpaceOnQuadrant(req, res) {
@@ -226,37 +216,30 @@ export async function occupiesSpaceOnQuadrant(req, res) {
       // Buscar el cuadrante por su id
       const quadrant = await Quadrant.findById(quadrantId);
 
-      if (!quadrant) {
-        return res.status(404).json({ message: "Cuadrante no encontrado" });
-      } else {
-        const space = await Space.findOne({
-          quadrant: quadrant._id,
-          isOccupied: false,
-        });
-        if (space) {
-          space.isOccupied = true;
-          await space.save();
-          //Actualizar el cuadrante
-          await updateQuadrantSpaces(quadrantId);
-          res.status(200).json({
-            message: `Acción realizada correctamente, espacio usado: ${space.number}`,
-          });
-        } else {
-          res
-            .status(400)
-            .send("No hay espacios disponibles para ocupar en este cuadrante");
+            if (!quadrant) {
+                return res.status(404).json({ message: 'Cuadrante no encontrado' });
+            }else{
+                const space = await Space.findOne({ quadrant: quadrant._id, isOccupied: false });
+                if (space) {
+                    space.isOccupied = true;
+                    await space.save();
+                    //Actualizar el cuadrante
+                    await updateQuadrantSpaces(quadrantId);
+                    res.status(200).json({ message: `Acción realizada correctamente, espacio usado: ${space.number}` });
+
+                } else {
+                    res.status(400).json('No hay espacios disponibles para ocupar en este cuadrante');
+                }
+            }
+        }else{
+            res.status(404).json({ message: 'Cuadrante no encontrado' });
         }
-      }
-    } else {
-      res.status(404).json({ message: "Cuadrante no encontrado" });
+
+
+    } catch (error) {
+        console.log("Error en parkingStock.controller.js -> occupiesSpaceOnQuadrant(): ", error);
+        res.status(500).json({ message: error.message });
     }
-  } catch (error) {
-    console.log(
-      "Error en parkingStock.controller.js -> occupiesSpaceOnQuadrant(): ",
-      error,
-    );
-    res.status(500).json({ message: error.message });
-  }
 }
 
 //Desocupar un espacio

@@ -143,7 +143,6 @@ export async function updateQuadrantSpaces(quadrantId) {
               quadrant.full = false; //?Libre
               await quadrant.save()
             }
-            res.status(200),json({message: 'El cuadrante se actualizo', data: updatedQuadrant});
             console.log("El cuadrante se actualizo")
           }
           
