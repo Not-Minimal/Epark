@@ -387,19 +387,18 @@ export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
         } else {
           // Verificar si hay suficientes espacios desocupados en la base de datos
 
-          const countFreeSpace = Space.countDocuments({
-            quadrant: quadrant._id,
+          const countFreeSpace = await Space.countDocuments({
+            quadrant: quadrantId,
             isOccupied: false,
           });
-
-          if (countFreeSpace < num) {
+          if (countFreeSpace < num ) {
             console.log(
-              `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`,
+            `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`,
             );
             return res.status(404).json({
               message: `No hay suficientes espacios desocupados para eliminar. Se encontraron ${countFreeSpace}`,
             });
-          } else {
+          }else {
             // Eliminar los espacios desocupados
             for (let i = 0; i < num; i++) {
               const freeSpace = await Space.findOne({
@@ -409,7 +408,7 @@ export async function deleteSpecifiedSpacesOnQuadrant(req, res) {
               if (freeSpace) {
                 await Space.deleteOne({ _id: freeSpace._id });
                 quadrant.spaces = quadrant.spaces.filter(
-                  (space) => space.toString() !== freeSpace._id.toString(),
+                (space) => space.toString() !== freeSpace._id.toString(),
                 );
               }
             }
