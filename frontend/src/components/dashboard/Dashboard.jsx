@@ -9,8 +9,28 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { UsersTable } from "./UsersTable";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getUsers } from "@/services/user.service";
 
 export function Dashboard() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers();
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
+  const getUserCount = () => users.length;
+  const userCount = getUserCount();
+  const limit = 100;
+  const percentage = (userCount / limit) * 100;
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40 ">
       <main>
@@ -28,16 +48,19 @@ export function Dashboard() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Espacios Ocupados</CardDescription>
-              <CardTitle className="text-4xl">56</CardTitle>
+              <CardDescription>Usuarios Registrados</CardDescription>
+              <CardTitle className="text-4xl">{userCount}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-xs text-muted-foreground">
-                +25% desde la semana pasado
+                {percentage}% del limite de 100 usuarios
               </div>
             </CardContent>
             <CardFooter>
-              <Progress value={25} aria-label="25% increase" />
+              <Progress
+                value={percentage}
+                aria-label={`${percentage}% del límite de 100 usuarios`}
+              />
             </CardFooter>
           </Card>
           <Card>
