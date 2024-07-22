@@ -170,3 +170,56 @@ export async function getBicycleByOwnerId(request, response) {
     response.status(500).json({ message: error.message });
   }
 }
+
+export async function updateVehicleByOwnerId(request, response) {
+  try {
+    const userId = request.params.id;
+    const { brand, color, model } = request.body;
+
+    // Verificar que el usuario exista
+    const user = await User.findById(userId);
+    if (!user) {
+      response.status(404).json({
+        message: "Usuario no encontrado",
+        data: null,
+      });
+      return;
+    }
+
+    // Buscar el vehiculo asociado al usuario
+    const bicycle = await Bicycle.findOne({ user: userId });
+    if (!bicycle) {
+      response.status(404).json({
+        message: "El usuario no posee una bicicleta registrada",
+        data: null,
+      });
+      return;
+    }
+
+    // Actualizar los datos de la bicicleta
+    if (brand) bicycle.brand = brand;
+    if (color) bicycle.color = color;
+    if (model) bicycle.model = model;
+    // Guardamos los cambios
+    const updatedBicycle = await bicycle.save();
+
+    // Mapeamos el JSON de respuesta
+    const bicycleMap = {
+      Bicicleta_ID: updatedBicycle._id,
+      Marca: updatedBicycle.brand,
+      Color: updatedBicycle.color,
+      Modelo: updatedBicycle.model,
+      Propietario: {
+        Usuario_ID: bicycle.user._id,
+        Nombre: bicycle.user.username,
+      },
+    };
+    // retornar el dato
+    response.status(200).json({
+      message: "Bicicleta actualizada",
+      data: bicycleMap,
+    });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
