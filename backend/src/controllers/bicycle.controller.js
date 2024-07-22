@@ -1,5 +1,5 @@
-import User from "../models/user.model";
-import Bicycle from "../models/bicycle.model";
+import User from "../models/user.model.js";
+import Bicycle from "../models/bicycle.model.js";
 
 export async function createBicycle(request, response) {
   try {

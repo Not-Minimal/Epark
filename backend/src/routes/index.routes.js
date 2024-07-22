@@ -27,6 +27,8 @@ import uploadRoutes from "./upload.routes.js";
 // Enrutador de QRCode
 import qrCodeRoutes from "./qrCode.routes.js";
 
+// Enrutador de Bicicletas
+import bicycle from "./bicycle.routes.js";
 
 // Se realiza una instancia de express
 const router = Router();
@@ -47,6 +49,7 @@ router.use("/issues", issueRoutes);
 router.use("/files", uploadRoutes);
 // Define las rutas para la generación de códigos QR
 router.use("/qrcode", qrCodeRoutes);
-
+// Define las rutas para las bicicletas
+router.use("/bicycle", bicycle);
 
 export default router;

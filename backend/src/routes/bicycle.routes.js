@@ -8,9 +8,13 @@ import {
   getBicycleByQuery,
   getBicycleByOwnerId,
   deleteBicycle,
-} from "../controllers/bicycle.controller";
+} from "../controllers/bicycle.controller.js";
 
-import { isAdmin, isUser, isAdminOrUser } from "../middlewares/auth.middleware";
+import {
+  isAdmin,
+  isUser,
+  isAdminOrUser,
+} from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
