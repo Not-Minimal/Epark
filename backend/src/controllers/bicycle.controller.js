@@ -55,3 +55,70 @@ export async function createBicycle(request, response) {
     response.status(500).json({ message: error.message });
   }
 }
+
+export async function getBicycles(request, response) {
+  try {
+    const bicycles = await Bicycle.find().populate("user", "username");
+
+    // Verificar si no hay bicicletas registradas
+    if (bicycles.length === 0) {
+      return response
+        .status(404)
+        .json({ message: "No hay bicicletas registradas" });
+    }
+
+    const bicyclesMap = bicycles.map((bicycle) => ({
+      Bicicleta_ID: bicycle._id,
+      Marca: bicycle.brand,
+      Color: bicycle.color,
+      Modelo: bicycle.model,
+      Propietario: {
+        Usuario_ID: bicycle.user._id,
+        Nombre: bicycle.user.username,
+      },
+    }));
+    response
+      .status(200)
+      .json({ message: "Listado de Bicicletas", data: bicyclesMap });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+export async function getBicycleByQuery(request, response) {
+  try {
+    const { brand, color, model } = request.query;
+
+    // Construir el url de consulta dinamico
+    let query = {};
+    if (brand) query.brand = brand;
+    if (color) query.color = color;
+    if (model) query.model = model;
+
+    // Buscar la bicicleta por los parametros de consulta
+    const bicycles = await Bicycle.find(query).populate("user", "username");
+
+    // Verificar si no hay bicicletas registradas
+    if (bicycles.length === 0) {
+      return response
+        .status(404)
+        .json({ message: "No hay bicicletas registradas" });
+    }
+
+    const bicyclesMap = bicycles.map((bicycle) => ({
+      Bicicleta_ID: bicycle._id,
+      Marca: bicycle.brand,
+      Color: bicycle.color,
+      Modelo: bicycle.model,
+      Propietario: {
+        Usuario_ID: bicycle.user._id,
+        Nombre: bicycle.user.username,
+      },
+    }));
+    response
+      .status(200)
+      .json({ message: "Listado de Bicicletas", data: bicyclesMap });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
