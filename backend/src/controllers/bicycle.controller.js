@@ -104,6 +104,7 @@ export async function getBicycleByQuery(request, response) {
         .status(404)
         .json({ message: "No hay bicicletas registradas" });
     }
+    return;
 
     const bicyclesMap = bicycles.map((bicycle) => ({
       Bicicleta_ID: bicycle._id,
@@ -118,6 +119,53 @@ export async function getBicycleByQuery(request, response) {
     response
       .status(200)
       .json({ message: "Listado de Bicicletas", data: bicyclesMap });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
+
+export async function getBicycleByOwnerId(request, response) {
+  try {
+    const userId = request.params.id;
+
+    // Verificar que el usuario exista
+    const user = await User.findById(userId);
+    if (!user) {
+      response.status(404).json({
+        message: "Usuario no encontrado",
+      });
+      return;
+    }
+
+    // Buscar el vehiculo asociado al usuario
+    const bicycle = await Bicycle.findOne({ user: userId }).populate(
+      "user",
+      "username",
+    );
+
+    if (!bicycle) {
+      response.status(404).json({
+        message: "El usuario no posee una bicicleta registrada",
+        data: null,
+      });
+      return;
+    }
+    // Mapeamos el JSON de respuesta
+    const bicycleMap = {
+      Bicicleta_ID: bicycle._id,
+      Marca: bicycle.brand,
+      Color: bicycle.color,
+      Modelo: bicycle.model,
+      Propietario: {
+        Usuario_ID: bicycle.user._id,
+        Nombre: bicycle.user.username,
+      },
+    };
+    // Retornar el vehículo encontrado
+    response.status(200).json({
+      message: "Bicicleta encontrada",
+      data: bicycleMap,
+    });
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
