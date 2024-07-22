@@ -223,3 +223,36 @@ export async function updateVehicleByOwnerId(request, response) {
     response.status(500).json({ message: error.message });
   }
 }
+
+export async function deleteBicycle(request, response) {
+  try {
+    const userId = request.params.id;
+
+    // Verificar que el usuario exista
+    const user = await User.findById(userId);
+    if (!user) {
+      return response.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Verificar que el usuario tenga una bicicleta registrada
+    if (!user.bicycle) {
+      return response
+        .status(404)
+        .json({ message: "El usuario no posee una bicicleta registrada" });
+    }
+
+    // Eliminar la bicicleta
+    const bicycleId = user.bicycle;
+    await Bicycle.findByIdAndDelete(bicycleId);
+
+    // Eliminar la referencia a la bicicleta en el usuario
+    user.bicycle = null;
+    await user.save();
+
+    response.status(200).json({
+      message: "Bicicleta eliminada exitosamente",
+    });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+}
