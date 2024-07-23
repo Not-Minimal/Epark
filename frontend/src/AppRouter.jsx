@@ -11,10 +11,10 @@ import Vehicle from "./pages/protected/Vehicle";
 import ParkingSpots from "./pages/protected/ParkingSpots";
 import MainLayout from "./components/layout/MainLayout";
 import Settings from "./pages/protected/Settings";
-import Support from "./pages/protected/Support/Dashboard";
-import Dashboard from "./pages/protected/Support/Dashboard";
+import IssueDashboard from "./pages/protected/Support/Dashboard";
 import CreateIssue from "./pages/protected/Support/CreateIssue";
 import ViewIssue from "./pages/protected/Support/ViewIssue";
+import BicycleDashboard from "./pages/protected/Bicycle/Dashboard";
 
 const AppRouter = () => {
   return (
@@ -37,9 +37,10 @@ const AppRouter = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/vehicle" element={<Vehicle />} />
         <Route path="/parking-spots" element={<ParkingSpots />} />
-        <Route path="/support/dashboard" element={<Dashboard />} />
+        <Route path="/support/dashboard" element={<IssueDashboard />} />
         <Route path="/support/createissue" element={<CreateIssue />} />
         <Route path="/support/viewissue" element={<ViewIssue />} />
+        <Route path="/bicycle/dashboard" element={<BicycleDashboard />} />
       </Route>
 
       <Route path="*" element={<Error404 />} />
