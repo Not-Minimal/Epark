@@ -7,6 +7,7 @@ import {
   getBicycles,
   getBicycleByQuery,
   getBicycleByOwnerId,
+  updateBicycleByOwnerId,
   deleteBicycle,
 } from "../controllers/bicycle.controller.js";
 
@@ -22,6 +23,7 @@ router.post("/createBicycle/:id", isUser, createBicycle);
 router.get("/getBicycles", isAdmin, getBicycles);
 router.get("/getBicycleByQuery", isAdmin, getBicycleByQuery);
 router.get("/getBicycleByOwnerId/:id", isAdminOrUser, getBicycleByOwnerId);
+router.put("/updateBicycleByOwnerId/:id", isUser, updateBicycleByOwnerId);
 router.delete("/deleteBicycle/:id", isAdmin, deleteBicycle);
 
 export default router;

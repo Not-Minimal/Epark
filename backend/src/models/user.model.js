@@ -45,7 +45,12 @@ const userSchema = new mongoose.Schema(
     vehicle: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Vehicle",
-      required: false
+      required: false,
+    },
+    bicycle: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bicycle",
+      required: false,
     },
   },
   {

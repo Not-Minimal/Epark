@@ -3,7 +3,8 @@ import Bicycle from "../models/bicycle.model.js";
 
 export async function createBicycle(request, response) {
   try {
-    const userId = request.userId;
+    const userId = request.params.id;
+    console.log("User ID in createBicycle:", userId);
     const { brand, color, model } = request.body;
 
     // Verificar si el usuario existe
@@ -137,7 +138,7 @@ export async function getBicycleByOwnerId(request, response) {
       return;
     }
 
-    // Buscar el vehiculo asociado al usuario
+    // Buscar la bicicleta asociado al usuario
     const bicycle = await Bicycle.findOne({ user: userId }).populate(
       "user",
       "username",
@@ -171,7 +172,7 @@ export async function getBicycleByOwnerId(request, response) {
   }
 }
 
-export async function updateVehicleByOwnerId(request, response) {
+export async function updateBicycleByOwnerId(request, response) {
   try {
     const userId = request.params.id;
     const { brand, color, model } = request.body;
@@ -186,7 +187,7 @@ export async function updateVehicleByOwnerId(request, response) {
       return;
     }
 
-    // Buscar el vehiculo asociado al usuario
+    // Buscar la bicicleta asociado al usuario
     const bicycle = await Bicycle.findOne({ user: userId });
     if (!bicycle) {
       response.status(404).json({
