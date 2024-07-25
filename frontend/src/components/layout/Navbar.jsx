@@ -15,6 +15,7 @@ import profileImage from "@/assets/png/avatar.png";
 import {
   Car,
   LayoutDashboard,
+  MessageCircleQuestion,
   PanelsTopLeft,
   ParkingSquare,
   Settings,
@@ -159,6 +160,19 @@ const Navbar = () => {
                   </TooltipTrigger>
                   <TooltipContent side="right">Estacionamientos</TooltipContent>
                 </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/support/dashboard"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <MessageCircleQuestion className="h-5 w-5" />
+                      <span className="sr-only">Soporte</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Soporte</TooltipContent>
+                </Tooltip>
               </>
             )}
           </TooltipProvider>
@@ -269,6 +283,14 @@ const Navbar = () => {
                     </NavLink>
                   </>
                 )}
+                <NavLink
+                  to="/support/dashboard"
+                  className={getNavLinkClass}
+                  prefetch={false}
+                >
+                  <MessageCircleQuestion className="h-5 w-5" />
+                  Reclamo
+                </NavLink>
                 <NavLink
                   to="/settings"
                   className={getNavLinkClass}

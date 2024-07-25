@@ -134,7 +134,6 @@ export function UsersTable() {
       tipoUsuario: user.TipoUsuario,
     });
   };
-
   return (
     <>
       {userProfile.rolName === "administrador" && (
