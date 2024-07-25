@@ -3,8 +3,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
   Table,
@@ -18,8 +16,26 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getIssues } from "@/services/issue.service";
 
 export default function Dashboard() {
+  const [issues, setIssues] = useState([]);
+
+  useEffect(() => {
+    async function fetchIssues() {
+      try {
+        const response = await getIssues();
+        console.log("Issues:", response);
+        setIssues(response.data); // Aquí accedes a la propiedad `data`
+      } catch (error) {
+        console.error("Error fetching issues:", error);
+      }
+    }
+
+    fetchIssues();
+  }, []);
+
   return (
     <>
       <header>
@@ -49,18 +65,20 @@ export default function Dashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px]">ID Problema</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead>Metodo</TableHead>
+                <TableHead>Nombre</TableHead>
+                <TableHead>Descripcion</TableHead>
                 <TableHead className="text-right">Accion</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">ISSUE001</TableCell>
-                <TableCell>En proceso</TableCell>
-                <TableCell>Mail</TableCell>
-                <TableCell className="text-right">Ver</TableCell>
-              </TableRow>
+              {issues.map((issue) => (
+                <TableRow key={issue._id}>
+                  <TableCell className="font-medium">{issue._id}</TableCell>
+                  <TableCell>{issue.title}</TableCell>
+                  <TableCell>{issue.description}</TableCell>
+                  <TableCell className="text-right">Ver</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>
