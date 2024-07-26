@@ -21,6 +21,16 @@ export async function getIssueById(id) {
   }
 }
 
+// Obtener reclamos de un usuario específico por su ID
+export async function getIssuesByUser(userId) {
+  try {
+    const response = await axios.get(`/issues/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}
+
 // Crear una nueva incidencia
 export async function createIssue(id, data) {
   try {
@@ -34,7 +44,7 @@ export async function createIssue(id, data) {
 // Eliminar una incidencia por su ID
 export async function deleteIssue(id) {
   try {
-    const response = await axios.delete(`/deleteIssueById/${id}`);
+    const response = await axios.delete(`/issues/deleteIssueById/${id}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

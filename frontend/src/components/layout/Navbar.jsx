@@ -117,6 +117,19 @@ const Navbar = () => {
                   </TooltipTrigger>
                   <TooltipContent side="right">Dashboard</TooltipContent>
                 </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/support/dashboard"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <MessageCircleQuestion className="h-5 w-5" />
+                      <span className="sr-only">Soporte</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Soporte</TooltipContent>
+                </Tooltip>
               </>
             )}
             {userProfile.rolName === "administrador" && (

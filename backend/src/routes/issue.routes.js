@@ -5,11 +5,16 @@ import {
   createIssue,
   getIssues,
   getIssueById,
+  getIssuesByUser,
   deleteIssue,
 } from "../controllers/issue.controller.js";
 
 // Se importa Middleware de autenticación
-import { isAdmin, isAdminOrUser } from "../middlewares/auth.middleware.js";
+import {
+  isAdmin,
+  isAdminOrUser,
+  isUser,
+} from "../middlewares/auth.middleware.js";
 
 // Se realiza una instancia de express
 const router = express.Router();
@@ -22,6 +27,9 @@ router.get("/getIssues/", isAdmin, getIssues);
 
 // Ruta para obtener todas las incidencias
 router.get("/getIssueById/:id", isAdmin, getIssueById);
+
+// Ruta para obtener todas las incidencias por id de usuario
+router.get("/getIssueByUserId/:id", isUser, getIssuesByUser);
 
 // Ruta para eliminar un reclamo específico
 router.delete("/deleteIssueById/:id", isAdmin, deleteIssue);

@@ -25,7 +25,7 @@ const MainLayout = () => {
     <div className="bg-stone-50">
       <Navbar />
       <main className="sm:px-16 px-4 sm:ml-4 pt-4">
-        <h1 className="text-4xl mb-4 text-gray-700">
+        <h1 className="text-4xl mb-4 text-gray-700 font-bold">
           Hola, {userProfile.username} 👋🏻
         </h1>
         <Outlet />

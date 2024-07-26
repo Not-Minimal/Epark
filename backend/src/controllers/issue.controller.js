@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import Issue from "../models/issue.model.js";
 
@@ -45,7 +46,6 @@ export async function getIssues(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
-import mongoose from "mongoose";
 
 // Ver todas las incidencias
 export async function getIssueById(req, res) {
@@ -75,6 +75,41 @@ export async function getIssueById(req, res) {
     });
   } catch (error) {
     console.log("Error en getIssueById(): ", error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
+// Obtener todas las incidencias de un usuario específico por su ID
+// Ver los reclamos de un usuario específico
+export async function getIssuesByUser(req, res) {
+  try {
+    const userId = req.params.id;
+
+    // Verificar que el usuario exista
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Buscar todos los reclamos asociados con el ID del usuario
+    const issues = await Issue.find({ user: userId }).populate(
+      "user",
+      "username",
+    );
+
+    if (!issues.length) {
+      return res.status(404).json({
+        message: "No se encontraron problemas para este usuario",
+      });
+    }
+
+    // Enviar la respuesta con los datos de los reclamos encontrados
+    res.status(200).json({
+      message: "Lista de problemas del usuario",
+      data: issues,
+    });
+  } catch (error) {
+    console.error("Error en getIssuesByUser(): ", error);
     res.status(500).json({ message: error.message });
   }
 }
