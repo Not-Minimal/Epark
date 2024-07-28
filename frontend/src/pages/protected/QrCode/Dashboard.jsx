@@ -13,21 +13,21 @@ export default function Dashboard() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/vehicle/dashboard">
+              <BreadcrumbLink href="/QrCode/dashboard">
                 Dashboard
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/vehicle/viewvehicle">
-                Ver Vehiculo
+              <BreadcrumbLink href="/QrCode/viewQrCode">
+                Ver codigo QR
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </header>
       <main>
-        <h1>Vehiculo</h1>
+        <h1>Mi documentacion</h1>
       </main>
     </>
   );
