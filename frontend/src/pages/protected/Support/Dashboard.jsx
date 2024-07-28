@@ -7,7 +7,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -21,14 +20,13 @@ import {
 } from "@/components/ui/tooltip";
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   deleteIssue,
   getIssues,
   getIssuesByUser,
 } from "@/services/issue.service";
-import { MoveHorizontalIcon, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { profile } from "@/services/auth.service";
 
 import {
@@ -41,14 +39,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const [issues, setIssues] = useState([]);
@@ -107,87 +98,15 @@ export default function Dashboard() {
       <main className="py-8 flex-1">
         {userProfile.rolName === "usuario" && (
           <>
-            <section className="p-4 sm:p-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Crear Reclamo</CardTitle>
-                  <CardDescription>
-                    Completa los datos para crear un nuevo reclamo.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form className="grid gap-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="title">Titulo</Label>
-                      <Input id="title" placeholder="Ingrese un titulo" />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="description">Descripcion</Label>
-                      <Textarea
-                        id="description"
-                        placeholder="Describe los detalles de tu reclamo"
-                        rows={4}
-                      />
-                    </div>
-                    <Button type="submit" className="justify-self-end">
-                      Crear Reclamo
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </section>
-            <section className="p-4 sm:p-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Mis Reclamos</CardTitle>
-                  <CardDescription>Ve y gestiona tus reclamos.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>ID Problema</TableHead>
-                        <TableHead>Nombre</TableHead>
-                        <TableHead>Descripcion</TableHead>
-                        <TableHead className="text-right">Acciones</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {issues.map((issue) => (
-                        <TableRow key={issue._id}>
-                          <TableCell className="font-medium">
-                            {issue._id}
-                          </TableCell>
-                          <TableCell>{issue.title}</TableCell>
-                          <TableCell>{issue.description}</TableCell>
-                          <TableCell align="end">
-                            <div className="space-x-2 space-y-2">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <Button
-                                      className="bg-red-500"
-                                      variant="outline"
-                                      size="icon"
-                                      onClick={() => handleDelete(issue._id)}
-                                    >
-                                      <Trash className="h-4 w-4 text-white" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Eliminar</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </section>
+            <div>
+              <h1 className="text-3xl py-8">Listado de Problemas Recientes</h1>
+              <div className="bg-white p-4 rounded-2xl max-w-4xl">
+                <h1 className="text-3xl mb-8">Necesitas crear un Reclamo?</h1>
+                <Link to="/support/createissue">
+                  <Button>Crear Reclamo</Button>
+                </Link>
+              </div>
+            </div>
           </>
         )}
         {userProfile.rolName === "administrador" && (
