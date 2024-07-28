@@ -9,7 +9,16 @@ import Quadrant from '../models/quadrant.model.js';
 export async function createQuadrant(req, res){
 
     try{
-         //* Extrae el nombre y los espacios
+
+        //* Contar los cuadrantes existentes 
+        const quadrantCount = await Quadrant.countDocuments();
+
+        //* Verificar si ya existen 4 cuadrantes
+        if(quadrantCount >= 4){
+          return res.status(400).json({message: 'Solo se pueden crear hasta 4 cuadrantres'});
+        }
+
+        //* Extrae el nombre y los espacios
         const {name} = req.body;
         const newQuadrant = new Quadrant({name});
 
@@ -17,7 +26,7 @@ export async function createQuadrant(req, res){
         await newQuadrant.save();
         
         //? Enviamos respuesta del cuadrante creado
-        res.status(201).json({message: 'Nuevo cuadrante creado.',data: newQuadrant,});
+        res.status(201).json({message:  'Nuevo cuadrante creado.',data: newQuadrant,});
         
     }catch(error){
 
@@ -39,10 +48,10 @@ export async function getQuadrant(req,res){
         if(quadrants.length === 0){return res.status(404).json({message: 'No existen cuadrantes creados.'});}
         
         //? Enviamos respuesta con todos los cuadrantes
-         res.status(200).json({message:'Cuadrantes exitentes', data: quadrants});
+        res.status(200).json({message:'Cuadrantes exitentes', data: quadrants});
         
     }catch(error){
-
+      
         //! Enviamos error si algo falla 
          res.status(500).json({message:'Error interno del servidor.'});
     }
