@@ -16,6 +16,8 @@ import Dashboard from "./pages/protected/Support/Dashboard";
 import CreateIssue from "./pages/protected/Support/CreateIssue";
 import ViewIssue from "./pages/protected/Support/ViewIssue";
 
+import CreateQuadrants from "./pages/protected/Quadrant/CreateQuadrants";
+
 const AppRouter = () => {
   return (
     <Routes>
@@ -36,10 +38,12 @@ const AppRouter = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/vehicle" element={<Vehicle />} />
+        <Route path="/createquadrants" element={<CreateQuadrants />} />
         <Route path="/parking-spots" element={<ParkingSpots />} />
         <Route path="/support/dashboard" element={<Dashboard />} />
         <Route path="/support/createissue" element={<CreateIssue />} />
         <Route path="/support/viewissue" element={<ViewIssue />} />
+        
       </Route>
 
       <Route path="*" element={<Error404 />} />
