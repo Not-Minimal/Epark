@@ -143,7 +143,7 @@ export async function getVehiclesByQuery(req, res) {
       patente: vehicle.licensePlate,
       modelo: vehicle.model,
       color: vehicle.color,
-      marca: vehicle.marca,
+      marca: vehicle.brand,
       usuario: {
         usuario_id: vehicle.user._id,
         nombre_usuario: vehicle.user.username,
@@ -183,7 +183,7 @@ export async function getVehicleByLicensePlate(req, res) {
       patente: vehicle.licensePlate,
       modelo: vehicle.model,
       color: vehicle.color,
-      marca: vehicle.marca,
+      marca: vehicle.brand,
       usuario: {
         usuario_id: vehicle.user._id,
         nombre_usuario: vehicle.user.username,
@@ -233,7 +233,7 @@ export async function getVehicleByOwnerId(req, res) {
       patente: vehicle.licensePlate,
       modelo: vehicle.model,
       color: vehicle.color,
-      marca: vehicle.marca,
+      marca: vehicle.brand,
       usuario: {
         usuario_id: vehicle.user._id,
         nombre_usuario: vehicle.user.username,

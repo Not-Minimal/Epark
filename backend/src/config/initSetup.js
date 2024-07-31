@@ -74,7 +74,7 @@ export async function createUsers() {
       }).save(),
 
       new User({
-        username: "Nombre Administrador",
+        username: "Administrador",
         email: "admin@epark.com",
         rut: "12345678-0",
         password: await User.encryptPassword("eparkadmin123"),

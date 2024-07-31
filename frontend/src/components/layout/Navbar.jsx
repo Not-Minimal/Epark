@@ -150,7 +150,7 @@ const Navbar = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
-                      to="/vehicle"
+                      to="/vehicle/dashboard"
                       className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                       prefetch={false}
                     >
@@ -279,7 +279,7 @@ const Navbar = () => {
                       Usuarios
                     </NavLink>
                     <NavLink
-                      to="/vehicle"
+                      to="/vehicle/dashboard"
                       className={getNavLinkClass}
                       prefetch={false}
                     >
