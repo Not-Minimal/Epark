@@ -40,7 +40,7 @@ export default function Component() {
     setSelectedCuadrante(Cuadrante);
   };
   return (
-    <div className="container mx-auto ">
+    <div className="py-4 ">
       <h1 className="text-3xl font-bold mb-8">Parking Cuadrante Management</h1>
       <div className="mb-8">
         <DropdownMenu>
