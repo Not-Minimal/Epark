@@ -1,5 +1,5 @@
 "use client";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   Breadcrumb,
@@ -23,9 +23,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { viewFreeSpaces } from '@/services/parkingSpot.service';
-import { getQuadrants } from '@/services/quadrant.service'; 
-import { viewOccupiedSpaces } from '@/services/parkingSpot.service';
+import { viewFreeSpaces } from "@/services/parkingSpot.service";
+import { getQuadrant } from "@/services/quadrant.service.js";
+import { viewOccupiedSpaces } from "@/services/parkingSpot.service";
 
 export default function Component() {
   const [parkingCuadrantes, setParkingCuadrantes] = useState();
@@ -34,11 +34,10 @@ export default function Component() {
   const [freeSpaces, setFreeSpaces] = useState(null);
   const [occupiedSpaces, setoccupiedSpaces] = useState(null);
 
-
   // Function to fetch quadrants
   const fetchQuadrants = async () => {
     try {
-      const { data } = await getQuadrants();
+      const { data } = await getQuadrant();
       setParkingCuadrantes(data);
       setFilteredCuadrantes(data);
       console.log("Fetched Quadrants:", data); // Verifica los datos obtenidos
@@ -99,17 +98,19 @@ export default function Component() {
       setFilteredCuadrantes(parkingCuadrantes);
     } else if (status === "Disponible") {
       setFilteredCuadrantes(
-        parkingCuadrantes.filter((cuadrante) => !cuadrante.full)
+        parkingCuadrantes.filter((cuadrante) => !cuadrante.full),
       );
     } else if (status === "ocupado") {
       setFilteredCuadrantes(
-        parkingCuadrantes.filter((cuadrante) => cuadrante.full)
+        parkingCuadrantes.filter((cuadrante) => cuadrante.full),
       );
     }
   };
 
   const handleCuadranteClick = (id) => {
-    const selected = parkingCuadrantes.find((cuadrante) => cuadrante._id === id);
+    const selected = parkingCuadrantes.find(
+      (cuadrante) => cuadrante._id === id,
+    );
     console.log("Selected Cuadrante:", selected._id); // Verifica el cuadrante seleccionado
     setSelectedCuadrante(selected);
   };
@@ -117,24 +118,20 @@ export default function Component() {
   const navigate = useNavigate();
 
   return (
-    <div className='min-h-screen'>
+    <div className="min-h-screen">
       <Breadcrumb className=" mt-20 mb-5">
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/home">
-                      Home
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/parking-spots">
-                      Parking Spots
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/home">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/parking-spots">Parking Spots</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <h1 className="text-3xl mb-8 ">Parking Quadrant Management</h1>
-      
+
       <div className="mb-8 ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -165,16 +162,13 @@ export default function Component() {
             onClick={() => handleCuadranteClick(cuadrante._id)}
           >
             <div className="flex items-center justify-between">
-
               <div className="text-lg font-semibold">{cuadrante.name}</div>
               <div
                 className={`w-4 h-4 rounded-full ${cuadrante.full == true ? "bg-red-500" : "bg-green-500"}`}
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {cuadrante.full == true
-                ? `Ocupado`
-                : "Disponible"}
+              {cuadrante.full == true ? `Ocupado` : "Disponible"}
             </div>
           </div>
         ))}
@@ -183,8 +177,7 @@ export default function Component() {
         <Dialog open onOpenChange={() => setSelectedCuadrante(null)}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-            <DialogTitle>{selectedCuadrante.name}</DialogTitle>
-
+              <DialogTitle>{selectedCuadrante.name}</DialogTitle>
             </DialogHeader>
             <div>
               <div className="grid gap-4">
@@ -197,32 +190,24 @@ export default function Component() {
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">Espacios Libres</div>
                   <div className="text-sm">
-                    {freeSpaces !== null ? (
-                      freeSpaces
-                    ) : (
-                      "null"
-                    )}
+                    {freeSpaces !== null ? freeSpaces : "null"}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">Espacios Ocupados</div>
                   <div className="text-sm">
-                    {occupiedSpaces !== null ? (
-                      occupiedSpaces
-                    ) : (
-                      "null"
-                    )}
+                    {occupiedSpaces !== null ? occupiedSpaces : "null"}
                   </div>
                 </div>
-
               </div>
             </div>
-            <DialogFooter>       
+            <DialogFooter>
               <Button
                 variant="ghost"
                 onClick={() => {
-                  
-                  navigate('/parkingspot/spacemanagement', { state: { selectedCuadrante } });
+                  navigate("/parkingspot/spacemanagement", {
+                    state: { selectedCuadrante },
+                  });
                 }}
               >
                 Administrar espacios
