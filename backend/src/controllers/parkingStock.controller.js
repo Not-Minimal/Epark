@@ -341,12 +341,17 @@ export async function deleteSpaceOnQuadrant(req, res) {
         } else {
           // Eliminar el espacio desocupado
           await Space.deleteOne({ _id: freeSpace._id });
+          await updateQuadrantSpaces(quadrantId);
 
           // Actualizar el cuadrante para eliminar la referencia al espacio eliminado
           quadrant.spaces = quadrant.spaces.filter(
             (spaceId) => spaceId.toString() !== freeSpace._id.toString(),
           );
+          //Actualizar el cuadrante
           await quadrant.save();
+
+          
+
 
           console.log(
             `El espacio ${freeSpace.number} fue eliminado correctamente`,

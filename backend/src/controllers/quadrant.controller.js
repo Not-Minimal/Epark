@@ -143,7 +143,7 @@ export async function updateQuadrantSpaces(quadrantId) {
           const totalSpaces = await Space.countDocuments({quadrant:quadrantId});
 
           //* Si los espacios ocupados son igual a los totales, esta completamente lleno
-          if(occupiedSpaces || totalSpaces ){
+          if(totalSpaces){
               console.log(`Espacios totales: ${totalSpaces}, Espacios ocupados: ${occupiedSpaces}`);
             if(occupiedSpaces == totalSpaces){
               quadrant.full = true;  //?Completo
@@ -153,13 +153,15 @@ export async function updateQuadrantSpaces(quadrantId) {
               await quadrant.save()
             }
             console.log("El cuadrante se actualizo")
+          }else{
+              quadrant.full = true;  //?Completo
+              await quadrant.save()
           }
           
       }
 
   } catch (error) {
-      console.log("Error en quadrant.controller.js -> updateQuadrant(): ", error);
-      res.status(500).json({message:'Error interno del servidor'})   
+      console.log("Error en quadrant.controller.js -> updateQuadrant(): ", error);  
   }
 
 }

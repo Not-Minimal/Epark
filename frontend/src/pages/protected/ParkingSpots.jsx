@@ -1,6 +1,14 @@
 "use client";
-
-import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -15,34 +23,119 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { viewFreeSpaces } from '@/services/parkingSpot.service';
+import { getQuadrants } from '@/services/quadrant.service'; 
+import { viewOccupiedSpaces } from '@/services/parkingSpot.service';
 
 export default function Component() {
-  const [parkingCuadrantes, setParkingCuadrantes] = useState([
-    { id: 1, status: "ocupado", lastocupado: "2023-06-29 10:15 AM" },
-    { id: 2, status: "libre", lastocupado: null },
-    { id: 3, status: "ocupado", lastocupado: "2023-06-29 11:30 AM" },
-    { id: 4, status: "libre", lastocupado: null },
-    { id: 5, status: "ocupado", lastocupado: "2023-06-29 9:45 AM" },
-  ]);
-  const [filteredCuadrantes, setFilteredCuadrantes] =
-    useState(parkingCuadrantes);
+  const [parkingCuadrantes, setParkingCuadrantes] = useState();
+  const [filteredCuadrantes, setFilteredCuadrantes] = useState([]);
   const [selectedCuadrante, setSelectedCuadrante] = useState(null);
+  const [freeSpaces, setFreeSpaces] = useState(null);
+  const [occupiedSpaces, setoccupiedSpaces] = useState(null);
+
+
+  // Function to fetch quadrants
+  const fetchQuadrants = async () => {
+    try {
+      const { data } = await getQuadrants();
+      setParkingCuadrantes(data);
+      setFilteredCuadrantes(data);
+      console.log("Fetched Quadrants:", data); // Verifica los datos obtenidos
+    } catch (error) {
+      console.error("Error fetching quadrants:", error);
+    }
+  };
+
+  // Function to fetch free spaces for a selected quadrant
+  const fetchFreeSpaces = async (id) => {
+    if (!id) {
+      console.error("No valid id ");
+      return;
+    }
+    try {
+      const spaces = await viewFreeSpaces(id);
+      setFreeSpaces(spaces);
+    } catch (error) {
+      console.error("Error fetch free spaces:", error);
+    }
+  };
+
+  const fetchOccupiedSpaces = async (id) => {
+    if (!id) {
+      console.error("No valid id ");
+      return;
+    }
+    try {
+      const spaces = await viewOccupiedSpaces(id);
+      setoccupiedSpaces(spaces);
+    } catch (error) {
+      console.error("Error fetch free spaces:", error);
+    }
+  };
+
+  // Fetch quadrants on component mount
+  useEffect(() => {
+    fetchQuadrants();
+    const intervalId = setInterval(fetchQuadrants, 5000); // 5000 ms = 5 segundos
+    return () => clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
+  }, []);
+
+  // Fetch free spaces when selectedCuadrante changes
+  useEffect(() => {
+    if (selectedCuadrante && selectedCuadrante._id) {
+      fetchFreeSpaces(selectedCuadrante._id);
+    }
+  }, [selectedCuadrante]);
+
+  useEffect(() => {
+    if (selectedCuadrante && selectedCuadrante._id) {
+      fetchOccupiedSpaces(selectedCuadrante._id);
+    }
+  }, [selectedCuadrante]);
+
   const handleFilterChange = (status) => {
     if (status === "all") {
       setFilteredCuadrantes(parkingCuadrantes);
-    } else {
+    } else if (status === "Disponible") {
       setFilteredCuadrantes(
-        parkingCuadrantes.filter((Cuadrante) => Cuadrante.status === status),
+        parkingCuadrantes.filter((cuadrante) => !cuadrante.full)
+      );
+    } else if (status === "ocupado") {
+      setFilteredCuadrantes(
+        parkingCuadrantes.filter((cuadrante) => cuadrante.full)
       );
     }
   };
-  const handleCuadranteClick = (Cuadrante) => {
-    setSelectedCuadrante(Cuadrante);
+
+  const handleCuadranteClick = (id) => {
+    const selected = parkingCuadrantes.find((cuadrante) => cuadrante._id === id);
+    console.log("Selected Cuadrante:", selected._id); // Verifica el cuadrante seleccionado
+    setSelectedCuadrante(selected);
   };
+
+  const navigate = useNavigate();
+
   return (
-    <div className="container mx-auto ">
-      <h1 className="text-3xl font-bold mb-8">Parking Cuadrante Management</h1>
-      <div className="mb-8">
+    <div className='min-h-screen'>
+      <Breadcrumb className=" mt-20 mb-5">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/home">
+                      Home
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/parking-spots">
+                      Parking Spots
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
+      <h1 className="text-3xl mb-8 ">Parking Quadrant Management</h1>
+      
+      <div className="mb-8 ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2">
@@ -55,34 +148,33 @@ export default function Component() {
             <DropdownMenuItem onSelect={() => handleFilterChange("all")}>
               All
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => handleFilterChange("libre")}>
-              libre
+            <DropdownMenuItem onSelect={() => handleFilterChange("Disponible")}>
+              Disponible
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => handleFilterChange("ocupado")}>
-              ocupado
+              Ocupado
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="grid grid-cols-4 gap-4">
-        {filteredCuadrantes.map((Cuadrante) => (
+      <div className="grid grid-cols-4 gap-4 ">
+        {filteredCuadrantes.map((cuadrante) => (
           <div
-            key={Cuadrante.id}
+            key={cuadrante._id}
             className="bg-white p-4 rounded-lg cursor-pointer hover:bg-muted/50"
-            onClick={() => handleCuadranteClick(Cuadrante)}
+            onClick={() => handleCuadranteClick(cuadrante._id)}
           >
             <div className="flex items-center justify-between">
-              <div className="text-lg font-semibold">
-                Cuadrante {Cuadrante.id}
-              </div>
+
+              <div className="text-lg font-semibold">{cuadrante.name}</div>
               <div
-                className={`w-4 h-4 rounded-full ${Cuadrante.status === "libre" ? "bg-green-500" : "bg-red-500"}`}
+                className={`w-4 h-4 rounded-full ${cuadrante.full == true ? "bg-red-500" : "bg-green-500"}`}
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {Cuadrante.status === "libre"
-                ? "Disponible"
-                : `ocupado desde ${Cuadrante.lastocupado}`}
+              {cuadrante.full == true
+                ? `Ocupado`
+                : "Disponible"}
             </div>
           </div>
         ))}
@@ -91,29 +183,51 @@ export default function Component() {
         <Dialog open onOpenChange={() => setSelectedCuadrante(null)}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>
-                Parking Cuadrante {selectedCuadrante.id}
-              </DialogTitle>
+            <DialogTitle>{selectedCuadrante.name}</DialogTitle>
+
             </DialogHeader>
             <div>
               <div className="grid gap-4">
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">Status</div>
                   <div
-                    className={`w-4 h-4 rounded-full ${selectedCuadrante.status === "libre" ? "bg-green-500" : "bg-red-500"}`}
+                    className={`w-4 h-4 rounded-full ${selectedCuadrante.full ? "bg-red-500" : "bg-green-500"}`}
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="font-semibold">Last ocupado</div>
-                  <div>
-                    {selectedCuadrante.lastocupado
-                      ? selectedCuadrante.lastocupado
-                      : "Never"}
+                  <div className="font-semibold">Espacios Libres</div>
+                  <div className="text-sm">
+                    {freeSpaces !== null ? (
+                      freeSpaces
+                    ) : (
+                      "null"
+                    )}
                   </div>
                 </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-semibold">Espacios Ocupados</div>
+                  <div className="text-sm">
+                    {occupiedSpaces !== null ? (
+                      occupiedSpaces
+                    ) : (
+                      "null"
+                    )}
+                  </div>
+                </div>
+
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter>       
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  
+                  navigate('/parkingspot/spacemanagement', { state: { selectedCuadrante } });
+                }}
+              >
+                Administrar espacios
+              </Button>
+
               <Button
                 variant="ghost"
                 onClick={() => setSelectedCuadrante(null)}

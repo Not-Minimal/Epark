@@ -15,6 +15,7 @@ import Support from "./pages/protected/Support/Dashboard";
 import Dashboard from "./pages/protected/Support/Dashboard";
 import CreateIssue from "./pages/protected/Support/CreateIssue";
 import ViewIssue from "./pages/protected/Support/ViewIssue";
+import SpaceManagement from "./pages/protected/ParkingSpot/SpaceManagement";
 
 import CreateQuadrants from "./pages/protected/Quadrant/CreateQuadrants";
 
@@ -43,6 +44,7 @@ const AppRouter = () => {
         <Route path="/support/dashboard" element={<Dashboard />} />
         <Route path="/support/createissue" element={<CreateIssue />} />
         <Route path="/support/viewissue" element={<ViewIssue />} />
+        <Route path="/parkingspot/spacemanagement" element={<SpaceManagement />} />
         
       </Route>
 
