@@ -40,6 +40,10 @@ const MainLayout = () => {
         return "Gestion vehiculos";
       case "/settings":
         return "Ajustes";
+      case "/vehicle/GetByLicensePlate":
+          return "Buscar Vehiculo 🚗";
+      case "/vehicle/UpdateVehicleByLicensePlate":
+          return "Editar vehiculo 🚗";
       default:
         return `Hola, ${userProfile.username} 👋🏻`;
     }

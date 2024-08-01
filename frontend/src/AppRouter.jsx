@@ -15,7 +15,7 @@ import CreateIssue from "./pages/protected/Support/CreateIssue";
 import ViewIssue from "./pages/protected/Support/ViewIssue";
 import VehicleDashboard from "./pages/protected/Vehicle/Dashboard";
 import GetByLicensePlate from "./pages/protected/Vehicle/GetByLicensePlate";
-
+import UpdateVehicleByLicensePlate from "./pages/protected/Vehicle/UpdateVehicleByLicensePlate"
 import CreateQuadrants from "./pages/protected/Quadrant/CreateQuadrants";
 
 const AppRouter = () => {
@@ -41,6 +41,9 @@ const AppRouter = () => {
         <Route
           path="/vehicle/GetByLicensePlate"
           element={<GetByLicensePlate />}
+        />
+        <Route path="/vehicle/UpdateVehicleByLicensePlate"
+        element={<UpdateVehicleByLicensePlate />} 
         />
         <Route path="/createquadrants" element={<CreateQuadrants />} />
         <Route path="/parking-spots" element={<ParkingSpots />} />

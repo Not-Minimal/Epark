@@ -9,3 +9,12 @@ export async function getVehicleByLicensePlate(licensePlate) {
     throw error.response?.data || error.message;
   }
 }
+
+export async function updatedVehicleByLicensePlate(licensePlate,data) {
+  try {
+    const response = await axios.put(`vehicle/updateVehicleByLicensePlate/${licensePlate}`,data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}
