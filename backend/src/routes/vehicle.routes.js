@@ -25,8 +25,7 @@ router.post("/createVehicle/:id", isUser, createVehicle);
 router.get("/getVehicles", isAdmin, getVehicles);
 // peticion getpara obtener vehicle por id
 router.get(
-  "/getVehicleByLicensePlate/:LicensePlate",
-  isAdmin,
+  "/getVehicleByLicensePlate/:LicensePlate",isAdmin,
   getVehicleByLicensePlate,
 );
 // peticion get para obtener vehicle por el id del dueño
