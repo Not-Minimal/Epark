@@ -17,6 +17,7 @@ import VehicleDashboard from "./pages/protected/Vehicle/Dashboard";
 import GetByLicensePlate from "./pages/protected/Vehicle/GetByLicensePlate";
 
 import CreateQuadrants from "./pages/protected/Quadrant/CreateQuadrants";
+import UpdateQuadrants from "./pages/protected/Quadrant/UpdateQuadrant";
 
 const AppRouter = () => {
   return (
@@ -37,12 +38,15 @@ const AppRouter = () => {
         <Route path="/users" element={<Users />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
+
         <Route path="/vehicle/dashboard" element={<VehicleDashboard />} />
         <Route
           path="/vehicle/GetByLicensePlate"
           element={<GetByLicensePlate />}
         />
         <Route path="/createquadrants" element={<CreateQuadrants />} />
+        <Route path="/updatequadrants" element={<UpdateQuadrants />} />
+        
         <Route path="/parking-spots" element={<ParkingSpots />} />
         <Route path="/support/dashboard" element={<DashboardSupport />} />
         <Route path="/support/createissue" element={<CreateIssue />} />

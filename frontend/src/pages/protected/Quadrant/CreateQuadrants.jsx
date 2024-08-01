@@ -10,19 +10,20 @@ import {
 } from "@/components/ui/breadcrumb";
 
 const CreateQuadrants = () => {
-  // Guarda el nombre del cuadrante
+  //? Guarda el nombre del cuadrante ingresado en el formulario
   const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); 
 
   const handleSubmit = async (e) => {
+    //? evita que la pagina se recargue al enviar el formulario
     e.preventDefault();
     try {
-      // Aquí llamamos a la función `createQuadrant` del servicio
+      //? Aquí llamamos a la función createQuadrant del servicio
       const response = await createQuadrant({ name });
       setMessage("Cuadrante creado con éxito!!");
       setName("");
     } catch (error) {
-      setMessage(error.response ? error.response.data.message : "Error interno del servidor");
+      setMessage(error.response ? error.response.data.message : "Se exedio el limite, No se pueden crear mas de 4 cuadrantes!");
     }
   };
 
@@ -47,7 +48,7 @@ const CreateQuadrants = () => {
       </header>
       <main>
         <div className="flex flex-col justify-center items-center h-screen">
-          <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+          <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
             <h1 className="text-3xl font-bold mb-8">Crear Cuadrantes</h1>
             {message && <div className="mb-4 text-center text-sm text-gray-700">{message}</div>}
             <form onSubmit={handleSubmit}>
@@ -68,8 +69,7 @@ const CreateQuadrants = () => {
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
+                  className="bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transform transition duration-500 hover:bg-green-700 hover:scale-105"                >
                   Crear
                 </button>
               </div>
