@@ -11,8 +11,9 @@ export default function GetByLicensePlate() {
 
   const handleSearch = async () => {
     try {
-      const vehicleData = await getVehicleByLicensePlate(licensePlate);
-      setVehicle(vehicleData.data); 
+      const response = await getVehicleByLicensePlate(licensePlate);
+      const vehicleData = response.data;
+      setVehicle(vehicleData); 
       setError('');
       console.log(vehicleData);
     } catch (err) {
@@ -22,7 +23,7 @@ export default function GetByLicensePlate() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-stone-50">
+    <div className="flex flex-col items-center justify-center h-auto bg-stone-50">
       <Card className="p-8 rounded-lg shadow-md w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Buscar Patente</CardTitle>
@@ -46,11 +47,11 @@ export default function GetByLicensePlate() {
           {vehicle && (
             <div className="mt-4 p-4 border border-gray-300 rounded">
               <h2 className="text-xl font-bold">Vehículo Encontrado</h2>
-              <p><strong>Patente:</strong> {vehicle.patente}</p>
-              <p><strong>Modelo:</strong> {vehicle.modelo}</p>
+              <p><strong>Patente:</strong> {vehicle.licensePlate}</p>
+              <p><strong>Modelo:</strong> {vehicle.model}</p>
               <p><strong>Color:</strong> {vehicle.color}</p>
-              <p><strong>Marca:</strong> {vehicle.marca}</p>
-              <p><strong>Usuario:</strong> {vehicle.usuario?.nombre_usuario}</p>
+              <p><strong>Marca:</strong> {vehicle.brand}</p>
+              <p><strong>Usuario:</strong> {vehicle.user?.username}</p>
             </div>
           )}
         </CardContent>
