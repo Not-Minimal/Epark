@@ -19,6 +19,7 @@ import UpdateVehicleByLicensePlate from "./pages/protected/Vehicle/UpdateVehicle
 import CreateQuadrants from "./pages/protected/Quadrant/CreateQuadrants";
 import UpdateQuadrants from "./pages/protected/Quadrant/UpdateQuadrant";
 import DashboardQuadrant from "./pages/protected/Quadrant/Dashboard";
+import DashboardDocuments from "./pages/protected/Upload/Dashboard";
 
 const AppRouter = () => {
   return (
@@ -57,6 +58,7 @@ const AppRouter = () => {
         <Route path="/support/dashboard" element={<DashboardSupport />} />
         <Route path="/support/createissue" element={<CreateIssue />} />
         <Route path="/support/viewissue" element={<ViewIssue />} />
+        <Route path="/upload/dashboard" element={<DashboardDocuments />} />
       </Route>
 
       <Route path="*" element={<Error404 />} />
