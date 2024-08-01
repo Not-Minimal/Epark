@@ -113,7 +113,7 @@ export default function Dashboard() {
           <>
             <div>
               <h1 className="text-3xl py-8">Listado de Problemas Recientes</h1>
-              <div className="bg-white p-4 rounded-2xl">
+              <div className="bg-stone-50 p-4 rounded-2xl">
                 <Table>
                   <TableHeader>
                     <TableRow>
