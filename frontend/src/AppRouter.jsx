@@ -15,9 +15,10 @@ import CreateIssue from "./pages/protected/Support/CreateIssue";
 import ViewIssue from "./pages/protected/Support/ViewIssue";
 import VehicleDashboard from "./pages/protected/Vehicle/Dashboard";
 import GetByLicensePlate from "./pages/protected/Vehicle/GetByLicensePlate";
-import UpdateVehicleByLicensePlate from "./pages/protected/Vehicle/UpdateVehicleByLicensePlate"
+import UpdateVehicleByLicensePlate from "./pages/protected/Vehicle/UpdateVehicleByLicensePlate";
 import CreateQuadrants from "./pages/protected/Quadrant/CreateQuadrants";
 import UpdateQuadrants from "./pages/protected/Quadrant/UpdateQuadrant";
+import DashboardQuadrant from "./pages/protected/Quadrant/Dashboard";
 
 const AppRouter = () => {
   return (
@@ -44,12 +45,14 @@ const AppRouter = () => {
           path="/vehicle/GetByLicensePlate"
           element={<GetByLicensePlate />}
         />
-        <Route path="/vehicle/UpdateVehicleByLicensePlate"
-        element={<UpdateVehicleByLicensePlate />} 
+        <Route
+          path="/vehicle/UpdateVehicleByLicensePlate"
+          element={<UpdateVehicleByLicensePlate />}
         />
-        <Route path="/createquadrants" element={<CreateQuadrants />} />
-        <Route path="/updatequadrants" element={<UpdateQuadrants />} />
-        
+        <Route path="/quadrants/dashboard" element={<DashboardQuadrant />} />
+        <Route path="/quadrants/create" element={<CreateQuadrants />} />
+        <Route path="/quadrants/update" element={<UpdateQuadrants />} />
+
         <Route path="/parking-spots" element={<ParkingSpots />} />
         <Route path="/support/dashboard" element={<DashboardSupport />} />
         <Route path="/support/createissue" element={<CreateIssue />} />

@@ -41,9 +41,9 @@ const MainLayout = () => {
       case "/settings":
         return "Ajustes";
       case "/vehicle/GetByLicensePlate":
-          return "Buscar Vehiculo 🚗";
+        return "Buscar Vehiculo 🚗";
       case "/vehicle/UpdateVehicleByLicensePlate":
-          return "Editar vehiculo 🚗";
+        return "Editar vehiculo 🚗";
       default:
         return `Hola, ${userProfile.username} 👋🏻`;
     }
@@ -52,7 +52,7 @@ const MainLayout = () => {
   const message = getMessageForRoute(location.pathname);
 
   return (
-    <div className="bg-stone-50">
+    <div>
       <Navbar />
       <main className="sm:px-16 px-4 sm:ml-4 pt-4">
         <h1 className="text-4xl mb-4 text-gray-700 font-bold">{message}</h1>

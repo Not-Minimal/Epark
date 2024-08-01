@@ -14,11 +14,13 @@ import profileImage from "@/assets/png/avatar.png";
 
 import {
   Car,
+  Copyright,
   LayoutDashboard,
   MessageCircleQuestion,
   PanelsTopLeft,
+  Paperclip,
+  ParkingMeter,
   ParkingSquare,
-  QrCodeIcon,
   Settings,
   User,
   Users,
@@ -87,7 +89,7 @@ const Navbar = () => {
               className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
               prefetch={false}
             >
-              <ParkingSquare className="h-4 w-4 transition-all group-hover:scale-150" />
+              <ParkingMeter className="h-4 w-4 transition-all group-hover:scale-150" />
               <span className="sr-only">Epark</span>
             </Link>
             <Tooltip>
@@ -164,15 +166,30 @@ const Navbar = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
-                      to="/qr/dashboard"
+                      to="/upload/dashboard"
                       className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                       prefetch={false}
                     >
-                      <QrCodeIcon className="h-5 w-5" />
-                      <span className="sr-only">Escanear</span>
+                      <Paperclip className="h-5 w-5" />
+                      <span className="sr-only">Ver Documentacion</span>
                     </Link>
                   </TooltipTrigger>
-                  <TooltipContent side="right">Escanear</TooltipContent>
+                  <TooltipContent side="right">
+                    Ver Documentacion
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/quadrants/dashboard"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <Copyright className="h-5 w-5 " />
+                      <span className="sr-only">Cuadrantes</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Cuadrantes</TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -299,6 +316,22 @@ const Navbar = () => {
                     >
                       <Car className="h-5 w-5" />
                       Vehiculos
+                    </NavLink>
+                    <NavLink
+                      to="/upload/dashboard"
+                      className={getNavLinkClass}
+                      prefetch={false}
+                    >
+                      <Paperclip className="h-5 w-5" />
+                      Documentacion
+                    </NavLink>
+                    <NavLink
+                      to="/quadrants/dashboard"
+                      className={getNavLinkClass}
+                      prefetch={false}
+                    >
+                      <ParkingSquare className="h-5 w-5" />
+                      Cuadrantes
                     </NavLink>
                     <NavLink
                       to="/parking-spots"
