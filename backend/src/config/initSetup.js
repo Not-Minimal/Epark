@@ -5,6 +5,7 @@ import Role from "../models/role.model.js";
 import User from "../models/user.model.js";
 
 import Vehicle from "../models/vehicle.model.js";
+import Issue from "../models/issue.model.js";
 
 /**
  * Crea los roles por defecto en la base de datos.
@@ -63,6 +64,11 @@ export async function createUsers() {
             color: "Blue",
             brand: "Toyota",
           });
+          await createIssues(user._id, {
+            title: "Problema de estacionamiento",
+            description:
+              "No hay espacio suficiente para estacionar en las mañanas.",
+          });
         }),
       new User({
         username: "Mark 1",
@@ -74,7 +80,7 @@ export async function createUsers() {
       }).save(),
 
       new User({
-        username: "Nombre Administrador",
+        username: "Administrador",
         email: "admin@epark.com",
         rut: "12345678-0",
         password: await User.encryptPassword("eparkadmin123"),
@@ -89,6 +95,11 @@ export async function createUsers() {
             model: "Model S",
             color: "Red",
             brand: "Tesla",
+          });
+          await createIssues(user._id, {
+            title: "Problema de Seguridad",
+            description:
+              "Se han reportado robos al interior del estacionamiento",
           });
         }),
     ]);
@@ -118,5 +129,27 @@ async function createVehicles(userId, vehicleData) {
     console.log(`Vehículo creado para el usuario ${user.username}`);
   } catch (error) {
     console.log(`Error creando vehículo para usuario (${userId}):`, error);
+  }
+}
+
+// Función para crear issues asociados a un usuario
+export async function createIssues(userId, issuesData) {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
+
+    // Crear el Issue
+    const newIssue = new Issue({ user: userId, ...issuesData });
+    const savedIssue = await newIssue.save();
+
+    // Asociar el Issue al usuario
+    user.issue = savedIssue._id;
+    await user.save();
+
+    console.log(`Problemas creados para el usuario ${user.username}`);
+  } catch (error) {
+    console.log(`Error creando issues para usuario (${userId}):`, error);
   }
 }

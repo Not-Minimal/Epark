@@ -18,6 +18,7 @@ import {
   MessageCircleQuestion,
   PanelsTopLeft,
   ParkingSquare,
+  QrCodeIcon,
   Settings,
   User,
   Users,
@@ -97,25 +98,25 @@ const Navbar = () => {
                   prefetch={false}
                 >
                   <LayoutDashboard className="h-5 w-5" />
-                  <span className="sr-only">Mi vehiculo</span>
+                  <span className="sr-only">Dashboard</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Mi vehiculo</TooltipContent>
+              <TooltipContent side="right">Dashboard</TooltipContent>
             </Tooltip>
             {userProfile.rolName === "usuario" && (
               <>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
-                      to="/car"
+                      to="/vehicle/dashboard"
                       className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                       prefetch={false}
                     >
                       <Car className="h-5 w-5" />
-                      <span className="sr-only">Mi Vehiculo</span>
+                      <span className="sr-only">Mi vehiculo</span>
                     </Link>
                   </TooltipTrigger>
-                  <TooltipContent side="right">Dashboard</TooltipContent>
+                  <TooltipContent side="right">Mi vehiculo</TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -150,7 +151,7 @@ const Navbar = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
-                      to="/vehicle"
+                      to="/vehicle/dashboard"
                       className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                       prefetch={false}
                     >
@@ -159,6 +160,19 @@ const Navbar = () => {
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent side="right">Vehiculos</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to="/qr/dashboard"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      prefetch={false}
+                    >
+                      <QrCodeIcon className="h-5 w-5" />
+                      <span className="sr-only">Escanear</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Escanear</TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -279,7 +293,7 @@ const Navbar = () => {
                       Usuarios
                     </NavLink>
                     <NavLink
-                      to="/vehicle"
+                      to="/vehicle/dashboard"
                       className={getNavLinkClass}
                       prefetch={false}
                     >
