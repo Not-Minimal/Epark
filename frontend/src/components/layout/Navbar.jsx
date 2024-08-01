@@ -110,19 +110,6 @@ const Navbar = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
-                      to="/vehicle/dashboard"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                      prefetch={false}
-                    >
-                      <Car className="h-5 w-5" />
-                      <span className="sr-only">Mi vehiculo</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Mi vehiculo</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
                       to="/support/dashboard"
                       className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                       prefetch={false}
@@ -287,18 +274,7 @@ const Navbar = () => {
                   <LayoutDashboard className="h-5 w-5" />
                   Dashboard
                 </NavLink>
-                {userProfile.rolName === "usuario" && (
-                  <>
-                    <NavLink
-                      to="/car"
-                      className={getNavLinkClass}
-                      prefetch={false}
-                    >
-                      <Car className="h-5 w-5" />
-                      Mi Vehiculo
-                    </NavLink>
-                  </>
-                )}
+
                 {userProfile.rolName === "administrador" && (
                   <>
                     <NavLink
