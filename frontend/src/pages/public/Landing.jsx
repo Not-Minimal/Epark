@@ -47,7 +47,7 @@ export default function Landing() {
               <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                 <Link
                   to="/login"
-                  className="inline-flex justify-center items-center py-3 px-4 text-base font-medium text-center text-white rounded-lg bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 shadow-2xl shadow-green-600/100"
+                  className="inline-flex justify-center items-center py-3 px-4 text-base font-medium text-center text-white rounded-lg bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 shadow-lg shadow-green-400/100"
                 >
                   Iniciar Sesión
                 </Link>

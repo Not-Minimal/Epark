@@ -143,7 +143,7 @@ export async function getVehiclesByQuery(req, res) {
       patente: vehicle.licensePlate,
       modelo: vehicle.model,
       color: vehicle.color,
-      marca: vehicle.marca,
+      marca: vehicle.brand,
       usuario: {
         usuario_id: vehicle.user._id,
         nombre_usuario: vehicle.user.username,
@@ -177,22 +177,10 @@ export async function getVehicleByLicensePlate(req, res) {
       });
       return;
     }
-    //Mapeo del Json de respuesta
-    const vehicleMap = {
-      vehiculo_id: vehicle._id,
-      patente: vehicle.licensePlate,
-      modelo: vehicle.model,
-      color: vehicle.color,
-      marca: vehicle.marca,
-      usuario: {
-        usuario_id: vehicle.user._id,
-        nombre_usuario: vehicle.user.username,
-      },
-    };
 
     res.status(200).json({
       message: "Vehiculo encontrado",
-      data: vehicleMap,
+      data: vehicle,
     });
   } catch (error) {
     console.log("Error en getVehicleByPatente", error);
@@ -233,7 +221,7 @@ export async function getVehicleByOwnerId(req, res) {
       patente: vehicle.licensePlate,
       modelo: vehicle.model,
       color: vehicle.color,
-      marca: vehicle.marca,
+      marca: vehicle.brand,
       usuario: {
         usuario_id: vehicle.user._id,
         nombre_usuario: vehicle.user.username,
@@ -347,23 +335,10 @@ export async function updateVehicleByLicensePlate(req, res) {
 
     const updatedVehicle = await vehicle.save();
 
-    const user = vehicle.user;
-    // Mapeamos el JSON de respuesta
-    const vehicleMap = {
-      vehiculo_id: updatedVehicle._id,
-      patente: updatedVehicle.licensePlate,
-      modelo: updatedVehicle.model,
-      color: updatedVehicle.color,
-      marca: updatedVehicle.brand,
-      usuario: {
-        usuario_id: user._id,
-        nombre_usuario: user.username,
-      },
-    };
     // Retornar el vehículo actualizado con el nombre del dueño
     res.status(200).json({
       message: "Vehiculo actualizado",
-      data: vehicleMap,
+      data: updatedVehicle,
     });
   } catch (error) {
     console.log("Error en updateVehicleByPatente", error);

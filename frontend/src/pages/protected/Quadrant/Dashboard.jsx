@@ -5,6 +5,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   return (
@@ -27,7 +29,19 @@ export default function Dashboard() {
         </Breadcrumb>
       </header>
       <main>
-        <h1>Mi documentacion</h1>
+        <div className="flex flex-col items-center justify-center h-auto gap-4 ">
+          <Link to="/quadrants/create">
+            <Button className="w-64 bg-[#4CAF50] text-white hover:bg-[#45a049] px-8 py-3 rounded-md focus:outline-none">
+              Crear Cuadrante
+            </Button>
+          </Link>
+
+          <Link to="/quadrants/update">
+            <Button className="w-64 bg-[#4CAF50] text-white hover:bg-[#45a049] px-8 py-3 rounded-md focus:outline-none">
+              Actualizar Cuadrante
+            </Button>
+          </Link>
+        </div>
       </main>
     </>
   );

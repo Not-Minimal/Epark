@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,22 +18,18 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
-import Form from "@/components/forms/Form";
-import { Link } from "react-router-dom";
-import { register } from "@/services/auth.service";
 import { createIssue } from "@/services/issue.service";
 
 export default function CreateIssue() {
   const navigate = useNavigate();
+  const [userId, setUserId] = useState(""); // Estado para almacenar el ID de usuario
 
   const registerIssue = (data) => {
-    createIssue('6687461ad57cdae16403e03d',data)
+    createIssue(userId, data) // Usa userId en lugar de un ID fijo
       .then(() => {
-        // Mostrar un toast de éxito
-        navigate("/support/dashboard"); // Redirige a la página de inicio de sesión
+        navigate("/support/dashboard");
       })
       .catch((error) => {
-        // Mostrar un toast de error
         console.error("Error registering:", error);
       });
   };
@@ -43,6 +40,7 @@ export default function CreateIssue() {
       title: event.target.title.value,
       description: event.target.description.value,
     };
+
     registerIssue(data);
   };
 
@@ -77,8 +75,22 @@ export default function CreateIssue() {
             <CardContent>
               <form className="grid gap-4" onSubmit={handleSubmit}>
                 <div className="grid gap-2">
+                  <Label htmlFor="userId">ID de Usuario</Label>
+                  <Input
+                    id="userId"
+                    name="userId"
+                    placeholder="Ingrese el ID del usuario"
+                    value={userId} // Vincula el valor al estado userId
+                    onChange={(e) => setUserId(e.target.value)} // Actualiza el estado cuando el usuario escribe
+                  />
+                </div>
+                <div className="grid gap-2">
                   <Label htmlFor="title">Titulo</Label>
-                  <Input id="title" name="title" placeholder="Ingrese un titulo" />
+                  <Input
+                    id="title"
+                    name="title"
+                    placeholder="Ingrese un titulo"
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="description">Descripcion</Label>
