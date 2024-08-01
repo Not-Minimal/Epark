@@ -99,8 +99,7 @@ export default function Dashboard() {
         {userProfile.rolName === "usuario" && (
           <>
             <div>
-              <h1 className="text-3xl py-8">Listado de Problemas Recientes</h1>
-              <div className="bg-white p-4 rounded-2xl max-w-4xl">
+              <div className="bg-white py-4 rounded-2xl max-w-4xl">
                 <h1 className="text-3xl mb-8">Necesitas crear un Reclamo?</h1>
                 <Link to="/support/createissue">
                   <Button>Crear Reclamo</Button>

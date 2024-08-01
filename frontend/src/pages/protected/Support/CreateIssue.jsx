@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,7 +17,33 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useNavigate } from "react-router-dom";
+import { createIssue } from "@/services/issue.service";
+
 export default function CreateIssue() {
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(""); // Estado para almacenar el ID de usuario
+
+  const registerIssue = (data) => {
+    createIssue(userId, data) // Usa userId en lugar de un ID fijo
+      .then(() => {
+        navigate("/support/dashboard");
+      })
+      .catch((error) => {
+        console.error("Error registering:", error);
+      });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = {
+      title: event.target.title.value,
+      description: event.target.description.value,
+    };
+
+    registerIssue(data);
+  };
+
   return (
     <>
       <header>
@@ -46,15 +73,30 @@ export default function CreateIssue() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="grid gap-4">
+              <form className="grid gap-4" onSubmit={handleSubmit}>
+                <div className="grid gap-2">
+                  <Label htmlFor="userId">ID de Usuario</Label>
+                  <Input
+                    id="userId"
+                    name="userId"
+                    placeholder="Ingrese el ID del usuario"
+                    value={userId} // Vincula el valor al estado userId
+                    onChange={(e) => setUserId(e.target.value)} // Actualiza el estado cuando el usuario escribe
+                  />
+                </div>
                 <div className="grid gap-2">
                   <Label htmlFor="title">Titulo</Label>
-                  <Input id="title" placeholder="Ingrese un titulo" />
+                  <Input
+                    id="title"
+                    name="title"
+                    placeholder="Ingrese un titulo"
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="description">Descripcion</Label>
                   <Textarea
                     id="description"
+                    name="description"
                     placeholder="Describe los detalles de tu reclamo"
                     rows={4}
                   />

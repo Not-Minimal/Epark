@@ -34,7 +34,7 @@ export async function getIssuesByUser(userId) {
 // Crear una nueva incidencia
 export async function createIssue(id, data) {
   try {
-    const response = await axios.post(`/createIssue/${id}`, data);
+    const response = await axios.post(`/issues/createIssue/${id}`, data);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
